@@ -5,7 +5,7 @@ from django.urls import path
 from django.views.generic import RedirectView
 from accounts import views as accounts
 from discovery import pages as discovery
-from discovery.views import map_events
+from discovery.views import event_details, map_events
 from groups import pages as groups
 from notifications import views as notices
 from .pages import activity, my_events, my_groups
@@ -23,6 +23,7 @@ urlpatterns = [
     path("groups/", my_groups, name="my-groups"),
     path("admin/", admin.site.urls),
     path("api/map/events/", map_events, name="map-events"),
+    path("api/events/<int:event_id>/", event_details, name="api-event-details"),
     path("api/discover/playing-near-me/", discovery.playing_near_me, name="playing-near-me"),
     path("genres/", discovery.genres, name="genres"),
     path("genres/<int:genre_id>/", discovery.genres, name="genre-detail"),

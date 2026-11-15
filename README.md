@@ -1,5 +1,22 @@
 # Bassline
 
+## Assignment 2 progress
+
+The first extraction milestone adds public JSON event details at
+`GET /api/events/<event_id>/`. It reuses Discovery's public visibility rules,
+including for signed-in owners and admins. The response includes event ID,
+title, start/end timestamps, cancellation status, and venue ID/name/timezone.
+Unavailable and missing events return the same JSON 404. Writes return 405.
+The incremental contract is in `discovery/event-api.openapi.json`.
+
+This endpoint still runs in the Assignment 1 monolith with SQLite. Service
+extraction, a Groups HTTP client with timeouts, SQL Server, static UI, containers,
+CI/CD and Azure remain to be implemented. Identity and notification ownership
+remain open decisions. This milestone does not yet satisfy the cross-service flow.
+
+Run the endpoint regression checks with
+`.\.venv\Scripts\python.exe manage.py test discovery.test_event_api --noinput`.
+
 A music-first event discovery application: find nearby events by genre and date, hear what their music sounds like through listening references, and find people to attend with.
 
 The idea comes from difficulty discovering smaller and niche events. It is built around electronic music (22 broad genres and 251 subgenres), and the genre system could be extended to other kinds of music. Attendees and independent event organizers are the intended users.
