@@ -249,7 +249,8 @@ class WebTests(TestCase):
         self.assertRedirects(response, f'/events/{event.pk}/')
         self.assertEqual(event.creator_id,self.guest.pk)
         self.assertFalse(event.moderation_hidden)
-        self.assertEqual(event.starts_at.hour,19)  # Paris summer time -> UTC
+        # The submitted wall time must survive both summer and winter offsets.
+        self.assertEqual(event.starts_at.astimezone(ZoneInfo('Europe/Paris')).hour,21)
         self.assertEqual(ds.tempo_estimate(event),(115,130))
 
     def test_venue_choices_and_submission_reject_other_pending_venue(self):

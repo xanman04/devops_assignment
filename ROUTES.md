@@ -6,6 +6,7 @@ Most interactions use Django templates and POST forms, redirecting after success
 
 | Route | Methods | Responsibility |
 |---|---|---|
+| `/api/events/<event_id>/` | GET | Public event-details JSON contract for Assignment 2 extraction; same public visibility for anonymous callers, owners and admins; uniform 404 for unavailable records |
 | `/` | GET | Map landing page, date/genre controls, location fallback |
 | `/discover/` | GET | Public event, genre, subgenre, and performer discovery; text search hides empty rows |
 | `/my-events/` | GET, login required | Followed events and the user's listings together |

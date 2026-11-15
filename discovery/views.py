@@ -1,10 +1,33 @@
 # Copyright © 2026 Xander Chen. All rights reserved.
-"""Read-only map JSON endpoint; public page handlers live in discovery.pages."""
+"""Read-only discovery JSON endpoints; page handlers live in discovery.pages."""
 from datetime import datetime
 from django.core.exceptions import ValidationError
 from django.http import JsonResponse
 from django.views.decorators.http import require_GET
-from .services import map_pins, search_events
+from .models import Event
+from .services import get_event, map_pins, search_events
+
+
+@require_GET
+def event_details(request, event_id):
+    """Public event contract for the future Groups service and static UI.
+
+    Always use public visibility, even when a privileged browser is signed in.
+    Private creator/account fields never cross this boundary.
+    """
+    try:
+        event = get_event(event_id=event_id)
+    except Event.DoesNotExist:
+        return JsonResponse({"error": "Event not found."}, status=404)
+    return JsonResponse({
+        "id": event.pk,
+        "title": event.title,
+        "starts_at": event.starts_at.isoformat(),
+        "ends_at": event.ends_at.isoformat(),
+        "cancelled": event.cancelled_at is not None,
+        "venue": {"id": event.venue_id, "name": event.venue.name,
+                  "timezone": event.venue.timezone},
+    })
 
 
 def _date(value):
