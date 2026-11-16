@@ -2,6 +2,15 @@
 
 ## Assignment 2 progress
 
+Discovery now has an independent JSON-only runtime in
+[`services/discovery`](services/discovery/README.md), with its own database,
+account/event models, event notifications, migrations, expiring bearer identity,
+health checks and request logs. It has no dependency on Groups. See
+[`SERVICE_BOUNDARIES.md`](SERVICE_BOUNDARIES.md) and ADR 6 for the extraction design.
+The root application remains the Assignment 1 regression reference while the
+remaining features move. SQLite is transitional; SQL Server and deployment
+remain pending. GitHub Actions now checks the monolith and extracted service.
+
 The first extraction milestone adds public JSON event details at
 `GET /api/events/<event_id>/`. It reuses Discovery's public visibility rules,
 including for signed-in owners and admins. The response includes event ID,
@@ -9,10 +18,10 @@ title, start/end timestamps, cancellation status, and venue ID/name/timezone.
 Unavailable and missing events return the same JSON 404. Writes return 405.
 The incremental contract is in `discovery/event-api.openapi.json`.
 
-This endpoint still runs in the Assignment 1 monolith with SQLite. Service
-extraction, a Groups HTTP client with timeouts, SQL Server, static UI, containers,
-CI/CD and Azure remain to be implemented. Identity and notification ownership
-remain open decisions. This milestone does not yet satisfy the cross-service flow.
+This endpoint is also available in the extracted Discovery runtime. Groups
+extraction and its HTTP client with timeouts, SQL Server, static UI, containers,
+full CI/CD and Azure remain to be implemented. This milestone does not yet
+satisfy the cross-service flow.
 
 Run the endpoint regression checks with
 `.\.venv\Scripts\python.exe manage.py test discovery.test_event_api --noinput`.
