@@ -1,0 +1,41 @@
+name: Extraction checks
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  monolith:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - run: python manage.py test --noinput
+
+  discovery:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: services/discovery
+    env:
+      DJANGO_SECRET_KEY: ci-only-disposable-key-never-used-in-deployment
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          cache: pip
+          cache-dependency-path: services/discovery/requirements*.txt
+      - run: python -m pip install -r requirements-dev.txt
+      - run: python -m ruff check --select E9,F63,F7,F82 .
+      - run: python -m openapi_spec_validator openapi.json
+      - run: python manage.py makemigrations --check --dry-run
+      - run: python -m coverage run --source=discovery,accounts,notifications,config --omit='*/migrations/*,*/test*.py' manage.py test discovery config --noinput
+      - run: python -m coverage report --fail-under=70
