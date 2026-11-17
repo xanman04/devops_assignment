@@ -2,6 +2,14 @@
 
 ## Assignment 2 progress
 
+Groups is now independently runnable in
+[`services/groups`](services/groups/README.md). It validates Discovery bearer
+identity and event availability over HTTP with timeouts, stores its own
+attendance data, handles peer failure and protects create retries with
+per-account idempotency receipts. Public group summaries and health remain
+available during a Discovery outage. CI includes the Groups coverage gates and
+a real two-process HTTP boundary check.
+
 Discovery now has an independent JSON-only runtime in
 [`services/discovery`](services/discovery/README.md), with its own database,
 account/event models, event notifications, migrations, expiring bearer identity,
@@ -18,10 +26,10 @@ title, start/end timestamps, cancellation status, and venue ID/name/timezone.
 Unavailable and missing events return the same JSON 404. Writes return 405.
 The incremental contract is in `discovery/event-api.openapi.json`.
 
-This endpoint is also available in the extracted Discovery runtime. Groups
-extraction and its HTTP client with timeouts, SQL Server, static UI, containers,
-full CI/CD and Azure remain to be implemented. This milestone does not yet
-satisfy the cross-service flow.
+This endpoint is also available in the extracted Discovery runtime and is used
+by Groups participation actions. SQL Server, static UI, containers, remaining
+feature adapters, full CI/CD and Azure remain to be implemented. The required
+user-visible UI flow still needs its static frontend.
 
 Run the endpoint regression checks with
 `.\.venv\Scripts\python.exe manage.py test discovery.test_event_api --noinput`.

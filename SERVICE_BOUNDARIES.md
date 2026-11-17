@@ -81,3 +81,21 @@ The root application stays runnable during migration. Temporary source copies
 must be reconciled and the old runtime retired before submission. The complete
 OpenAPI documents and professor-provided system.schema.json remain required;
 this design does not substitute for either.
+
+## November 17 implementation status
+
+Both service folders now have independent runtimes and databases. Groups stores
+credential-free Person references for foreign account IDs, plain event IDs and
+event title/start snapshots. HTTP identity grants are request-scoped, and event
+participation facts are validated before entering local transactions. The UI,
+SQL Server conversion, data import and deployment remain separate milestones.
+The CI boundary check runs both actual processes against disposable databases.
+
+For deployment, the owner reports that the professor credits infrastructure
+managed explicitly with tools such as Terraform. Prefer Terraform definitions
+of the assignment's required resources, applied by the deployment pipeline.
+The lecture's compute comparison (Backend Components — SDD Session.pdf pages
+19 and 22) presents general options and does not amend the explicit exclusion
+of VMs. The professor-reported credit is an owner report, not a verified change
+to the rubric. Continue to use Container Apps Consumption, serverless SQL and
+Static Web Apps unless an updated assignment contract says otherwise.

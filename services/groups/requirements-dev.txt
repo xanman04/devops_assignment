@@ -1,0 +1,4 @@
+-r requirements.txt
+coverage==7.11.0
+ruff==0.14.1
+openapi-spec-validator==0.7.2
