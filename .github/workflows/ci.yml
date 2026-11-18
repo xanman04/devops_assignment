@@ -18,6 +18,7 @@ jobs:
           cache: pip
       - run: python -m pip install -r requirements.txt
       - run: python manage.py test --noinput
+      - run: python tools/check_split_import.py
 
   discovery:
     runs-on: ubuntu-latest
@@ -61,3 +62,14 @@ jobs:
       - run: python -m coverage run --source=groups,notifications,config --omit='*/migrations/*,*/test*.py' manage.py test config --noinput
       - run: python -m coverage report --fail-under=70
       - run: python ../../tools/check_service_boundary.py
+
+  compose-sqlserver:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: docker compose config --quiet
+      - run: python tools/check_compose.py --project bassline-ci-${{ github.run_id }}-${{ github.run_attempt }}

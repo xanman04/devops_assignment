@@ -77,7 +77,8 @@ def token(request):
 def whoami(request):
     user, _ = identity(request)
     # Group authorization is explicitly scoped, not the entire permission list.
-    permissions = ["groups.*"] if user.is_superuser else []
+    permissions = ["groups.*"] if user.is_superuser else sorted(
+        permission for permission in user.get_all_permissions() if permission.startswith("groups."))
     return JsonResponse({"id": user.pk, "display_name": user.public_name,
                          "active": user.is_active, "permissions": permissions})
 

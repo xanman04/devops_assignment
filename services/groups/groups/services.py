@@ -14,6 +14,7 @@ from .context import can_manage, require_permission, require_user, require_event
 from notifications.models import Notification
 from .models import AttendanceGroup, GroupBan, GroupHistory, GroupNotice, JoinRequest, Membership, Message
 from .photos import prepare_photo
+from .transactions import domain_write
 
 
 def _group(group_id):
@@ -59,6 +60,7 @@ def get_group(*, group_id, actor=None):
     return _group(group_id)
 
 
+@domain_write
 def save_group(*, actor, data, group_id=None, photo=None, remove_photo=False):
     """Top-level write boundary: remove any newly written file if this write fails."""
     require_user(actor)
@@ -146,13 +148,13 @@ def _delete(group):
         transaction.on_commit(lambda: storage.delete(name), robust=True)
 
 
-@transaction.atomic
+@domain_write
 def delete_group(*, actor, group_id):
     require_permission(actor, "groups.delete_attendancegroup")
     _delete(_group(group_id))
 
 
-@transaction.atomic
+@domain_write
 def leave_group(*, actor, group_id):
     require_user(actor)
     group = _group(group_id)
@@ -185,7 +187,7 @@ def _join(actor, group, *, confirm_switch=False):
     return membership
 
 
-@transaction.atomic
+@domain_write
 def join_group(*, actor, group_id, confirm_switch=False):
     group = _group(group_id)
     if group.joining_mode != AttendanceGroup.JoiningMode.PUBLIC:
@@ -193,7 +195,7 @@ def join_group(*, actor, group_id, confirm_switch=False):
     return _join(actor, group, confirm_switch=confirm_switch)
 
 
-@transaction.atomic
+@domain_write
 def request_join(*, actor, group_id):
     require_user(actor)
     group = _group(group_id)
@@ -211,7 +213,7 @@ def request_join(*, actor, group_id):
     return request
 
 
-@transaction.atomic
+@domain_write
 def review_request(*, actor, request_id, approve):
     request = JoinRequest.objects.select_related("group__owner", "applicant").get(pk=request_id)
     group = request.group
@@ -237,7 +239,7 @@ def review_request(*, actor, request_id, approve):
     return request
 
 
-@transaction.atomic
+@domain_write
 def accept_offer(*, actor, request_id, confirm_switch=False):
     require_user(actor)
     request = JoinRequest.objects.select_related("group__owner").get(pk=request_id, applicant=actor)
@@ -246,7 +248,7 @@ def accept_offer(*, actor, request_id, confirm_switch=False):
     return _join(actor, request.group, confirm_switch=confirm_switch)
 
 
-@transaction.atomic
+@domain_write
 def cancel_request(*, actor, request_id):
     require_user(actor)
     request = JoinRequest.objects.get(pk=request_id, applicant=actor)
@@ -257,7 +259,7 @@ def cancel_request(*, actor, request_id):
     return request
 
 
-@transaction.atomic
+@domain_write
 def remove_member(*, actor, group_id, user_id, ban=False, reason=""):
     group = _group(group_id)
     _manager(actor, group)
@@ -282,7 +284,7 @@ def remove_member(*, actor, group_id, user_id, ban=False, reason=""):
     return record if ban else None
 
 
-@transaction.atomic
+@domain_write
 def lift_ban(*, actor, ban_id):
     ban = GroupBan.objects.select_related("group__owner").get(pk=ban_id)
     _manager(actor, ban.group)
@@ -304,14 +306,14 @@ def _text(body):
     return body.strip()
 
 
-@transaction.atomic
+@domain_write
 def post_message(*, actor, group_id, body):
     group = _group(group_id)
     _member(actor, group)
     return Message.objects.create(group=group, author=actor, body=_text(body))
 
 
-@transaction.atomic
+@domain_write
 def edit_message(*, actor, message_id, body):
     message = Message.objects.select_related("group__owner").get(pk=message_id)
     _member(actor, message.group)
@@ -326,7 +328,7 @@ def edit_message(*, actor, message_id, body):
     return message
 
 
-@transaction.atomic
+@domain_write
 def delete_message(*, actor, message_id):
     message = Message.objects.select_related("group__owner").get(pk=message_id)
     require_user(actor)

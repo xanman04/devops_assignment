@@ -1,0 +1,123 @@
+name: bassline
+
+services:
+  local-secrets:
+    image: python:3.13.11-slim-bookworm@sha256:20080e807bfc404f8450b185cf0fc95d553462673598549613735f70a5b4d5d0
+    command: ["python", "/bootstrap/init_local_secrets.py"]
+    network_mode: none
+    volumes:
+      - ./tools/init_local_secrets.py:/bootstrap/init_local_secrets.py:ro
+      - sqladmin-secret:/secrets/sqladmin
+      - discovery-secret:/secrets/discovery
+      - groups-secret:/secrets/groups
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    platform: linux/amd64
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: Developer
+      MSSQL_MEMORY_LIMIT_MB: "2048"
+    entrypoint: ["/bin/bash", "-c", 'export MSSQL_SA_PASSWORD="$$(cat /run/sqladmin/password)"; exec /opt/mssql/bin/sqlservr']
+    depends_on:
+      local-secrets:
+        condition: service_completed_successfully
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+      - sqladmin-secret:/run/sqladmin:ro
+    healthcheck:
+      test: ["CMD-SHELL", 'SQLCMDPASSWORD="$$(cat /run/sqladmin/password)" /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -C -b -Q "SELECT 1" > /dev/null']
+      interval: 5s
+      timeout: 5s
+      retries: 24
+      start_period: 30s
+
+  db-init:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    platform: linux/amd64
+    entrypoint: ["/bin/bash", "/bootstrap/init.sh"]
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    volumes:
+      - ./db/init.sh:/bootstrap/init.sh:ro
+      - ./db/init.sql:/bootstrap/init.sql:ro
+      - sqladmin-secret:/run/sqladmin:ro
+      - discovery-secret:/run/discovery:ro
+      - groups-secret:/run/groups:ro
+
+  discovery:
+    build: ./services/discovery
+    image: bassline-discovery:local
+    environment:
+      LOCAL_SECRETS_DIR: /run/app-secrets
+      DATABASE_HOST: sqlserver
+      DATABASE_NAME: discovery
+      DATABASE_USER: bassline_discovery
+      ALLOWED_HOSTS: localhost,127.0.0.1,discovery,testserver
+      UI_ORIGIN: http://localhost:${UI_PORT:-8080}
+      VERSION: ${VERSION:-development}
+      SEED_TAXONOMY: "1"
+    depends_on:
+      db-init:
+        condition: service_completed_successfully
+    ports:
+      - "127.0.0.1:${DISCOVERY_PORT:-8000}:8000"
+    volumes:
+      - discovery-secret:/run/app-secrets:ro
+      - discovery-data:/app/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "from urllib.request import urlopen; urlopen('http://127.0.0.1:8000/health',timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 18
+      start_period: 60s
+
+  groups:
+    build: ./services/groups
+    image: bassline-groups:local
+    environment:
+      LOCAL_SECRETS_DIR: /run/app-secrets
+      DATABASE_HOST: sqlserver
+      DATABASE_NAME: groups
+      DATABASE_USER: bassline_groups
+      DISCOVERY_URL: http://discovery:8000
+      DISCOVERY_TIMEOUT_S: "2"
+      ALLOWED_HOSTS: localhost,127.0.0.1,groups,testserver
+      UI_ORIGIN: http://localhost:${UI_PORT:-8080}
+      VERSION: ${VERSION:-development}
+    depends_on:
+      db-init:
+        condition: service_completed_successfully
+    ports:
+      - "127.0.0.1:${GROUPS_PORT:-8001}:8000"
+    volumes:
+      - groups-secret:/run/app-secrets:ro
+      - groups-data:/app/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "from urllib.request import urlopen; urlopen('http://127.0.0.1:8000/health',timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 18
+      start_period: 60s
+
+  ui:
+    image: nginx:1.28.0-alpine
+    environment:
+      DISCOVERY_PUBLIC_URL: http://localhost:${DISCOVERY_PORT:-8000}
+      GROUPS_PUBLIC_URL: http://localhost:${GROUPS_PORT:-8001}
+      NGINX_ENVSUBST_OUTPUT_DIR: /tmp
+    ports:
+      - "127.0.0.1:${UI_PORT:-8080}:80"
+    volumes:
+      - ./ui:/usr/share/nginx/html:ro
+      - ./ui/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./ui/config.js.template:/etc/nginx/templates/config.js.template:ro
+
+volumes:
+  sqlserver-data:
+  sqladmin-secret:
+  discovery-secret:
+  groups-secret:
+  discovery-data:
+  groups-data:

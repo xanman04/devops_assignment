@@ -1,6 +1,7 @@
 # Copyright © 2026 Xander Chen. All rights reserved.
 """Discovery records. Use discovery.services for authorized business operations."""
 from pathlib import Path
+import hashlib
 from urllib.parse import urlsplit
 from uuid import uuid4
 
@@ -150,16 +151,31 @@ class DJMediaLink(models.Model):
     dj = models.ForeignKey(DJProfile, on_delete=models.CASCADE, related_name="media_links")
     title = models.CharField(max_length=200)
     url = models.URLField(max_length=2048, validators=[http_url])
+    url_digest = models.CharField(max_length=64, blank=True, editable=False, default="")
     kind = models.CharField(max_length=5, choices=Kind)
     platform = models.CharField(max_length=10, choices=Platform)
     display_order = models.PositiveIntegerField(default=0)
 
     class Meta:
         ordering = ["display_order", "id"]
-        constraints = [models.UniqueConstraint(fields=["dj", "url"], name="dj_media_unique_url")]
+        constraints = [
+            models.UniqueConstraint(fields=["dj", "url_digest"], name="dj_media_unique_digest"),
+            models.CheckConstraint(condition=~Q(url_digest=""), name="dj_media_digest_present"),
+        ]
 
     def __str__(self):
         return f"{self.dj.name}: {self.title}"
+
+
+    def clean_fields(self, exclude=None):
+        self.url_digest = hashlib.sha256(self.url.encode('utf-8')).hexdigest()
+        super().clean_fields(exclude=exclude)
+
+    def save(self, *args, **kwargs):
+        self.url_digest = hashlib.sha256(self.url.encode('utf-8')).hexdigest()
+        if kwargs.get('update_fields') is not None and 'url' in kwargs['update_fields']:
+            kwargs['update_fields'] = set(kwargs['update_fields']) | {'url_digest'}
+        super().save(*args, **kwargs)
 
 
 class Venue(Timestamped):
@@ -352,3 +368,14 @@ class EventCard(models.Model):
 
     class Meta:
         constraints = [models.UniqueConstraint(fields=["user", "event"], name="event_card_unique")]
+
+
+class LegacyAdminAudit(models.Model):
+    """Retain source Django admin history without exposing server-rendered admin pages."""
+    action_time = models.DateTimeField()
+    user = models.ForeignKey(USER, on_delete=models.PROTECT)
+    content_type = models.ForeignKey('contenttypes.ContentType', on_delete=models.SET_NULL, null=True)
+    object_id = models.TextField(null=True, blank=True)
+    object_repr = models.CharField(max_length=200)
+    action_flag = models.PositiveSmallIntegerField()
+    change_message = models.TextField(blank=True)

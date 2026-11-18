@@ -2,6 +2,12 @@
 
 ## Assignment 2 progress
 
+The complete local stack now starts with `docker compose up --build`.
+See [LOCAL_DEVELOPMENT.md](LOCAL_DEVELOPMENT.md) for ports, single-service
+operation, private local credentials, data volumes and SQL Server verification.
+The nginx UI currently serves a static shell while the full UI conversion is
+being implemented. CI builds/runs both images and checks the SQL Server stack.
+
 Groups is now independently runnable in
 [`services/groups`](services/groups/README.md). It validates Discovery bearer
 identity and event availability over HTTP with timeouts, stores its own
@@ -16,8 +22,9 @@ account/event models, event notifications, migrations, expiring bearer identity,
 health checks and request logs. It has no dependency on Groups. See
 [`SERVICE_BOUNDARIES.md`](SERVICE_BOUNDARIES.md) and ADR 6 for the extraction design.
 The root application remains the Assignment 1 regression reference while the
-remaining features move. SQLite is transitional; SQL Server and deployment
-remain pending. GitHub Actions now checks the monolith and extracted service.
+remaining features move. Both services now support SQL Server, with stable-ID
+export/import tooling and ADR 7. See [DATA_MIGRATION.md](DATA_MIGRATION.md).
+GitHub Actions checks the monolith and extracted services.
 
 The first extraction milestone adds public JSON event details at
 `GET /api/events/<event_id>/`. It reuses Discovery's public visibility rules,
@@ -27,8 +34,8 @@ Unavailable and missing events return the same JSON 404. Writes return 405.
 The incremental contract is in `discovery/event-api.openapi.json`.
 
 This endpoint is also available in the extracted Discovery runtime and is used
-by Groups participation actions. SQL Server, static UI, containers, remaining
-feature adapters, full CI/CD and Azure remain to be implemented. The required
+by Groups participation actions. Full static UI, remaining feature adapters,
+image publication and Azure deployment remain to be implemented. The required
 user-visible UI flow still needs its static frontend.
 
 Run the endpoint regression checks with

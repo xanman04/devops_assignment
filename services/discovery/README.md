@@ -20,7 +20,7 @@ the configured UI origin. Database/health errors do not expose connection data.
 | Variable | Default | Meaning |
 |---|---|---|
 | DJANGO_SECRET_KEY | Required, secret | Session signing key; never commit a real value |
-| DATABASE_URL | sqlite:/// followed by this folder's data/discovery.sqlite3 path | Transitional local database; other schemes currently fail startup |
+| DATABASE_URL | sqlite:/// followed by this folder's data/discovery.sqlite3 path | SQL Server mssql:// URL or local SQLite compatibility path |
 | ALLOWED_HOSTS | localhost,127.0.0.1,testserver | Comma-separated request hosts |
 | UI_ORIGIN | http://localhost:8080 | Sole allowed browser CORS origin |
 | PORT | 8000 | Waitress listening port |
@@ -62,15 +62,23 @@ retired admin/templates remain in the root monolith suite; they are not service
 routes. New HTTP tests cover authentication, expiry/revocation, active accounts,
 ownership, rejected fields, event writes, inbox isolation, health and CORS.
 
-This is an extraction milestone, not the final submission runtime. SQL Server,
-stable-ID data import, containers, the Groups caller, static UI, production login
-abuse controls, registration/profile/moderation/reference adapters, full seed
-transfer, system.yaml/schema validation and Azure deployment remain pending.
-The initial CI workflow tests both runtimes and validates/lints/covers Discovery.
-It must later add Groups, SQL Server testing, image builds, system validation
-and main-only deployment. No Azure resources or credentials are accessed yet.
+SQL Server and stable-ID data import are implemented. See
+[DATA_MIGRATION.md](../../DATA_MIGRATION.md) and ADR 7 for URL/TLS settings,
+connection retries, import order, SQL constraints and recovery. Existing admin
+audit records are retained in LegacyAdminAudit. Imported Groups permission
+grants are returned by the identity endpoint; Groups owns their enforcement.
 
-November 16 verification found 42 passing service tests and 80% coverage. Lint,
-OpenAPI validation and migration-drift checks pass. An isolated-folder startup
-applied the schema successfully, then hit Windows socket permission error 10013
-while binding Waitress; the live-server restart check remains unverified.
+Standalone SQL Server operation requires Microsoft ODBC Driver 18.
+SQLSERVER_TEST_MODE=1 selects the destructive local-only runner for disposable
+sqlserver/localhost/127.0.0.1 databases. Never use it on application data.
+
+The Dockerfile and complete local Compose stack are documented in
+[LOCAL_DEVELOPMENT.md](../../LOCAL_DEVELOPMENT.md). Compose supplies
+LOCAL_SECRETS_DIR and DATABASE_HOST/NAME/USER from separate private credential
+volumes. SEED_TAXONOMY defaults to 0 standalone and 1 in Compose.
+
+Full static UI, production login abuse controls, remaining
+registration/profile/moderation/reference adapters, complete seed transfer,
+system.yaml/schema validation and Azure deployment remain pending. The current
+CI has service/monolith, image/SQL Server and HTTP-boundary checks. No Azure
+credentials are used by these tests.

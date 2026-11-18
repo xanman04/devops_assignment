@@ -1,0 +1,4 @@
+window.BASSLINE_CONFIG = {
+  discoveryUrl: "${DISCOVERY_PUBLIC_URL}",
+  groupsUrl: "${GROUPS_PUBLIC_URL}"
+};

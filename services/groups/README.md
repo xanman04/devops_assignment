@@ -2,8 +2,8 @@
 
 This independently runnable Django API owns attendance groups, memberships,
 requests, bans, messages, notices, history and group notifications. It imports
-no Discovery code and never opens Discovery's database. SQLite is transitional
-until the SQL Server/container milestone.
+no Discovery code and never opens Discovery's database. SQL Server is supported;
+SQLite remains available for local compatibility tests.
 
 ## Run and configure
 
@@ -15,7 +15,7 @@ its own process first for protected actions and group participation.
 | Variable | Default | Purpose |
 |---|---|---|
 | DJANGO_SECRET_KEY | Required secret | Django runtime signing key |
-| DATABASE_URL | sqlite:/// followed by this folder's data/groups.sqlite3 | Own database only; other schemes currently fail startup |
+| DATABASE_URL | sqlite:/// followed by this folder's data/groups.sqlite3 | Own SQL Server mssql:// URL or local SQLite compatibility path |
 | DISCOVERY_URL | http://localhost:8000 | Peer base URL; no embedded credentials, query or fragment |
 | DISCOVERY_TIMEOUT_S | 2 | Positive finite timeout on every peer call |
 | PORT | 8000 | Set to a different port, e.g. 8001, when running beside Discovery |
@@ -60,8 +60,10 @@ The original domain rules are retained, including capacity, one membership per
 event, explicit group-switch confirmation, private approval/offers, owner
 succession, bans and member-only chat. A database unique constraint on
 (event_id, user) supplements the membership checks. Current SQLite IMMEDIATE
-transactions serialize local writes. SQL Server needs its own locking and
-concurrency verification when that backend is introduced.
+transactions serialize local writes. SQL Server takes a database-scoped
+transaction application lock before mutable state reads, including receipt
+checks. Calls from an unprotected outer transaction are rejected. The actual
+SQL Server concurrency path is exercised by the local-only test runner.
 
 ## Tests and remaining work
 
@@ -89,8 +91,15 @@ independent public reads/health, restart and receipt replay. This needs loopback
 socket permission; a prior Windows sandbox check was blocked, so live behavior
 is verified by the Linux CI job rather than assumed from unit tests.
 
-Remaining work includes SQL Server and existing-data import, complete seed
-transfer, containers, static UI, group-photo upload adapters, fine-grained
-Groups moderation permission migration, system description/schema and Azure.
+SQL Server and stable-ID import are implemented. See
+[DATA_MIGRATION.md](../../DATA_MIGRATION.md) and ADR 7 for TLS/URL settings,
+retries, import order, local-only SQLSERVER_TEST_MODE and recovery. Imported
+role grants are resolved in Discovery using natural permission keys.
+The Dockerfile and complete local stack are documented in
+[LOCAL_DEVELOPMENT.md](../../LOCAL_DEVELOPMENT.md). Compose supplies
+LOCAL_SECRETS_DIR and DATABASE_HOST/NAME/USER from this service's private volume.
+Remaining work includes actual deployment data transfer, complete seed
+transfer, full static UI, group-photo upload adapters, system description
+and Azure.
 Existing photo validation/storage rules are retained in the domain layer;
 only existing processed-photo reads are currently exposed over HTTP.

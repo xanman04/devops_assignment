@@ -25,3 +25,8 @@ class Notification(models.Model):
 class HealthProbe(models.Model):
     """One durable row allows health to prove an actual database write."""
     value = models.PositiveIntegerField(default=0)
+
+
+class DataImport(models.Model):
+    fingerprint = models.CharField(max_length=64, unique=True)
+    imported_at = models.DateTimeField(auto_now_add=True)

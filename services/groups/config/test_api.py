@@ -12,6 +12,7 @@ from urllib.error import HTTPError, URLError
 from unittest.mock import patch
 
 from django.apps import apps
+from django.conf import settings
 from django.db import IntegrityError, OperationalError, connection, transaction
 from django.test import Client, TransactionTestCase, override_settings
 from django.utils import timezone
@@ -62,7 +63,7 @@ class GroupsApiTests(TransactionTestCase):
             status = self.identity_status if credential in self.identities else 401
             data = self.identities.get(credential, {})
         else:
-            self.assertEqual(request.full_url, 'http://localhost:8000/api/events/10/')
+            self.assertEqual(request.full_url, settings.DISCOVERY_URL+'/api/events/10/')
             status, data = self.event_status, self.event
         if status != 200:
             raise HTTPError(request.full_url, status, 'test response', {}, io.BytesIO(b'{}'))
@@ -273,6 +274,9 @@ class GroupsApiTests(TransactionTestCase):
         from groups.discovery_client import event
         with transaction.atomic(), self.assertRaises(ContextError):
             event(10)
+        from groups.transactions import domain_transaction
+        with transaction.atomic(), self.assertRaises(ContextError), domain_transaction():
+            pass
 
     def test_concurrent_identical_create_returns_one_group_and_same_response(self):
         barrier = Barrier(2)

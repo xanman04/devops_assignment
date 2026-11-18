@@ -28,9 +28,14 @@ class Notification(models.Model):
                 Q(kind__in=["group_offer", "group_request", "group_rejected"], join_request__isnull=False, group__isnull=True)
                 | Q(kind__in=["member_removed", "member_banned", "owner_transfer"], join_request__isnull=True, group__isnull=False)),
                 name="notification_group_source"),
-            models.UniqueConstraint(fields=["recipient", "join_request"], name="notification_offer_once"),
+            models.UniqueConstraint(fields=["recipient", "join_request"], condition=Q(join_request__isnull=False), name="notification_offer_once"),
         ]
 
 
 class HealthProbe(models.Model):
     value = models.PositiveIntegerField(default=0)
+
+
+class DataImport(models.Model):
+    fingerprint = models.CharField(max_length=64, unique=True)
+    imported_at = models.DateTimeField(auto_now_add=True)
