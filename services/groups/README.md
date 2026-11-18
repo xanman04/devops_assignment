@@ -95,8 +95,11 @@ SQL Server and stable-ID import are implemented. See
 [DATA_MIGRATION.md](../../DATA_MIGRATION.md) and ADR 7 for TLS/URL settings,
 retries, import order, local-only SQLSERVER_TEST_MODE and recovery. Imported
 role grants are resolved in Discovery using natural permission keys.
+The Dockerfile and complete local stack are documented in
+[LOCAL_DEVELOPMENT.md](../../LOCAL_DEVELOPMENT.md). Compose supplies
+LOCAL_SECRETS_DIR and DATABASE_HOST/NAME/USER from this service's private volume.
 Remaining work includes actual deployment data transfer, complete seed
-transfer, containers, static UI, group-photo upload adapters, system description
+transfer, full static UI, group-photo upload adapters, system description
 and Azure.
 Existing photo validation/storage rules are retained in the domain layer;
 only existing processed-photo reads are currently exposed over HTTP.

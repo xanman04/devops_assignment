@@ -72,8 +72,13 @@ Standalone SQL Server operation requires Microsoft ODBC Driver 18.
 SQLSERVER_TEST_MODE=1 selects the destructive local-only runner for disposable
 sqlserver/localhost/127.0.0.1 databases. Never use it on application data.
 
-Container orchestration, static UI, production login abuse controls, remaining
+The Dockerfile and complete local Compose stack are documented in
+[LOCAL_DEVELOPMENT.md](../../LOCAL_DEVELOPMENT.md). Compose supplies
+LOCAL_SECRETS_DIR and DATABASE_HOST/NAME/USER from separate private credential
+volumes. SEED_TAXONOMY defaults to 0 standalone and 1 in Compose.
+
+Full static UI, production login abuse controls, remaining
 registration/profile/moderation/reference adapters, complete seed transfer,
 system.yaml/schema validation and Azure deployment remain pending. The current
-CI has service/monolith and HTTP-boundary checks; SQL Server/image gates follow
-in the container milestone. No Azure credentials are used by these tests.
+CI has service/monolith, image/SQL Server and HTTP-boundary checks. No Azure
+credentials are used by these tests.
