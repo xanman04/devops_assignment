@@ -10,6 +10,7 @@ from django.http import FileResponse, JsonResponse
 from django.views.decorators.http import require_GET, require_http_methods
 
 from groups import discovery_client, services
+from groups.transactions import domain_transaction
 from groups.context import Conflict, ContextError, NotFound, Unauthorized, Unavailable, permissions, validated_event
 from groups.models import AttendanceGroup, CreationReceipt, JoinRequest, Person
 from notifications import services as notices
@@ -143,7 +144,7 @@ def create(request):
         return JsonResponse(previous.response, status=201)
     event = discovery_client.event(data["event_id"])
     try:
-        with validated_event(event), transaction.atomic():
+        with validated_event(event), domain_transaction():
             previous = receipt(request.actor, key, fingerprint)
             if previous:
                 return JsonResponse(previous.response, status=201)

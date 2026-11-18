@@ -18,6 +18,7 @@ jobs:
           cache: pip
       - run: python -m pip install -r requirements.txt
       - run: python manage.py test --noinput
+      - run: python tools/check_split_import.py
 
   discovery:
     runs-on: ubuntu-latest
