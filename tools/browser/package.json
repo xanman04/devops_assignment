@@ -1,0 +1,7 @@
+{
+  "name": "bassline-browser-checks",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Development-only real-browser checks; never deployed with the static UI",
+  "devDependencies": {"playwright": "1.62.1"}
+}

@@ -1,8 +1,14 @@
 from django.urls import path
 from discovery.views import event_details, map_events
-from . import api
+from . import api, content_api
 
 urlpatterns = [
+    path("api/browse/", content_api.browse),
+    path("api/artists/", content_api.artists),
+    path("api/artists/<int:artist_id>/", content_api.artist),
+    path("api/genres/<int:genre_id>/", content_api.genre),
+    path("api/events/<int:event_id>/content/", content_api.detail),
+    path("api/events/<int:event_id>/poster/", content_api.poster),
     path("health", api.health),
     path("api/auth/token/", api.token),
     path("api/auth/identity/", api.whoami),
