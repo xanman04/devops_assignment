@@ -91,7 +91,7 @@ export async function near(root, filters, signal) {
     if (!signal.aborted && map) map.flyTo({center: [position.coords.longitude, position.coords.latitude], zoom: 12});
   }, () => { status.textContent = 'Location unavailable. You can move the map or browse the list.'; }, {timeout: 7000}));
   filters.append(el('label', {class: 'ui-filter'}, 'Music', select), mode, locate);
-  let map, markers = [], events = [], timer;
+  let map, markers = [], events = [], timer, generation = 0;
   function render() {
     if (signal.aborted) return;
     const bounds = map?.getBounds();
@@ -115,8 +115,10 @@ export async function near(root, filters, signal) {
     }
   }
   async function load() {
+    const version = ++generation;
     try {
       const data = await api('discovery', `/api/browse/?${new URLSearchParams(select.value ? {category: select.value} : {})}`, {signal});
+      if (version !== generation || signal.aborted) return;
       events = data.events; render();
     } catch (error) { if (!signal.aborted) status.textContent = error.message; }
   }

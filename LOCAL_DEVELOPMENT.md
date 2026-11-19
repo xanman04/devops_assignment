@@ -6,8 +6,8 @@ From a clean clone, with Docker running, start everything with:
 docker compose up --build
 ```
 
-Open http://localhost:8080. It currently serves the static UI shell; the full
-browser workflows are the next milestone. Discovery is at localhost:8000 and
+Open http://localhost:8080. It serves the static public and account/group
+workflows described in [ui/README.md](ui/README.md). Discovery is at localhost:8000 and
 Groups at localhost:8001. Each service has GET /health. The root Django app
 remains the Assignment 1 reference during UI migration.
 
@@ -72,7 +72,8 @@ docker compose up --build discovery
 Groups can run independently with its own health/public reads, while protected
 actions require Discovery. Create an operator account interactively using
 `docker compose exec discovery python manage.py createsuperuser`. New-clone
-SQL databases contain taxonomy, not copied user data or preconfigured accounts.
+SQL databases contain taxonomy, curated artist/listening records, and no copied
+user data or preconfigured accounts.
 Existing private records are never transferred automatically.
 
 ## Verification

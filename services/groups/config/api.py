@@ -128,7 +128,10 @@ def detail(request, group_id):
 @endpoint()
 def mine(request):
     groups = AttendanceGroup.objects.filter(memberships__user=request.actor).order_by("id")
-    return JsonResponse({"groups": [group_json(g) for g in groups]})
+    return JsonResponse({"groups": [group_json(g) for g in groups],
+        "requests": [{"id": r.pk, "group_id": r.group_id, "group_name": r.group.name,
+                      "event_id": r.group.event_id, "status": r.status}
+                     for r in JoinRequest.objects.filter(applicant=request.actor).select_related("group").order_by("-id")[:200]]})
 
 
 @require_http_methods(["POST"])

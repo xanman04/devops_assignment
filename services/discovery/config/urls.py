@@ -1,8 +1,17 @@
 from django.urls import path
 from discovery.views import event_details, map_events
-from . import api, content_api
+from . import api, content_api, account_api
 
 urlpatterns = [
+    path("api/auth/register/", account_api.register),
+    path("api/account/", account_api.account),
+    path("api/my-events/", account_api.my_events),
+    path("api/event-form/", account_api.event_form),
+    path("api/event-form/<int:event_id>/", account_api.event_form),
+    path("api/events/<int:event_id>/cancel/", account_api.cancel_event),
+    path("api/events/<int:event_id>/report/", account_api.report),
+    path("api/venues/propose/", account_api.propose_venue),
+    path("api/notifications/<int:notice_id>/read/", account_api.read_notice),
     path("api/browse/", content_api.browse),
     path("api/artists/", content_api.artists),
     path("api/artists/<int:artist_id>/", content_api.artist),

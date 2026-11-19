@@ -12,6 +12,7 @@ from discovery.models import Event, GenreCategory, GenreTag, Venue
 from notifications.models import HealthProbe
 from notifications import services as notices
 from .authentication import InvalidCredential, identity, issue_token
+from .throttle import limited
 
 
 def endpoint(view):
@@ -68,6 +69,13 @@ def health(request):
 @endpoint
 def token(request):
     data = body(request)
+    if set(data) != {'username', 'password'} or not isinstance(data['username'], str) or not isinstance(data['password'], str):
+        raise ValueError()
+    if len(data['username']) > 150 or len(data['password']) > 4096:
+        raise ValueError()
+    blocked = limited(request, 'login', data['username'])
+    if blocked is not None:
+        return blocked
     return JsonResponse({"token": issue_token(data["username"], data["password"]),
                          "expires_in": settings.TOKEN_TTL_S})
 

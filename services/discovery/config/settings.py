@@ -12,6 +12,7 @@ ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1,testserver"
 UI_ORIGIN = os.environ.get("UI_ORIGIN", "http://localhost:8080")
 VERSION = os.environ.get("VERSION", "development")
 TOKEN_TTL_S = 900
+TRUST_CONTAINER_APPS_INGRESS = os.environ.get('TRUST_CONTAINER_APPS_INGRESS', '0') == '1'
 DATA_DIR = BASE_DIR / "data"
 DATA_DIR.mkdir(exist_ok=True)
 DATABASE_URL = os.environ.get("DATABASE_URL", "sqlite:///" + str(DATA_DIR / "discovery.sqlite3"))
@@ -28,6 +29,12 @@ INSTALLED_APPS = ["django.contrib.auth", "django.contrib.contenttypes",
 MIDDLEWARE = ["config.middleware.RequestMiddleware"]
 ROOT_URLCONF = "config.urls"
 AUTH_USER_MODEL = "accounts.User"
+AUTH_PASSWORD_VALIDATORS = [
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
+]
 USE_TZ = True
 TIME_ZONE = "UTC"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
