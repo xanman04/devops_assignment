@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 
 from django.core.management.base import BaseCommand
+from django.core.management import call_command
 from django.db import transaction
 from discovery.models import GenreCategory, GenreTag
 from .import_subgenres import parse_bpm
@@ -32,3 +33,5 @@ class Command(BaseCommand):
                     'bpm_max': high,
                 })
         self.stdout.write('Curated Discovery taxonomy is present; existing rows retained.')
+        call_command('seed_djs', stdout=self.stdout)
+        call_command('seed_genre_songs', stdout=self.stdout)

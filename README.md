@@ -5,8 +5,9 @@
 The complete local stack now starts with `docker compose up --build`.
 See [LOCAL_DEVELOPMENT.md](LOCAL_DEVELOPMENT.md) for ports, single-service
 operation, private local credentials, data volumes and SQL Server verification.
-The nginx UI currently serves a static shell while the full UI conversion is
-being implemented. CI builds/runs both images and checks the SQL Server stack.
+The nginx UI serves the static Discovery interface at http://localhost:8080.
+It includes public event search/details, the map with list fallback, genres and
+credited artist profiles. CI also runs real-browser checks at desktop/mobile sizes.
 
 Groups is now independently runnable in
 [`services/groups`](services/groups/README.md). It validates Discovery bearer
@@ -34,9 +35,9 @@ Unavailable and missing events return the same JSON 404. Writes return 405.
 The incremental contract is in `discovery/event-api.openapi.json`.
 
 This endpoint is also available in the extracted Discovery runtime and is used
-by Groups participation actions. Full static UI, remaining feature adapters,
-image publication and Azure deployment remain to be implemented. The required
-user-visible UI flow still needs its static frontend.
+by Groups participation actions. Account/group screens and remaining feature adapters are the next UI milestone.
+Azure deployment and the required deployment evidence are still pending.
+See [ui/README.md](ui/README.md) for runtime configuration and browser checks.
 
 Run the endpoint regression checks with
 `.\.venv\Scripts\python.exe manage.py test discovery.test_event_api --noinput`.

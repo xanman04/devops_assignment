@@ -16,6 +16,8 @@ data/
 media/
 uploads/
 .coverage
+node_modules/
+tools/browser/artifacts/
 htmlcov/
 .pytest_cache/
 
