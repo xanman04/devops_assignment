@@ -101,6 +101,15 @@ class GroupsApiTests(TransactionTestCase):
         self.assertEqual(AttendanceGroup.objects.count(), 1)
         self.assertEqual(CreationReceipt.objects.count(), 1)
 
+    def test_my_request_history_is_scoped_to_applicant(self):
+        group_id = self.group(mode='approval_required')
+        self.assertEqual(self.action(group_id, 'request').status_code, 200)
+        guest = self.call('/api/groups/mine/', actor='guest', method='get').json()
+        self.assertEqual(guest['requests'][0]['status'], 'pending')
+        self.assertEqual(guest['requests'][0]['group_id'], group_id)
+        self.assertEqual(self.call('/api/groups/mine/', actor='owner', method='get').json()['requests'], [])
+        self.assertEqual(self.call('/api/groups/mine/', actor='other', method='get').json()['requests'], [])
+
     def test_missing_key_invalid_fields_and_forged_identity(self):
         for payload in ({}, {'event_id': '10'}, {'event_id': True}, {'event_id': -1}):
             self.assertEqual(self.call('/api/groups/', payload, key='k').status_code, 400)

@@ -25,6 +25,7 @@ the configured UI origin. Database/health errors do not expose connection data.
 | UI_ORIGIN | http://localhost:8080 | Sole allowed browser CORS origin |
 | PORT | 8000 | Waitress listening port |
 | VERSION | development | Git SHA supplied during later packaging/deployment |
+| TRUST_CONTAINER_APPS_INGRESS | 0 | Set to 1 only behind Azure Container Apps HTTP ingress; uses its appended rightmost X-Forwarded-For IP for rate limits |
 
 ## API and identity
 
@@ -37,13 +38,33 @@ credential lasting 900 seconds. Send it in `Authorization: Bearer <token>`.
 `/api/auth/identity/` checks active/password state on every call. Logout deletes
 that credential's session. Expiry and password changes invalidate credentials;
 deactivated users receive 403. Credentials never appear in URLs or request logs.
-The planned static UI keeps credentials in memory and requires login after a
-full reload. Only superusers currently receive the Groups moderation grant;
-fine-grained Groups permission migration remains part of Groups extraction.
+The static UI keeps credentials in memory, clears private screens on session
+changes, and requires login after a full reload. Imported fine-grained Groups
+grants are returned alongside the superuser grant. Account/profile endpoints
+are self-only and reject privilege/target-ID fields. Registration reuses Django
+password validators. Event forms interpret local times in the selected venue's
+zone and reject DST gaps and ambiguity.
+
+Password hashing is bounded by database-backed fixed-minute counters: 50 login
+attempts per source IP, 20 per normalized username, 10 registrations per IP.
+Counters store HMAC keys and expire from the table after ten minutes; all
+attempts count. The window resets at the next minute boundary, so bursts can
+straddle boundaries. This is a basic abuse control, not an account-recovery or
+credential-stuffing prevention service. `AuthWindow` is Discovery-owned
+operational data and is not part of legacy user-data imports.
+
+Local requests ignore forwarded headers. For Azure HTTP ingress, the pipeline
+must set `TRUST_CONTAINER_APPS_INGRESS=1`. Microsoft documents that only the
+rightmost X-Forwarded-For address is appended by Container Apps; earlier values
+are untrusted ([ingress documentation](https://learn.microsoft.com/en-us/azure/container-apps/ingress?tabs=bash)).
+Do not enable this setting on a directly exposed server or a different proxy.
+Test with two source addresses after deployment so limits cannot accidentally
+become global through the ingress proxy.
 
 Use `python manage.py seed_discovery` to load the original curated genre
-categories/subgenres without overwriting existing rows. Demo events, performer
-media and listening seed commands remain in the monolith pending transfer.
+categories/subgenres, credited artists and listening examples without replacing
+existing rows or operator edits. Existing private events are imported explicitly;
+there is no automatic transfer of personal data.
 
 ## Verification and remaining work
 
@@ -77,8 +98,7 @@ The Dockerfile and complete local Compose stack are documented in
 LOCAL_SECRETS_DIR and DATABASE_HOST/NAME/USER from separate private credential
 volumes. SEED_TAXONOMY defaults to 0 standalone and 1 in Compose.
 
-Full static UI, production login abuse controls, remaining
-registration/profile/moderation/reference adapters, complete seed transfer,
-system.yaml/schema validation and Azure deployment remain pending. The current
-CI has service/monolith, image/SQL Server and HTTP-boundary checks. No Azure
-credentials are used by these tests.
+Core static public/account/group workflows are implemented. Remaining image,
+moderation/curation and reference adapters, system.yaml/schema validation and
+Azure deployment are pending. CI includes service/monolith, image/SQL Server,
+HTTP-boundary and real-browser checks. No Azure credentials are used by tests.

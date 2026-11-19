@@ -35,8 +35,10 @@ Unavailable and missing events return the same JSON 404. Writes return 405.
 The incremental contract is in `discovery/event-api.openapi.json`.
 
 This endpoint is also available in the extracted Discovery runtime and is used
-by Groups participation actions. Account/group screens and remaining feature adapters are the next UI milestone.
-Azure deployment and the required deployment evidence are still pending.
+by Groups participation actions. The static UI now also supports accounts, profile editing, event forms, follows,
+notifications, group participation, private approvals and live chat. Group writes
+exercise the required UI → Groups → Discovery server-side HTTP flow. Remaining
+legacy UI adapters, Azure deployment and deployment evidence are still pending.
 See [ui/README.md](ui/README.md) for runtime configuration and browser checks.
 
 Run the endpoint regression checks with

@@ -1,6 +1,6 @@
 /* Static adapters retain Bassline's original font, palette and sidebar. */
-.skip-link {position:fixed;top:-100px;left:1rem;z-index:1000;background:#fff;color:#111;padding:.75rem}
-.skip-link:focus {top:1rem}
+.skip-link {position:fixed;top:1rem;left:1rem;z-index:1000;background:#fff;color:#111;padding:.75rem;clip-path:inset(50%);width:1px;height:1px;overflow:hidden}
+.skip-link:focus {clip-path:none;width:auto;height:auto}
 .ui-page {padding:2.5rem 3rem;overflow:auto;min-width:0}
 .ui-heading {margin:0 0 2rem}.ui-heading h1 {margin-bottom:.4rem}.ui-heading p,.ui-meta {color:#aaa}
 .ui-page h2 {margin-top:1.8rem}.ui-message {padding:1rem;border-left:3px solid #aaa;background:#222;color:#ddd}
@@ -23,3 +23,4 @@
 
 .ui-page button:hover,.live-sidebar #filters button:hover {background:#e5e5e5;color:#111}
 .ui-page :focus-visible,.live-sidebar :focus-visible {outline:2px solid #d4d4d4;outline-offset:4px}
+.ui-form {display:grid;gap:1rem;max-width:560px;margin:1.5rem 0}.ui-form label {display:grid;gap:.45rem;line-height:1.5}.ui-form input,.ui-form select,.ui-form textarea {width:100%;min-height:44px;background:#252629;color:#f1f1f1;border:1px solid #68696c;border-radius:6px;padding:.65rem .8rem;font:inherit}.ui-form textarea {resize:vertical}.ui-form select[multiple] {min-height:140px}.ui-form button {justify-self:start}.ui-form-wide {max-width:760px}.ui-form p {margin:0;color:#b8b9bd}.ui-row {display:flex;gap:1rem;align-items:center;flex-wrap:wrap;padding:1rem 0;border-bottom:1px solid #444}.ui-row>div:first-child {flex:1;min-width:180px}.ui-row h2,.ui-row h3 {margin:.3rem 0}.ui-action {display:inline-flex;flex-direction:column;gap:.3rem;margin:.3rem .6rem .3rem 0;vertical-align:top}.ui-action .ui-message {margin:0;max-width:50ch;font-size:.9rem}.ui-chat {max-height:55dvh;overflow:auto;border-block:1px solid #444;padding:1rem 0}.ui-chat-message {padding:.75rem 0;border-bottom:1px solid #353535}.ui-chat-message small {color:#b8b9bd}.ui-chat-message p {margin:.6rem 0}.ui-chat .ui-action {font-size:.85rem}.ui-chat .ui-form {margin:.5rem 0}button:disabled {opacity:.55;cursor:wait}

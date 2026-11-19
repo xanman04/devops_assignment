@@ -21,19 +21,37 @@ Browser checks are development tools, outside the deployed `ui/` directory:
 ```text
 npm ci --prefix tools/browser
 npx --prefix tools/browser playwright install chromium
+node tools/browser/check_api.cjs
 python tools/check_static_ui.py
 ```
 
 Install the service development requirements first. The checker starts two
 real processes with fresh temporary SQLite databases and synthetic accounts,
-then uses a real browser for routing, search, safe text, detail/genre/artist
-views, map failure and responsive layout. It stops its processes afterward.
+then uses a real browser for public views, account/profile forms, event
+creation/following, private-group request/approval, live chat and responsive
+layout. Request regressions also cover stale versus current HTML 401 responses,
+gateway failures, 204 responses and provisional identity lookups. It stops its processes afterward.
 Screenshots go to ignored `tools/browser/artifacts/`. CI repeats these checks;
 the separate Compose job verifies real SQL Server and the container images.
 `BROWSER_EXECUTABLE` optionally chooses an installed Chromium browser locally;
 `PLAYWRIGHT_CORE_PATH` optionally selects an installed Playwright module.
 
-This public milestone does not yet convert account forms, moderation or group
-participation. Those routes remain the next coherent UI workstream. It also
-does not prove Azure publication, live map-tile availability or feature parity
-with every legacy page.
+Authenticated routes include `#login`, `#register`, `#profile`, `#my-events`,
+`#create-event`, `#edit-event/<id>`, `#propose-venue`, `#notifications`, `#groups`,
+`#event-groups/<event-id>`, `#create-group/<event-id>`, `#group/<id>` and
+`#edit-group/<id>`. Groups writes validate identity/event facts through Discovery
+server-side; the browser does not join databases. A Groups outage leaves public
+Discovery usable. Each notification domain reports its own failure separately.
+
+Credentials are opaque, memory-only, expire after 15 minutes, and are discarded
+on logout/full reload/current-token 401. Switching routes aborts reads and chat
+polling. Late responses from an old credential cannot clear a newer login. A
+new login is published only after identity validation. Private DOM is cleared
+on session changes. Nothing secret is stored in browser persistent storage.
+
+This is the core static UI conversion, not complete legacy-page parity. Still
+pending: image upload/crop controls, moderator/curation screens, owner listening
+reference editing, profile collection/badge displays, ban-management controls,
+and richer map date/subgenre filters and nearby-artist browsing. These are
+tracked conversion work, not reasons to create small follow-up commits. Azure
+publication, live-map network behavior and deployment evidence are unverified.

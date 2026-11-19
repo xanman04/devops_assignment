@@ -11,6 +11,13 @@ from django.utils.deconstruct import deconstructible
 from discovery.validators import http_url
 
 
+class AuthWindow(models.Model):
+    """Short-lived HMAC buckets; never stores raw IPs, usernames or passwords."""
+    key = models.CharField(primary_key=True, max_length=64)
+    minute = models.PositiveBigIntegerField(db_index=True)
+    attempts = models.PositiveIntegerField(default=0)
+
+
 def avatar_path(instance, filename):
     return f"avatars/{uuid4().hex}{Path(filename).suffix.lower()}"
 
