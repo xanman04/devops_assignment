@@ -126,17 +126,68 @@ After setup, all infrastructure and application changes go through main CI/CD.
 When initial setup is not enabled, main publishes images and explicitly reports
 deployment pending; a green publish-only run is NOT successful CD evidence.
 
+## November 20 initial deployment evidence
+
+The own Azure for Students subscription was verified Enabled and selected. Initial
+setup completed in Germany West Central: own resource group, private Azure AD
+state container, main-only OIDC subjects, scoped identity, professor Reader roles
+and GitHub secrets. A Windows directory-name encoding error was corrected by
+forcing UTF-8 in CLI subprocesses; a regression test covers this setting. The
+idempotent rerun preserved existing resources and generated secrets.
+
+The [first successful main CD run](https://github.com/xanman04/devops_assignment/actions/runs/44742390475)
+deployed full SHA `7bd8ba217b4ac9216bee99860c6c076c958de595` to
+https://xcieu2023ui.z1.web.core.windows.net/. Both services returned HTTP 200,
+`db: ok` and that exact version. The run verified each contained login worked in
+its own database and was denied access to the other domain database. The temporary
+runner-IP rule was removed; only the prescribed Azure-services rule remained.
+The earlier run was canceled before deployment during the local-checkout
+clarification; cancellation is not a failed-and-fixed run for report purposes.
+
+Azure's actual database configuration was checked: each uses Gen5 serverless
+0.5–1 vCore, the free offer with exhaustion AutoPause, 60-minute auto-pause,
+32 GiB offer-controlled size and Local backups. The environment's only workload
+profile is Consumption; each app has a configured minimum of zero and maximum
+of one replica. Storage/logging still meter usage; these settings do not promise
+zero cost or prove a full pause/resume cycle.
+
+An explicit production browser check renders the real UI, calls both APIs from
+the browser origin, checks exact-version database health and captures desktop
+and mobile screenshots. It creates no accounts/events and never runs in CI:
+
+```powershell
+npm ci --prefix tools/browser
+$env:BROWSER_UI_URL = 'https://xcieu2023ui.z1.web.core.windows.net/'
+$env:DEPLOYED_SHA = '<full deployed SHA from the successful run>'
+node tools/browser/check_live.cjs
+```
+
+This uses an installed Chrome browser in an isolated headless session. Screenshots
+are local ignored files under `tools/browser/artifacts/live/`. Initial screenshots
+were visually inspected. The public seeded-row baseline is committed at
+[`evidence/azure/2026-11-20-initial-deployment.json`](evidence/azure/2026-11-20-initial-deployment.json):
+22 stable genre IDs/names and zero public events. This is an API projection,
+not a database backup or proof of the future preserving migration.
+
 ## Verification boundaries and remaining evidence
 
 Local tests use mock Terraform providers, fake plans/responses and disposable
 local databases. They prove contract checks and error paths, not Azure regional
 capacity, role propagation, image visibility, cold starts or live persistence.
-The actual student activation, initial setup and live run must be verified.
+Student activation, initial setup and the first live run are now verified above.
+Live account/group writes, partial-failure behavior and a fully paused database
+resume cycle have not yet been demonstrated on Azure.
 
 Save a real successful main CD run link and any genuine failed-and-fixed run
 with its cause. Capture populated Azure rows BEFORE a later in-place migration,
 then the retained rows, startup migration log and deployment link afterward.
 Never run CI tests against Azure SQL or recreate databases for evidence.
-The professor's actual `system.schema.json`, schema-matched `system.yaml`, live
-URLs, Azure migration evidence, remaining legacy UI adapters, report and final
-submission tag are still pending. Do not present prepared IaC as deployed.
+The owner supplied the official `system.schema.json` on November 20. The root
+`system.yaml` describes both services, their environment, peer calls and Azure
+names. Run `python -m pip install -r tools/requirements-validation.txt` then
+`python tools/check_system.py`; the infrastructure CI job runs this gate too.
+It validates the unmodified course schema, repository paths, environment reads
+and peer API methods. Schema validity alone does not establish live reachability.
+The later Azure migration, authenticated/partial-failure evidence, remaining UI
+adapters, report and final submission tag still need completion. Do not present
+prepared infrastructure or local tests as additional live evidence.

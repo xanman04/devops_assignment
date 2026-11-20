@@ -1,0 +1,146 @@
+# yaml-language-server: $schema=./system.schema.json
+# Actual Storage endpoint assigned during initial setup; reachability is checked by CD.
+student: xc.ieu2023
+prefix: xc-ieu2023
+public_url: https://xcieu2023ui.z1.web.core.windows.net/
+ui:
+  path: ui
+  storage_account: xcieu2023ui
+  calls: [discovery, groups]
+azure:
+  resource_group: rg-xc-ieu2023
+  container_apps_environment: xc-ieu2023-env
+  sql_server: xc-ieu2023-sql
+  registry: ghcr.io/xanman04
+services:
+  discovery:
+    description: >-
+      Owns accounts, events, venues, artists, listening, follows and event notifications.
+      Ordered Django migrations live in accounts/migrations, discovery/migrations and
+      notifications/migrations under the service folder; startup applies pending
+      versions under a database-scoped lock before serving requests.
+    path: services/discovery
+    openapi: services/discovery/openapi.json
+    port_default: 8000
+    health: /health
+    migrations: services/discovery/discovery/migrations
+    env:
+      PORT:
+        description: HTTP listen port.
+        default: 8000
+      DATABASE_URL:
+        description: Own database URL; Azure builds it from the Discovery GitHub DB secret. Local non-container development falls back to sqlite under the service data folder.
+        secret: true
+      DJANGO_SECRET_KEY:
+        description: Independent Discovery signing key, supplied from a GitHub secret.
+        secret: true
+      DJANGO_SETTINGS_MODULE:
+        description: Django settings module selected by serve.py/manage.py.
+        default: config.settings
+      ALLOWED_HOSTS:
+        description: Comma-separated hosts; deployment supplies the own Container App hostname.
+        default: localhost,127.0.0.1,testserver
+      UI_ORIGIN:
+        description: Only browser origin permitted by CORS; Azure supplies the actual Storage web origin.
+        default: http://localhost:8080
+      VERSION:
+        description: Build identity; Azure supplies the full deployed Git SHA.
+        default: development
+      TRUST_CONTAINER_APPS_INGRESS:
+        description: Trust only Azure's appended rightmost proxy IP for login rate limiting; deployment sets 1.
+        default: '0'
+      SEED_TAXONOMY:
+        description: Idempotently seed Discovery-owned curated content after migrations; deployment sets 1.
+        default: '0'
+      IMPORT_SPLIT_DATA:
+        description: Optional private split-export filename, unset normally. Import validates source digest and target ownership.
+        default: ''
+      SQLSERVER_TEST_MODE:
+        description: Disposable local SQL Server test runner only; never enabled against Azure.
+        default: ''
+      LOCAL_SECRETS_DIR:
+        description: Optional local Compose credential mount; unset in Azure.
+        default: ''
+      DATABASE_USER:
+        description: Required only with LOCAL_SECRETS_DIR and no explicit DATABASE_URL; unset otherwise, with no conditional fallback.
+        default: ''
+      DATABASE_HOST:
+        description: Required only with LOCAL_SECRETS_DIR and no explicit DATABASE_URL; unset otherwise, with no conditional fallback.
+        default: ''
+      DATABASE_NAME:
+        description: Required only with LOCAL_SECRETS_DIR and no explicit DATABASE_URL; unset otherwise, with no conditional fallback.
+        default: ''
+    calls: []
+    azure:
+      container_app: xc-ieu2023-discovery
+      sql_database: xc-ieu2023-discovery-db
+  groups:
+    description: >-
+      Owns attendance groups, membership, requests, chat, group notifications and
+      credential-free references to Discovery identities/events. Ordered Django
+      migrations live in groups/migrations and notifications/migrations under the
+      service folder; startup holds its own database-scoped migration lock.
+    path: services/groups
+    openapi: services/groups/openapi.json
+    port_default: 8000
+    health: /health
+    migrations: services/groups/groups/migrations
+    env:
+      PORT:
+        description: HTTP listen port.
+        default: 8000
+      DATABASE_URL:
+        description: Own database URL; Azure builds it from the Groups GitHub DB secret. Local non-container development falls back to sqlite under the service data folder.
+        secret: true
+      DJANGO_SECRET_KEY:
+        description: Independent Groups signing key, supplied from a GitHub secret.
+        secret: true
+      DJANGO_SETTINGS_MODULE:
+        description: Django settings module selected by serve.py/manage.py.
+        default: config.settings
+      ALLOWED_HOSTS:
+        description: Comma-separated hosts; deployment supplies the own Container App hostname.
+        default: localhost,127.0.0.1,testserver
+      UI_ORIGIN:
+        description: Only browser origin permitted by CORS; Azure supplies the actual Storage web origin.
+        default: http://localhost:8080
+      VERSION:
+        description: Build identity; Azure supplies the full deployed Git SHA.
+        default: development
+      DISCOVERY_URL:
+        description: Discovery base URL, configured to the peer's HTTPS Container App address on Azure.
+        default: http://localhost:8000
+      DISCOVERY_TIMEOUT_S:
+        description: Per-call timeout in seconds; Terraform deploys 5 seconds to accommodate cold starts.
+        default: 2
+      IMPORT_SPLIT_DATA:
+        description: Optional private split-export filename, unset normally. Import validates source digest and target ownership.
+        default: ''
+      SQLSERVER_TEST_MODE:
+        description: Disposable local SQL Server test runner only; never enabled against Azure.
+        default: ''
+      LOCAL_SECRETS_DIR:
+        description: Optional local Compose credential mount; unset in Azure.
+        default: ''
+      DATABASE_USER:
+        description: Required only with LOCAL_SECRETS_DIR and no explicit DATABASE_URL; unset otherwise, with no conditional fallback.
+        default: ''
+      DATABASE_HOST:
+        description: Required only with LOCAL_SECRETS_DIR and no explicit DATABASE_URL; unset otherwise, with no conditional fallback.
+        default: ''
+      DATABASE_NAME:
+        description: Required only with LOCAL_SECRETS_DIR and no explicit DATABASE_URL; unset otherwise, with no conditional fallback.
+        default: ''
+    calls:
+      - service: discovery
+        url_env: DISCOVERY_URL
+        endpoints: ['GET /api/auth/identity/', 'GET /api/events/{event_id}/']
+        timeout_s: 5
+        on_failure: >-
+          Peer calls precede local write transactions. Failed/invalid responses or
+          timeouts return 503 with a retry message without changing membership;
+          expired identity returns 401, forbidden identity 403, missing event 404.
+          Public Groups reads and own-database health do not depend on Discovery.
+    azure:
+      container_app: xc-ieu2023-groups
+      sql_database: xc-ieu2023-groups-db

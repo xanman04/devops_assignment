@@ -1,6 +1,7 @@
 """One-time own-student-subscription setup. No service/database provisioning here."""
 import argparse
 import json
+import os
 import re
 import secrets
 import shutil
@@ -14,7 +15,11 @@ READERS = ('amartini@faculty.ie.edu', 'bserra@faculty.ie.edu')
 
 
 def command(argv, *, data=None, json_output=True):
-    result = subprocess.run(argv, input=data, capture_output=True, text=True, encoding='utf-8')
+    # Azure CLI uses Python and otherwise emits the Windows console code page.
+    # Directory display names may contain accented characters even with JSON output.
+    environment = dict(os.environ, PYTHONIOENCODING='utf-8')
+    result = subprocess.run(argv, input=data, capture_output=True, text=True,
+                            encoding='utf-8', errors='replace', env=environment)
     if result.returncode:
         # Never echo argv/input/stdout: setup sends generated values through stdin.
         raise RuntimeError(f'{argv[0]} {argv[1]} failed (exit {result.returncode}). No secret values are printed; inspect the scoped resource in Azure.')

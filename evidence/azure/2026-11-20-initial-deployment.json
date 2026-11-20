@@ -1,0 +1,104 @@
+{
+  "observed_at_utc": "2026-11-20T13:25:33.391655+00:00",
+  "run_url": "https://github.com/xanman04/devops_assignment/actions/runs/44742390475",
+  "deployed_sha": "7bd8ba217b4ac9216bee99860c6c076c958de595",
+  "ui_url": "https://xcieu2023ui.z1.web.core.windows.net/",
+  "stage": "Initial deployment before the later populated-table migration",
+  "discovery_health": {
+    "status": "ok",
+    "db": "ok",
+    "version": "7bd8ba217b4ac9216bee99860c6c076c958de595"
+  },
+  "genre_categories": [
+    {
+      "id": 7,
+      "name": "Afro Electronic"
+    },
+    {
+      "id": 21,
+      "name": "Ambient / Experimental"
+    },
+    {
+      "id": 16,
+      "name": "Bass / Club"
+    },
+    {
+      "id": 11,
+      "name": "Brazilian Funk"
+    },
+    {
+      "id": 8,
+      "name": "Breaks / Breakbeat"
+    },
+    {
+      "id": 20,
+      "name": "Dance / Pop"
+    },
+    {
+      "id": 6,
+      "name": "Drum & Bass"
+    },
+    {
+      "id": 1,
+      "name": "Dubstep / 140"
+    },
+    {
+      "id": 12,
+      "name": "Electro"
+    },
+    {
+      "id": 3,
+      "name": "Hard Dance / Hardcore"
+    },
+    {
+      "id": 2,
+      "name": "Hard Techno"
+    },
+    {
+      "id": 15,
+      "name": "House"
+    },
+    {
+      "id": 9,
+      "name": "Indie Dance"
+    },
+    {
+      "id": 22,
+      "name": "Industrial / EBM"
+    },
+    {
+      "id": 5,
+      "name": "Latin Electronic"
+    },
+    {
+      "id": 4,
+      "name": "Mainstage / Commercial EDM"
+    },
+    {
+      "id": 19,
+      "name": "Nu Disco / Disco"
+    },
+    {
+      "id": 10,
+      "name": "Psy-Trance"
+    },
+    {
+      "id": 18,
+      "name": "Techno"
+    },
+    {
+      "id": 17,
+      "name": "Trance"
+    },
+    {
+      "id": 13,
+      "name": "Trap / Future Bass"
+    },
+    {
+      "id": 14,
+      "name": "UK Garage / Bassline"
+    }
+  ],
+  "public_event_count": 0,
+  "scope": "Public API projection of seeded Azure rows, not a SQL backup or proof of a later migration."
+}
