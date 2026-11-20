@@ -1,0 +1,122 @@
+name: Deploy student Azure
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: student-azure-production
+  cancel-in-progress: false
+
+jobs:
+  ci:
+    uses: ./.github/workflows/ci.yml
+
+  publish:
+    if: github.ref == 'refs/heads/main'
+    needs: ci
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      matrix:
+        service: [discovery, groups]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - id: image
+        shell: bash
+        run: echo "name=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/bassline-${{ matrix.service }}" >> "$GITHUB_OUTPUT"
+      - uses: docker/build-push-action@v6
+        with:
+          context: services/${{ matrix.service }}
+          push: true
+          tags: ${{ steps.image.outputs.name }}:${{ github.sha }}
+          provenance: false
+          cache-from: type=gha,scope=${{ matrix.service }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.service }}
+
+  deploy:
+    if: github.ref == 'refs/heads/main' && vars.AZURE_DEPLOYMENT_READY == 'true'
+    needs: [ci, publish]
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: read
+      packages: read
+      id-token: write
+    env:
+      PREFIX: ${{ vars.PREFIX }}
+      RESOURCE_GROUP: ${{ vars.RESOURCE_GROUP }}
+      UI_STORAGE: ${{ vars.UI_STORAGE }}
+      ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_USE_OIDC: 'true'
+      ARM_USE_AZUREAD: 'true'
+      TF_VAR_prefix: ${{ vars.PREFIX }}
+      TF_VAR_region: ${{ vars.AZURE_REGION }}
+      TF_VAR_sql_region: ${{ vars.AZURE_SQL_REGION }}
+      TF_VAR_ui_storage: ${{ vars.UI_STORAGE }}
+      TF_VAR_git_sha: ${{ github.sha }}
+      TF_VAR_sql_admin_password: ${{ secrets.SQL_ADMIN_PASSWORD }}
+      TF_VAR_discovery_password: ${{ secrets.DISCOVERY_DB_PASSWORD }}
+      TF_VAR_groups_password: ${{ secrets.GROUPS_DB_PASSWORD }}
+      TF_VAR_discovery_secret: ${{ secrets.DISCOVERY_SECRET_KEY }}
+      TF_VAR_groups_secret: ${{ secrets.GROUPS_SECRET_KEY }}
+      SQL_ADMIN_PASSWORD: ${{ secrets.SQL_ADMIN_PASSWORD }}
+      DISCOVERY_DB_PASSWORD: ${{ secrets.DISCOVERY_DB_PASSWORD }}
+      GROUPS_DB_PASSWORD: ${{ secrets.GROUPS_DB_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: '1.14.1'
+          terraform_wrapper: false
+      - name: Check setup and public images before contacting Azure
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python - <<'PY'
+          import os
+          required = ['PREFIX', 'RESOURCE_GROUP', 'UI_STORAGE', 'ARM_CLIENT_ID', 'ARM_TENANT_ID', 'ARM_SUBSCRIPTION_ID', 'TF_VAR_region', 'TF_VAR_sql_region', 'SQL_ADMIN_PASSWORD', 'DISCOVERY_DB_PASSWORD', 'GROUPS_DB_PASSWORD', 'TF_VAR_discovery_secret', 'TF_VAR_groups_secret']
+          if any(not os.environ.get(name) for name in required):
+              raise SystemExit('Initial setup is incomplete; required GitHub configuration is missing.')
+          PY
+          owner="${GITHUB_REPOSITORY_OWNER,,}"
+          echo "TF_VAR_image_namespace=ghcr.io/$owner" >> "$GITHUB_ENV"
+          for service in discovery groups; do
+            visibility="$(gh api "/users/$owner/packages/container/bassline-$service" --jq .visibility)"
+            if [ "$visibility" != public ]; then
+              echo "::error::Make GHCR package bassline-$service public in package settings, then rerun. Azure pulls anonymously."
+              exit 1
+            fi
+          done
+      - uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: Apply own infrastructure, publish static UI and verify exact-SHA health
+        run: python tools/deploy_azure.py
+
+  setup-pending:
+    if: github.ref == 'refs/heads/main' && vars.AZURE_DEPLOYMENT_READY != 'true'
+    needs: [ci, publish]
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo 'Images were published after CI. Azure deployment is pending the documented owner login and initial setup; no live deployment is claimed.' >> "$GITHUB_STEP_SUMMARY"

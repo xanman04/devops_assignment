@@ -23,6 +23,7 @@ data/
 *.pfx
 media/
 uploads/
+/ui/config.js
 .coverage
 node_modules/
 tools/browser/artifacts/

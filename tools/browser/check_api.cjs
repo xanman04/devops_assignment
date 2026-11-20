@@ -24,6 +24,8 @@ const path = require('node:path');
     assert.equal(currentUser(), null, 'A current non-JSON 401 must clear the session');
     global.fetch = async () => new Response('<html>Gateway unavailable</html>', {status: 502});
     await assert.rejects(api('groups', '/api/groups/mine/'), /502/);
+    global.fetch = async () => new Response('<html>App port is not ready</html>', {status: 503});
+    await assert.rejects(api('groups', '/api/groups/mine/'), /starting up.*try again/i);
     global.fetch = async () => new Response(null, {status: 204});
     assert.deepEqual(await api('discovery', '/api/auth/logout/', {method: 'POST'}), {});
 

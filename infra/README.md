@@ -58,3 +58,6 @@ The course-required 0.0.0.0 SQL firewall exception admits Azure-hosted sources
 across tenants; it is not a substitute for authentication. Use a strong generated
 administrator password and separate restricted contained users. Remove temporary
 operator/runner-IP firewall rules after setup, including when setup fails.
+
+See [AZURE_DEPLOYMENT.md](../AZURE_DEPLOYMENT.md) for exact bootstrap/pipeline
+commands, GitHub configuration and live evidence requirements.

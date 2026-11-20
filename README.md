@@ -9,6 +9,8 @@ Students subscription, Storage static website and GitHub OIDC identity. The
 Terraform runtime is in [infra/](infra/README.md); live provisioning awaits
 verified subscription/region access. No class service-principal secret or
 Static Web App token is needed.
+See [AZURE_DEPLOYMENT.md](AZURE_DEPLOYMENT.md) for secure initial setup and
+same-commit CI/CD. A publish-only run while setup is pending is not live CD.
 
 The complete local stack now starts with `docker compose up --build`.
 See [LOCAL_DEVELOPMENT.md](LOCAL_DEVELOPMENT.md) for ports, single-service
