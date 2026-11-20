@@ -2,6 +2,14 @@
 
 ## Assignment 2 progress
 
+The professor's November 20 student deployment guide (local course file
+`C:/School/devops/class_content/a2-azure-deployment-guide.pdf`)
+supersedes the original shared-class Azure contract. Use an own Azure for
+Students subscription, Storage static website and GitHub OIDC identity. The
+Terraform runtime is in [infra/](infra/README.md); live provisioning awaits
+verified subscription/region access. No class service-principal secret or
+Static Web App token is needed.
+
 The complete local stack now starts with `docker compose up --build`.
 See [LOCAL_DEVELOPMENT.md](LOCAL_DEVELOPMENT.md) for ports, single-service
 operation, private local credentials, data volumes and SQL Server verification.
