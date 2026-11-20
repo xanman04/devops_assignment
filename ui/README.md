@@ -54,4 +54,6 @@ pending: image upload/crop controls, moderator/curation screens, owner listening
 reference editing, profile collection/badge displays, ban-management controls,
 and richer map date/subgenre filters and nearby-artist browsing. These are
 tracked conversion work, not reasons to create small follow-up commits. Azure
-publication, live-map network behavior and deployment evidence are unverified.
+publication and read-only desktop/mobile browser checks passed on November 20;
+see [deployment evidence](../AZURE_DEPLOYMENT.md). Live-map network behavior,
+authenticated participation and partial-failure evidence still need verification.

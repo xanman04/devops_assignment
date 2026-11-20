@@ -6,11 +6,23 @@ The professor's November 20 student deployment guide (local course file
 `C:/School/devops/class_content/a2-azure-deployment-guide.pdf`)
 supersedes the original shared-class Azure contract. Use an own Azure for
 Students subscription, Storage static website and GitHub OIDC identity. The
-Terraform runtime is in [infra/](infra/README.md); live provisioning awaits
-verified subscription/region access. No class service-principal secret or
+Terraform runtime is in [infra/](infra/README.md). The first live deployment
+completed on November 20 in Germany West Central. No class service-principal secret or
 Static Web App token is needed.
 See [AZURE_DEPLOYMENT.md](AZURE_DEPLOYMENT.md) for secure initial setup and
 same-commit CI/CD. A publish-only run while setup is pending is not live CD.
+
+Live UI: **https://xcieu2023ui.z1.web.core.windows.net/**.
+The [first successful main deployment](https://github.com/xanman04/devops_assignment/actions/runs/44742390475)
+deployed `7bd8ba217b4ac9216bee99860c6c076c958de595`; both APIs reported this exact
+SHA and healthy own databases. Read-only browser verification passed at desktop
+and mobile sizes, including API CORS. Discovery contains seeded genres/artists;
+the initial deployment has no public events. Live participation and the later
+data-preserving migration still need their own evidence.
+
+The local Assignment 2 checkout is `devops_assignment2`; `devops_assignment1`
+is retained at its recorded Assignment 1 baseline. Both use the same remote
+repository and shared commit history. Run Assignment 2 work from its own checkout.
 
 The complete local stack now starts with `docker compose up --build`.
 See [LOCAL_DEVELOPMENT.md](LOCAL_DEVELOPMENT.md) for ports, single-service
@@ -48,7 +60,7 @@ This endpoint is also available in the extracted Discovery runtime and is used
 by Groups participation actions. The static UI now also supports accounts, profile editing, event forms, follows,
 notifications, group participation, private approvals and live chat. Group writes
 exercise the required UI → Groups → Discovery server-side HTTP flow. Remaining
-legacy UI adapters, Azure deployment and deployment evidence are still pending.
+legacy UI adapters and the remaining Azure migration/partial-failure evidence are still pending.
 See [ui/README.md](ui/README.md) for runtime configuration and browser checks.
 
 Run the endpoint regression checks with

@@ -4,7 +4,7 @@ import json
 import unittest
 from unittest.mock import patch
 from deployment_guard import validate
-from azure_bootstrap import names, role, validate_storage
+from azure_bootstrap import command, names, role, validate_storage
 from deploy_azure import health
 
 
@@ -15,6 +15,14 @@ def app_plan():
 
 
 class GuardTests(unittest.TestCase):
+    @patch('azure_bootstrap.subprocess.run')
+    def test_windows_directory_output_uses_utf8_without_echoing_profile(self, run):
+        run.return_value.returncode = 0
+        run.return_value.stdout = '{"id": "directory-object", "displayName": "Jos\u00e9"}'
+        self.assertEqual(command(['az', 'ad', 'user', 'show'])['id'], 'directory-object')
+        self.assertEqual(run.call_args.kwargs['env']['PYTHONIOENCODING'], 'utf-8')
+        self.assertEqual(run.call_args.kwargs['encoding'], 'utf-8')
+
     @patch('azure_bootstrap.az')
     def test_scoped_role_lookup_never_combines_all_and_scope(self, azure):
         azure.return_value = [{'principalId': 'principal', 'scope': '/own/group', 'roleDefinitionName': 'Contributor'}]
