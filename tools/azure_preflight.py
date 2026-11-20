@@ -60,7 +60,8 @@ def run(subscription=None):
     if account is None or account['state'].lower() != 'enabled':
         raise RuntimeError('The selected subscription is not present and Enabled in this login. No resources were changed.')
     details = read('rest', '--method', 'get', '--url',
-        f'https://management.azure.com/subscriptions/{subscription}?api-version=2022-12-01')
+        f'https://management.azure.com/subscriptions/{subscription}?api-version=2022-12-01',
+        '--subscription', subscription)
     policies = read('policy', 'assignment', 'list', '--scope', f'/subscriptions/{subscription}',
                     '--disable-scope-strict-match', 'true', '--subscription', subscription)
     regions = region_lists(policies)

@@ -7,7 +7,7 @@ regression reference.
 
 `config.js` is generated at runtime from `config.js.template` using the public
 Discovery and Groups origins. It contains no secrets. Deployments must generate
-the same file before publishing to Static Web Apps, and configure each API's
+the same file before publishing to the Azure Storage static website, and configure each API's
 `UI_ORIGIN` to that exact UI origin. Never put passwords or tokens in config.
 
 Public routes include `#near`, `#discover?q=...`, `#event/<id>`, `#genre/<id>` and

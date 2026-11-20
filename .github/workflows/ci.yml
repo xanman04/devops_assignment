@@ -2,7 +2,9 @@ name: Extraction checks
 
 on:
   push:
+    branches-ignore: [main]
   pull_request:
+  workflow_call:
 
 permissions:
   contents: read
@@ -23,6 +25,7 @@ jobs:
         with:
           python-version: '3.13'
       - run: python -m unittest discover -s tools -p test_azure_preflight.py
+      - run: python -m unittest discover -s tools -p test_deployment.py
   static-ui:
     runs-on: ubuntu-latest
     timeout-minutes: 12

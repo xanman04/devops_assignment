@@ -40,6 +40,7 @@ export async function api(service, path, {method = 'GET', data, signal, headers 
         if (response.ok) throw new Error('The service returned an invalid response. Please try again.');
       }
     }
+    if (response.status === 503) throw new Error('The service is starting up or temporarily unavailable. Please try again shortly.');
     if (!response.ok) throw new Error(result?.error || result?.errors?.join(' ') || `The service returned ${response.status}. Please try again.`);
     return result;
   } catch (error) {
