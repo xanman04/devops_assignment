@@ -24,7 +24,7 @@ export async function route() {
     if (name === 'near') await near(root, filters, signal);
     else if (name === 'discover') await discover(root, new URLSearchParams(query).get('q'), signal);
     else if (name === 'event' && /^\d+$/.test(id)) {await eventDetail(root, id, signal); if (!signal.aborted) accounts.participation(root, id, signal);}
-    else if (name === 'genre' && /^\d+$/.test(id)) await genre(root, id, signal);
+    else if (name === 'genre' && /^[-\w]+$/.test(id)) await genre(root, id, signal);
     else if (name === 'artist' && /^\d+$/.test(id)) await artist(root, id, signal);
     else if (name === 'login' || name === 'register') await accounts.login(root, name === 'register', signal);
     else if (name === 'profile') await accounts.profile(root, signal);

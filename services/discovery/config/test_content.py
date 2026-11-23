@@ -41,6 +41,26 @@ class ContentTests(TestCase):
             self.assertNotIn(private, detail)
         self.assertEqual(self.client.get(f'/api/events/{self.event.pk}/poster/').status_code, 404)
 
+    def test_genre_is_reachable_by_stable_slug(self):
+        self.assertEqual(self.category.slug, 'house')
+        by_id = self.client.get(f'/api/genres/{self.category.pk}/').json()
+        by_slug = self.client.get('/api/genres/slug/house/').json()
+        self.assertEqual(by_slug, by_id)
+        self.assertEqual(by_slug['slug'], 'house')
+        self.assertEqual(self.client.get('/api/genres/slug/absent/').status_code, 404)
+        listed = [c['slug'] for c in self.client.get('/api/genres/').json()['categories']]
+        self.assertIn('house', listed)
+        card = self.client.get('/api/browse/').json()['events'][0]['categories'][0]
+        self.assertEqual(card['slug'], 'house')
+
+    def test_new_categories_get_unique_slugs_and_keep_them_when_renamed(self):
+        other = services.save_category(actor=self.admin, data={'name': 'house!', 'color': '#112233', 'description': 'x'})
+        self.assertEqual(other.slug, 'house-2')
+        other.name = 'Deep House'
+        other.save()
+        other.refresh_from_db()
+        self.assertEqual(other.slug, 'house-2')
+
     def test_unpublished_event_is_absent_everywhere(self):
         self.event.moderation_hidden = True
         self.event.save()

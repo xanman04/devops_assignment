@@ -8,6 +8,8 @@ import sys
 import tempfile
 
 ROOT = Path(__file__).resolve().parents[1]
+# The Assignment 1 monolith is archived (git tag archive/a1-monolith); point MONOLITH_ROOT at a checkout of it.
+MONOLITH = Path(os.environ['MONOLITH_ROOT']).resolve() if os.environ.get('MONOLITH_ROOT') else None
 
 
 def execute(folder, environment, *arguments):
@@ -16,6 +18,8 @@ def execute(folder, environment, *arguments):
 
 
 def run():
+    if MONOLITH is None or not (MONOLITH/'manage.py').exists():
+        sys.exit('Set MONOLITH_ROOT to a checkout of the archive/a1-monolith tag.')
     with tempfile.TemporaryDirectory(prefix='bassline-split-import-') as directory:
         temp = Path(directory)
         environment = os.environ.copy()
@@ -24,7 +28,7 @@ def run():
         environment.pop('SQLSERVER_TEST_MODE', None)
         export = temp/'source/split.json'
         environment['IMPORT_TEST_EXPORT'] = str(export)
-        execute(ROOT, environment, 'manage.py', 'migrate', '--noinput')
+        execute(MONOLITH, environment, 'manage.py', 'migrate', '--noinput')
         source = '''
 import io, os, json, django
 django.setup()
@@ -56,7 +60,7 @@ discovery.save_event(actor=owner,event_id=event.pk,category_ids=[category.pk],da
 call_command('export_split_data',os.environ['IMPORT_TEST_EXPORT'],stdout=io.StringIO())
 print(json.dumps({'owner':owner.pk,'guest':guest.pk,'event':event.pk,'group':group.pk}))
 '''
-        ids = json.loads(execute(ROOT, environment, '-c', source))
+        ids = json.loads(execute(MONOLITH, environment, '-c', source))
         for owner in ('discovery', 'groups'):
             target_environment = environment.copy()
             target_environment['DATABASE_URL'] = 'sqlite:///'+str(temp/(owner+'.sqlite3'))

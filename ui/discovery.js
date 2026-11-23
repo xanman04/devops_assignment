@@ -13,7 +13,7 @@ export function cards(events) {
     return el('article', {class: 'ui-event'}, image && link(el('img', {src: image, alt: '', loading: 'lazy'}), `#event/${event.id}`),
       el('div', {}, el('p', {class: 'ui-meta'}, date(event.starts_at, event.venue.timezone)),
         el('h2', {}, link(event.title, `#event/${event.id}`)), el('p', {}, event.venue.name),
-        el('div', {class: 'ui-tags'}, event.categories.map(c => link(c.name, `#genre/${c.id}`)))));
+        el('div', {class: 'ui-tags'}, event.categories.map(c => link(c.name, `#genre/${c.slug}`)))));
   }));
 }
 function recordingList(records) {
@@ -34,7 +34,7 @@ export async function discover(root, query, signal) {
   if (signal.aborted) return;
   root.append(el('h2', {}, query ? `Results for “${query}”` : 'Upcoming events'), content.events.length ? cards(content.events) : message('No upcoming events match. Try another search or create an event after signing in.'),
     el('h2', {}, 'Explore genres'), el('div', {class: 'ui-genres'}, genres.categories.map(c => {
-      const item = link(c.name, `#genre/${c.id}`); item.style.borderInlineStartColor = c.color; return item;
+      const item = link(c.name, `#genre/${c.slug}`); item.style.borderInlineStartColor = c.color; return item;
     })), el('h2', {}, 'Artists & DJs'), artistCards(artists.artists));
 }
 
@@ -46,7 +46,7 @@ export async function eventDetail(root, id, signal) {
     el('div', {}, heading(event.title, `${date(event.starts_at, event.venue.timezone)} · ${event.venue.timezone}`),
       event.cancelled && message('This event has been cancelled.'), el('h2', {}, event.venue.name), el('p', {}, event.venue.address),
       el('p', {}, `Until ${date(event.ends_at, event.venue.timezone)}`), el('p', {}, event.tempo),
-      el('div', {class: 'ui-tags'}, event.categories.map(c => link(c.name, `#genre/${c.id}`))),
+      el('div', {class: 'ui-tags'}, event.categories.map(c => link(c.name, `#genre/${c.slug}`))),
       event.ticket_url && external('Tickets ↗', event.ticket_url))),
     el('section', {}, el('h2', {}, 'About this night'), el('p', {class: 'ui-prose'}, event.description)),
     el('section', {}, el('h2', {}, 'Lineup'), event.performers.length ? el('div', {class: 'ui-tags'}, event.performers.map(a => link(a.name, `#artist/${a.id}`))) : el('p', {}, 'Lineup to be announced.')),
@@ -56,7 +56,7 @@ export async function eventDetail(root, id, signal) {
 }
 
 export async function genre(root, id, signal) {
-  const data = await api('discovery', `/api/genres/${id}/`, {signal});
+  const data = await api('discovery', /^\d+$/.test(id) ? `/api/genres/${id}/` : `/api/genres/slug/${id}/`, {signal});
   if (signal.aborted) return;
   root.append(link('← Discover', '#discover'), heading(data.name, data.description), el('p', {}, data.tempo),
     el('h2', {}, 'Start listening'), recordingList(data.samples.filter(s => !s.tag_ids.length)),

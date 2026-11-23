@@ -81,7 +81,25 @@ files, mark a failed migration as applied, or reset the database on deployment.
 Irrecoverable loss requires professor-coordinated backup recovery that respects
 the two-database quota. Recheck retained records before restoring traffic.
 
-The Azure migration evidence is still outstanding. First deploy/populate the
-Azure databases and capture records, then deploy a later additive/backfill
-migration. Keep its run link, startup application log and before/after records.
-Local migration tests do not replace that evidence.
+## Populated-table migration on Azure: GenreCategory.slug
+
+The second-stage migration is `discovery` 0014 and 0015, applied by the normal
+deployment to the 22 genre categories already stored in Azure SQL:
+
+1. 0014 adds `slug` as a nullable, non-unique column and backfills every existing row
+   with a readable unique key derived from its name (`Dubstep / 140` becomes
+   `dubstep-140`; a collision gets `-2`, `-3`). IDs, names and all other columns are
+   not touched. The data step is forward-only.
+2. 0015 then makes `slug` required and unique, after no row can violate it.
+
+Splitting the steps keeps each schema change small and lets a failure after step 1 be
+fixed with a corrective forward migration. New and renamed categories keep their slug
+(`GenreCategory.save` fills it once); `import_split_data` derives slugs for imported
+rows because raw fixture saves skip `save()`. The UI links genres as `#genre/<slug>`
+and the API serves `GET /api/genres/slug/{genre_slug}/` next to the numeric route.
+
+`discovery/test_migrations.py::GenreSlugMigrationTests` migrates a populated test table
+from 0013 to the latest state and checks ids, names and other columns are unchanged and
+slugs are unique. Local tests do not replace the Azure evidence: the "before" snapshot
+is `evidence/azure/2026-11-23-before-slug-migration.json`; the "after" snapshot, the
+startup migration log and the deployment run link are added once the deployment ran.

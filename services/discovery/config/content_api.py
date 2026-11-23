@@ -38,7 +38,7 @@ def event_json(event):
             "venue": {"id": event.venue_id, "name": event.venue.name,
                       "address": event.venue.address, "timezone": event.venue.timezone,
                       "latitude": float(event.venue.latitude), "longitude": float(event.venue.longitude)},
-            "categories": list(event.categories.values("id", "name", "color")),
+            "categories": list(event.categories.values("id", "slug", "name", "color")),
             "tags": list(event.tags.values("id", "name")),
             "performers": [{"id": a.pk, "name": a.name} for a in event.performers.all()],
             "tempo": services.tempo_display(event)}
@@ -97,9 +97,18 @@ def artist(request, artist_id):
 @require_GET
 @endpoint
 def genre(request, genre_id):
-    category = GenreCategory.objects.get(pk=genre_id)
+    return genre_response(GenreCategory.objects.get(pk=genre_id))
+
+
+@require_GET
+@endpoint
+def genre_by_slug(request, genre_slug):
+    return genre_response(GenreCategory.objects.get(slug=genre_slug))
+
+
+def genre_response(category):
     references = category.listening_references.prefetch_related("tags")
-    return JsonResponse({"id": category.pk, "name": category.name, "description": category.description,
+    return JsonResponse({"id": category.pk, "slug": category.slug, "name": category.name, "description": category.description,
         "color": category.color, "tempo": category.bpm_display,
         "tags": list(category.tags.values("id", "name", "description", "bpm_min", "bpm_max")),
         "samples": [{**reference_json(r), "tag_ids": [t.pk for t in r.tags.all()]} for r in references],

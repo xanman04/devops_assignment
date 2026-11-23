@@ -1,5 +1,7 @@
 # Database schema
 
+> **Archived.** This document describes the Assignment 1 monolith, which is no longer in this tree. It is preserved at git tag `archive/a1-monolith`. The current services are described in `SERVICE_BOUNDARIES.md` and each service's `openapi.json`.
+
 Agreed design recorded September 27, 2026. Django models and initial migrations now implement the records and database constraints. Cross-record workflows below remain targets, not completed behavior. Update this schema and the eventual report diagram with implementation changes.
 
 ## Conventions and ownership

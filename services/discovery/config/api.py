@@ -103,7 +103,7 @@ def logout(request):
 @endpoint
 def categories(request):
     return JsonResponse({"categories": list(GenreCategory.objects.values(
-        "id", "name", "color", "description", "bpm_min", "bpm_max")),
+        "id", "slug", "name", "color", "description", "bpm_min", "bpm_max")),
         "tags": list(GenreTag.objects.values("id", "name", "category_id", "description", "bpm_min", "bpm_max"))})
 
 
