@@ -51,17 +51,23 @@ jobs:
         with:
           name: static-ui-browser-captures
           path: tools/browser/artifacts/
-  monolith:
+  archived-monolith-split-import:
+    # The Assignment 1 monolith is no longer in the tree; it is kept at the tag below and
+    # only used as the source database for the split export/import check.
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: refs/tags/archive/a1-monolith
+          path: legacy-monolith
       - uses: actions/setup-python@v5
         with:
           python-version: '3.13'
-          cache: pip
-      - run: python -m pip install -r requirements.txt
-      - run: python manage.py test --noinput
+      - run: python -m pip install -r legacy-monolith/requirements.txt
       - run: python tools/check_split_import.py
+        env:
+          MONOLITH_ROOT: ${{ github.workspace }}/legacy-monolith
 
   discovery:
     runs-on: ubuntu-latest

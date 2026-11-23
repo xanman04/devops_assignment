@@ -1,0 +1,124 @@
+{
+  "observed_at_utc": "2026-11-23T12:45:35.792210+00:00",
+  "stage": "Before deploying migrations 0014/0015 (GenreCategory.slug); public Discovery API, no credentials used",
+  "deployed_version_before": "181474919a9451414fd6a6087e6d681c8a737c0a",
+  "discovery_health": {
+    "status": "ok",
+    "db": "ok",
+    "version": "181474919a9451414fd6a6087e6d681c8a737c0a"
+  },
+  "cold_start_note": "After idle, the first two /health requests (20 seconds apart) returned 503 while the container started; the third returned 200.",
+  "genre_categories": [
+    {
+      "id": 1,
+      "name": "Dubstep / 140",
+      "has_slug": false
+    },
+    {
+      "id": 2,
+      "name": "Hard Techno",
+      "has_slug": false
+    },
+    {
+      "id": 3,
+      "name": "Hard Dance / Hardcore",
+      "has_slug": false
+    },
+    {
+      "id": 4,
+      "name": "Mainstage / Commercial EDM",
+      "has_slug": false
+    },
+    {
+      "id": 5,
+      "name": "Latin Electronic",
+      "has_slug": false
+    },
+    {
+      "id": 6,
+      "name": "Drum & Bass",
+      "has_slug": false
+    },
+    {
+      "id": 7,
+      "name": "Afro Electronic",
+      "has_slug": false
+    },
+    {
+      "id": 8,
+      "name": "Breaks / Breakbeat",
+      "has_slug": false
+    },
+    {
+      "id": 9,
+      "name": "Indie Dance",
+      "has_slug": false
+    },
+    {
+      "id": 10,
+      "name": "Psy-Trance",
+      "has_slug": false
+    },
+    {
+      "id": 11,
+      "name": "Brazilian Funk",
+      "has_slug": false
+    },
+    {
+      "id": 12,
+      "name": "Electro",
+      "has_slug": false
+    },
+    {
+      "id": 13,
+      "name": "Trap / Future Bass",
+      "has_slug": false
+    },
+    {
+      "id": 14,
+      "name": "UK Garage / Bassline",
+      "has_slug": false
+    },
+    {
+      "id": 15,
+      "name": "House",
+      "has_slug": false
+    },
+    {
+      "id": 16,
+      "name": "Bass / Club",
+      "has_slug": false
+    },
+    {
+      "id": 17,
+      "name": "Trance",
+      "has_slug": false
+    },
+    {
+      "id": 18,
+      "name": "Techno",
+      "has_slug": false
+    },
+    {
+      "id": 19,
+      "name": "Nu Disco / Disco",
+      "has_slug": false
+    },
+    {
+      "id": 20,
+      "name": "Dance / Pop",
+      "has_slug": false
+    },
+    {
+      "id": 21,
+      "name": "Ambient / Experimental",
+      "has_slug": false
+    },
+    {
+      "id": 22,
+      "name": "Industrial / EBM",
+      "has_slug": false
+    }
+  ],
+  "genre_tag_count": 251
+}

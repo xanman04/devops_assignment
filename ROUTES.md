@@ -1,5 +1,7 @@
 # Step 2: Django pages, forms, and request handlers
 
+> **Archived.** This document describes the Assignment 1 monolith, which is no longer in this tree. It is preserved at git tag `archive/a1-monolith`. The current services are described in `SERVICE_BOUNDARIES.md` and each service's `openapi.json`.
+
 Approved and implemented September 28, 2026. The root now serves the discovery page; all routes below are connected to Django forms/templates and the existing domain services. This table was updated through October 4, 2026.
 
 Most interactions use Django templates and POST forms, redirecting after successful writes. GET reads; POST writes with CSRF protection. Map refresh uses JSON. No REST Framework or separate frontend server is needed. Views pass request.user to existing services rather than trusting submitted actor/creator/reviewer/recipient fields.

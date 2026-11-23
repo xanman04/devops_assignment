@@ -16,6 +16,7 @@ urlpatterns = [
     path("api/artists/", content_api.artists),
     path("api/artists/<int:artist_id>/", content_api.artist),
     path("api/genres/<int:genre_id>/", content_api.genre),
+    path("api/genres/slug/<slug:genre_slug>/", content_api.genre_by_slug),
     path("api/events/<int:event_id>/content/", content_api.detail),
     path("api/events/<int:event_id>/poster/", content_api.poster),
     path("health", api.health),

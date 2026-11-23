@@ -1,6 +1,0 @@
-{# Copyright © 2026 Xander Chen. All rights reserved. #}
-{% extends 'base.html' %}
-{% block title %}Log in · Bassline{% endblock %}
-{% block content %}<section class="narrow form-page"><h1>Log in</h1>
-<form method="post" data-new-session>{% csrf_token %}{{ form.as_p }}<input type="hidden" name="next" value="{{ next }}"><button type="submit">Log in</button></form>
-<p class="form-alt">New here? <a class="btn btn-ghost btn-sm" href="{% url 'register' %}">Create an account</a></p></section>{% endblock %}

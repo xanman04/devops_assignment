@@ -71,6 +71,13 @@ class Command(BaseCommand):
             for row in rows:
                 if row["model"] == "discovery.djmedialink":
                     row["fields"]["url_digest"] = hashlib.sha256(row["fields"]["url"].encode("utf-8")).hexdigest()
+            if any(row["model"] == "discovery.genrecategory" for row in rows):
+                from discovery.models import unique_category_slug  # Raw saves skip GenreCategory.save().
+                taken_slugs = set()
+                for row in rows:
+                    if row["model"] == "discovery.genrecategory":
+                        row["fields"]["slug"] = row["fields"].get("slug") or unique_category_slug(row["fields"]["name"], taken_slugs)
+                        taken_slugs.add(row["fields"]["slug"])
             with connection.constraint_checks_disabled():
                 for record in serializers.deserialize("python", rows):
                     record.save()

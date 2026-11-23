@@ -11,6 +11,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator, RegexVa
 from django.db import models
 from django.db.models import F, Q
 from django.db.models.functions import Lower
+from django.utils.text import slugify
 
 from .validators import http_url, validate_changes, validate_timezone
 
@@ -49,8 +50,18 @@ class TempoRange(models.Model):
         return f"{self.bpm_min}–{self.bpm_max} BPM"
 
 
+def unique_category_slug(name, taken):
+    """Readable, URL-safe key for a genre name that is not already in `taken`."""
+    base = slugify(name)[:70].strip("-") or "genre"
+    slug, number = base, 2
+    while slug in taken:
+        slug, number = f"{base}-{number}", number + 1
+    return slug
+
+
 class GenreCategory(TempoRange):
     name = models.CharField(max_length=80, unique=True)
+    slug = models.SlugField(max_length=80, unique=True, blank=True, help_text="Stable URL key; generated from the name.")
     color = models.CharField(max_length=7, validators=[RegexValidator(r"^#[0-9a-fA-F]{6}$")])
     description = models.TextField()
     display_order = models.PositiveIntegerField(default=0)
@@ -66,6 +77,14 @@ class GenreCategory(TempoRange):
         self.name = self.name.strip()
         if not self.name:
             raise ValidationError({"name": "A name is required."})
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            taken = set(GenreCategory.objects.exclude(pk=self.pk).values_list("slug", flat=True))
+            self.slug = unique_category_slug(self.name, taken)
+            if kwargs.get("update_fields") is not None:
+                kwargs["update_fields"] = set(kwargs["update_fields"]) | {"slug"}
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name

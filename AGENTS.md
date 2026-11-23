@@ -1,10 +1,18 @@
 # Bassline Assignment 2 — instructions for every agent
 
+## Current handoff — read before implementation
+- Read [CLAUDE_HANDOFF.md](CLAUDE_HANDOFF.md) for verified progress, deployment, remaining work and the known map regression. Read [COMMIT_TIMELINE.md](COMMIT_TIMELINE.md) for the actual commit ledger and blocked-out November 21–22 work plan.
+- As verified November 20: 11 substantive A2 commits across SIX dates; deployed main is 181474919a9451414fd6a6087e6d681c8a737c0a, main CD 44745670962 succeeded. The six-day requirement is already covered; do not force more daily commits.
+- The working forward plan is two substantial remaining milestones (13 total); 12 is preferred if the work genuinely fits. No count-padding, per-prompt rows, tiny fixes, documentation-only bookkeeping or automatic daily quota. All timing is Europe/Paris; deadline November 22 at 23:59, with early completion buffers in the timeline.
+- **Owner: "DO NOT LEAVE ME WITH A WALL OF PROMPTS TO FILL OUT AGAIN."** One grouped AI_USAGE row per coherent commit. Only the owner writes the own-words field. Automatic commits are active-session milestone commits, never a timer, prompt or edit trigger.
+- These handoff documentation changes are intentionally uncommitted for the next substantial milestone; do not create a separate handoff/ledger/hash commit. The small map patch is preview-verified only, not applied or deployed; batch it with runtime/UI completion.
+- CURRENT AZURE AUTHORITY: the November 20 student guide supersedes the original brief's class RG/shared SP/Static Web App/2 GB SQL details. Use own student group, Storage static website, scoped OIDC and free-offer SQL limits. The historical Azure section below is not current provisioning authorization.
+
 ## Authority, scope, and handoff
 - These rules apply to Claude, Codex, and all delegated agents. They supersede Assignment 1 automatic-commit and AI-disclosure instructions for Assignment 2.
-- The owner is handing the bulk of implementation to Claude Max. Read this file before working. On November 15 the owner authorized the first implementation milestone and one coherent commit/push before midnight Europe/Paris. Continue only within the active request; Claude has not yet implemented changes.
+- The owner is handing the bulk of implementation to Claude Max. Read this file before working. On November 15 the owner authorized the first implementation milestone and one coherent commit/push before midnight Europe/Paris. Continue only within the active request. Codex completed the milestones recorded in the current handoff; do not assume work is still at the original planning stage.
 - Assignment source: C:/School/devops/individual_assignment/devops_assignment2/Assignment_2.pdf in the local workspace. On a fresh clone, obtain the actual brief and inherited Assignment 1 rules before implementation if unavailable. This checklist summarizes Assignment 2; it does not waive course requirements.
-- Continue the same Bassline use case and GitHub repository, currently https://github.com/xanman04/devops_assignment1.git. The active Assignment 2 Git root is C:/School/devops/individual_assignment/devops_assignment2. The owner clarified on November 20 that assignments are separated by LOCAL checkout only, with the SAME remote repository and shared history. devops_assignment1 is kept at recorded Assignment 1 baseline 33bf6d10fa11cfb9a63586dcb4ab2fb33eb8d384; do not implement Assignment 2 there or create a separate GitHub repository. The canonical remote URL is https://github.com/xanman04/devops_assignment.git (the older URL redirects).
+- Continue the same Bassline use case and GitHub repository, https://github.com/xanman04/devops_assignment.git. The active Assignment 2 Git root is C:/School/devops/individual_assignment/devops_assignment2. The owner clarified on November 20 that assignments are separated by LOCAL checkout only, with the SAME remote repository and shared history. devops_assignment1 is kept at recorded Assignment 1 baseline 33bf6d10fa11cfb9a63586dcb4ab2fb33eb8d384; do not implement Assignment 2 there or create a separate GitHub repository. The canonical remote URL is https://github.com/xanman04/devops_assignment.git (the older URL redirects).
 - Existing seam in ADR 2 is Discovery / Attendance Groups. Identity, notifications, cross-domain references, and failure behavior need explicit design. Earlier chat suggestions are proposals, not approved architecture.
 - Prioritize accuracy and low token usage. Explain decisions so the owner can answer the written comprehension check. Report tested, untested, failed, and uncommitted work. Stop and report permission blocks.
 - At the end of a turn that changes files, makes a decision, or leaves work open, add a short paragraph starting "State:" with at most two sentences.
@@ -46,7 +54,7 @@
 - Same language/stack as Assignment 1; no language rewrite and no new product features required.
 - Exactly TWO domain services, each its own process/container, Dockerfile, folder services/<name>/, and pinned dependency manifest. Soft cap about 12 third-party packages per service.
 - Every table belongs to exactly one service. Cross-domain foreign keys become plain IDs with explicit integrity policy. Obtain other-domain data through HTTP, never another service's database. Move idempotent seed data with its owning tables.
-- Static HTML/CSS/JS UI in ui/, fetching JSON from BOTH services. Convert server-rendered pages; services retain APIs only. Deploy UI on one Azure Static Web App. Configure API URLs, never hardcode them. Restrict each API's CORS to the UI origin.
+- Static HTML/CSS/JS UI in ui/, fetching JSON from BOTH services. Convert server-rendered pages; services retain APIs only. Deploy UI on the single Azure Storage static website specified by the November 20 guide. Configure API URLs, never hardcode them. Restrict each API's CORS to the UI origin.
 - At least one USER-VISIBLE flow must call one service that calls the other server-side. Browser-only aggregation does not satisfy this requirement. Configure peer URLs via environment variables. Every outbound call has a timeout.
 - Stop either service and verify the other continues its own domain. Design the affected flow's clear error/degradation/cache/retry behavior.
 - Local docker-compose.yml at repository root starts a clean clone with docker compose up --build. Two domain containers, one SQL Server 2022 container (mcr.microsoft.com/mssql/server:2022-latest), and one database/login per domain.
@@ -68,11 +76,11 @@
 - Unit tests per service plus at least one cross-domain integration test against compose or a justified stub (ADR 9). CI uses a local SQL Server container and NEVER Azure SQL.
 - On main only, after same-commit CI success, publish images tagged with commit SHA, deploy those images, deploy the static UI with service URL configuration, and fail CD unless both deployed /health endpoints return 200 within a bounded cold-start-aware wait.
 - Use GHCR by default. Justify any Azure Container Registry fixed cost.
-- Professor-provided service principal credentials and UI deployment token are GitHub secrets. Service DB passwords and other secrets are GitHub secrets passed as Container Apps secrets, referenced by configuration, not literal plaintext environment values.
+- The updated guide uses the owner's scoped GitHub OIDC identity; Azure identity IDs are GitHub secrets. No shared class service-principal secret or Static Web App deployment token is needed. Service DB passwords and other secrets are GitHub secrets passed as Container Apps secrets, referenced by configuration, not literal plaintext environment values.
 - No secrets anywhere in repository or Git history. A pushed secret is compromised. Within 24 hours rotate/revoke owner-created credentials and replace the GitHub secret; for professor-provided credentials notify the professor for rotation. Remove current exposure and record incident details in README. Do not send a notification as the user without authorization.
 - Unresolved leaked credentials cap the final grade at 40/100. Do not conceal an incident through deletion or history rewriting.
 
-## Azure contract — brief §7
+## Original Azure contract — historical; superseded by November 20 guide
 - Azure only. Existing class resource group rg-sdd-3a or rg-sdd-3b; confirm class. Never create a resource group or touch another student's resources.
 - Confirm IE username. Prefix EVERY created resource with its email local-part, dots replaced by hyphens. Shared service principal is scoped to the class group and cannot assign roles.
 - Maximum two Container Apps, two serverless SQL databases, and one Static Web App, even temporarily. One environment. UI name <prefix>-ui, logical SQL server <prefix>-sql, database names <prefix>-<service>-db.
@@ -101,7 +109,7 @@
 ## November 17 infrastructure guidance from the owner
 - The owner reports that the professor credits explicitly managed backend infrastructure and infrastructure as code. Prefer a Terraform definition of the required Azure resources for the deployment milestone, with resources/settings the owner can explain, applied through the pipeline.
 - The class source is C:/School/devops/class_content/Backend Components — SDD Session.pdf. Its compute comparison (pages 19 and 22) discusses VMs, containers and managed options in general; it does not itself change the assignment contract or establish an extra-credit promise.
-- Assignment 2 still explicitly requires Container Apps Consumption, serverless Azure SQL and Static Web Apps, and excludes VMs/always-on compute. Do not provision VMs or substitute another deployment platform based on the lecture discussion. Ask for an explicit updated assignment instruction if the professor changes these constraints.
+- The original brief required Container Apps Consumption, serverless Azure SQL and Static Web Apps; the November 20 guide replaces Static Web Apps with Storage static hosting. VMs/always-on compute remain excluded. Do not provision VMs or substitute another deployment platform based on the lecture discussion. Ask for an explicit updated assignment instruction if the professor changes these constraints.
 - In this context, manually managing infrastructure means writing/reviewing its configuration and understanding the backend components, with automated reproducible deployment. Preserve the requirement that changes after initial setup run through the pipeline rather than manual portal edits.
 
 

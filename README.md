@@ -2,6 +2,9 @@
 
 ## Assignment 2 progress
 
+Agent handoff: [CLAUDE_HANDOFF.md](CLAUDE_HANDOFF.md). Commit history, strict
+automatic-commit policy and remaining work blocks: [COMMIT_TIMELINE.md](COMMIT_TIMELINE.md).
+
 The professor's November 20 student deployment guide (local course file
 `C:/School/devops/class_content/a2-azure-deployment-guide.pdf`)
 supersedes the original shared-class Azure contract. Use an own Azure for
@@ -44,10 +47,11 @@ Discovery now has an independent JSON-only runtime in
 account/event models, event notifications, migrations, expiring bearer identity,
 health checks and request logs. It has no dependency on Groups. See
 [`SERVICE_BOUNDARIES.md`](SERVICE_BOUNDARIES.md) and ADR 6 for the extraction design.
-The root application remains the Assignment 1 regression reference while the
-remaining features move. Both services now support SQL Server, with stable-ID
-export/import tooling and ADR 7. See [DATA_MIGRATION.md](DATA_MIGRATION.md).
-GitHub Actions checks the monolith and extracted services.
+The Assignment 1 monolith is archived and no longer shipped in this tree (see
+"Archived Assignment 1 monolith" below). Both services support SQL Server, with
+stable-ID export/import tooling and ADR 7. See [DATA_MIGRATION.md](DATA_MIGRATION.md).
+GitHub Actions checks the extracted services, and checks the split export/import
+against the archived monolith.
 
 The first extraction milestone adds public JSON event details at
 `GET /api/events/<event_id>/`. It reuses Discovery's public visibility rules,
@@ -63,8 +67,28 @@ exercise the required UI → Groups → Discovery server-side HTTP flow. Remaini
 legacy UI adapters and the remaining Azure migration/partial-failure evidence are still pending.
 See [ui/README.md](ui/README.md) for runtime configuration and browser checks.
 
-Run the endpoint regression checks with
-`.\.venv\Scripts\python.exe manage.py test discovery.test_event_api --noinput`.
+Run the endpoint regression checks from `services/discovery` with
+`python manage.py test discovery.test_event_api --noinput`.
+
+## Archived Assignment 1 monolith
+
+The single-process Django application from Assignment 1 (`accounts/`, `discovery/`,
+`groups/`, `notifications/`, `config/`, `templates/`, `static/`, `manage.py`,
+`app.py`, its two root test files and the poster/photo build tools) is **not part of
+this tree**. It is preserved, unchanged, at the git tag `archive/a1-monolith`
+(commit `181474919a9451414fd6a6087e6d681c8a737c0a`):
+
+```text
+git checkout archive/a1-monolith      # browse or run it (README of that tag applies)
+git archive archive/a1-monolith | tar -x -C ../a1-monolith
+```
+
+CI uses that tag only as the source database for the split export/import check
+(`tools/check_split_import.py`, with `MONOLITH_ROOT` pointing at a checkout of the tag).
+The sections below from "A music-first event discovery application" to "Testing status"
+describe that monolith as built in Assignment 1 and are kept for context; to run the
+current system use [LOCAL_DEVELOPMENT.md](LOCAL_DEVELOPMENT.md) (Docker Compose).
+`SCHEMA.md` and `ROUTES.md` likewise describe the monolith.
 
 A music-first event discovery application: find nearby events by genre and date, hear what their music sounds like through listening references, and find people to attend with.
 
