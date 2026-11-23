@@ -30,7 +30,8 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="genrecategory",
             name="slug",
-            field=models.SlugField(max_length=80, null=True, blank=True),
+            # No index yet: SQL Server would otherwise create it under the name the unique constraint in 0015 needs.
+            field=models.SlugField(max_length=80, null=True, blank=True, db_index=False),
         ),
         # Forward-only data step: the slug column is dropped with the field when reversing.
         migrations.RunPython(backfill_slugs, migrations.RunPython.noop),
