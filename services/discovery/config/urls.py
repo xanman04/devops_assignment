@@ -1,8 +1,11 @@
 from django.urls import path
 from discovery.views import event_details, map_events
-from . import api, content_api, account_api
+from . import api, content_api, account_api, moderation_api
 
 urlpatterns = [
+    path("api/moderation/", moderation_api.queue),
+    path("api/moderation/venues/<int:venue_id>/review/", moderation_api.review_venue),
+    path("api/moderation/reports/<int:report_id>/review/", moderation_api.review_report),
     path("api/auth/register/", account_api.register),
     path("api/account/", account_api.account),
     path("api/my-events/", account_api.my_events),

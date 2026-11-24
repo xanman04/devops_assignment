@@ -53,6 +53,7 @@ export async function profile(root, signal) {
   const user = await api('discovery', '/api/account/', {signal});
   if (signal.aborted) return;
   root.append(heading(user.display_name || user.username, `@${user.username}`));
+  if (user.can_moderate) root.append(link('Review venues and reports', '#moderation', {class: 'button'}));
   const form = el('form', {class: 'ui-form'}, profileFields.map(([label, name, type, maxlength]) => field(label, name, type, {value: user[name], maxlength})), el('button', {type: 'submit'}, 'Save profile'));
   root.append(formAction(form, async data => {
     const saved = await api('discovery', '/api/account/', {method: 'PUT', data: Object.fromEntries(data), signal});

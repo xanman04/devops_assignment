@@ -7,7 +7,11 @@ on:
         description: Verify with controlled outages, or recover after a lost runner
         type: choice
         default: verify
-        options: [verify, recover]
+        options: [verify, recover, moderator]
+      moderator_username:
+        description: Existing Bassline username selected by the owner (moderator operation only)
+        type: string
+        default: ''
 
 permissions:
   contents: read
@@ -32,6 +36,7 @@ jobs:
       DISCOVERY_DB_PASSWORD: ${{ secrets.DISCOVERY_DB_PASSWORD }}
       DJANGO_SECRET_KEY: ${{ secrets.DISCOVERY_SECRET_KEY }}
       LIVE_CHECK_PASSWORD: ${{ secrets.LIVE_CHECK_PASSWORD }}
+      MODERATOR_USERNAME: ${{ inputs.moderator_username }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -57,8 +62,11 @@ jobs:
       - name: Exercise real browser participation and both service failures
         if: inputs.operation == 'verify'
         run: node tools/browser/check_participation_live.cjs
+      - name: Grant only selected existing account review permissions
+        if: inputs.operation == 'moderator'
+        run: python tools/live_release.py moderator
       - name: Always restore stopped apps and remove temporary SQL firewall rule
-        if: always() && inputs.operation == 'verify'
+        if: always() && inputs.operation != 'recover'
         run: python tools/live_release.py restore
       - name: Explicit recovery if a killed runner lost its markers
         if: inputs.operation == 'recover'

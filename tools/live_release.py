@@ -90,8 +90,10 @@ def ensure_running(service):
     raise RuntimeError('App did not settle into a recoverable lifecycle state.')
 
 
-def prepare():
+def inspect_release():
     prefix, group = context()
+    if (directory()/'restore-required.json').exists() and read('restore-required.json'):
+        raise ValueError('An earlier recovery obligation must be resolved first.')
     # Main may advance while a queued dispatch waits: do not exercise stale images.
     head = subprocess.check_output(['gh', 'api', 'repos/xanman04/devops_assignment/git/ref/heads/main',
                                    '--jq', '.object.sha'], text=True).strip()
@@ -117,9 +119,15 @@ def prepare():
     storage = az('storage', 'account', 'show', '--resource-group', group, '--name', prefix.replace('-', '')+'ui')
     write('configuration.json', {'sha': head, 'urls': urls, 'ui': storage['primaryEndpoints']['web'],
                                 'run_id': os.environ['GITHUB_RUN_ID']})
-    if (directory()/'restore-required.json').exists() and read('restore-required.json'):
-        raise ValueError('An earlier recovery obligation must be resolved first.')
     write('restore-required.json', [])
+    return read('configuration.json')
+
+
+def discovery_command(command_name, additional_environment):
+    if command_name not in {'prepare_live_check', 'grant_moderator'}:
+        raise ValueError('Unknown operator command.')
+    prefix, group = context()
+    head = read('configuration.json')['sha']
     rule = prefix+'-verify-'+os.environ['GITHUB_RUN_ID']
     write('firewall.json', {'rule': rule})
     try:
@@ -132,17 +140,28 @@ def prepare():
             f'mssql://bassline_discovery:{quote(os.environ["DISCOVERY_DB_PASSWORD"], safe="")}@'
             f'{prefix}-sql.database.windows.net:1433/{prefix}-discovery-db'))
         command = ['docker', 'run', '--rm']
-        for name in ('DATABASE_URL', 'DJANGO_SECRET_KEY', 'LIVE_CHECK_PASSWORD'):
+        for name in ('DATABASE_URL', 'DJANGO_SECRET_KEY') + additional_environment:
             command.extend(['-e', name])
-        command.extend(['ghcr.io/xanman04/bassline-discovery:'+head, 'python', 'manage.py', 'prepare_live_check'])
+        command.extend(['ghcr.io/xanman04/bassline-discovery:'+head, 'python', 'manage.py', command_name])
         result = subprocess.run(command, env=environment, capture_output=True, text=True)
         if result.returncode:
-            raise RuntimeError('Controlled fixture setup failed; database diagnostics withheld.')
-        fixture = json.loads(result.stdout.strip().splitlines()[-1])
-        write('fixture.json', fixture)
+            if command_name == 'grant_moderator' and 'That Bassline account does not exist.' in result.stderr:
+                raise ValueError('The selected Bassline account does not exist. Register it first; no account or password was created.')
+            raise RuntimeError('Operator command failed; database diagnostics withheld. Check the selected existing account and operator guide.')
+        return json.loads(result.stdout.strip().splitlines()[-1])
     finally:
         cleanup_firewall()
+
+
+def prepare():
+    inspect_release()
+    write('fixture.json', discovery_command('prepare_live_check', ('LIVE_CHECK_PASSWORD',)))
     audit_migration()
+
+
+def grant_moderator():
+    inspect_release()
+    write('moderator-grant.json', discovery_command('grant_moderator', ('MODERATOR_USERNAME',)))
 
 
 def audit_migration():
@@ -251,11 +270,12 @@ def recover_all():
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('action', choices=['prepare', 'stop', 'restore', 'recover'])
+    parser.add_argument('action', choices=['prepare', 'stop', 'restore', 'recover', 'moderator'])
     parser.add_argument('service', nargs='?', choices=['discovery', 'groups'])
     args = parser.parse_args()
     if args.action == 'prepare': prepare()
     elif args.action == 'restore': restore()
     elif args.action == 'recover': recover_all()
+    elif args.action == 'moderator': grant_moderator()
     elif args.service: stop(args.service)
     else: parser.error('stop requires a service')

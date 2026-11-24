@@ -46,13 +46,15 @@ from django.utils import timezone
 from discovery import services
 from discovery.models import GenreCategory
 owner=get_user_model().objects.create_superuser('browserowner', password=os.environ['BROWSER_PASSWORD'])
-get_user_model().objects.create_user('browserguest', password=os.environ['BROWSER_PASSWORD'])
+guest=get_user_model().objects.create_user('browserguest', password=os.environ['BROWSER_PASSWORD'])
 category=GenreCategory.objects.get(name='House')
 venue=services.save_venue(actor=owner,review_status='approved',data={'name':'Browser venue','address':'Madrid','latitude':'40.416800','longitude':'-3.703800','timezone':'Europe/Madrid'})
 start=timezone.now()+timedelta(days=2)
 event=services.save_event(actor=owner,category_ids=[category.pk],data={'venue':venue,'title':'Browser <img src=x onerror=alert(1)> night','description':'Safe fixture description','starts_at':start,'ends_at':start+timedelta(hours=4)})
 event.demo_poster='demo-posters/blue-hour.webp'
 event.save(update_fields=['demo_poster'])
+services.save_venue(actor=guest,data={'name':'Review <img src=x onerror=alert(1)> venue','address':'Madrid','latitude':'40.4','longitude':'-3.7','timezone':'Europe/Madrid'})
+services.report_event(actor=guest,event_id=event.pk,reason='other',explanation='Review <script>alert(1)</script> safely as text')
 '''
             subprocess.run([sys.executable, '-c', fixture], cwd=ROOT/'services'/'discovery',
                 env=dict(environments['discovery'], BROWSER_PASSWORD=password), check=True)

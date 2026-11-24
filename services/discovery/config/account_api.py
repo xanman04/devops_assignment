@@ -24,7 +24,9 @@ def validated(form):
 
 
 def account_json(user):
-    return {'id': user.pk, 'username': user.username, **{field: getattr(user, field) for field in sorted(PROFILE_FIELDS)}}
+    return {'id': user.pk, 'username': user.username,
+        'can_moderate': user.has_perm('discovery.change_venue') or user.has_perm('discovery.change_eventreport'),
+        **{field: getattr(user, field) for field in sorted(PROFILE_FIELDS)}}
 
 
 @require_http_methods(['POST'])

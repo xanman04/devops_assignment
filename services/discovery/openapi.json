@@ -3,7 +3,7 @@
   "info": {
     "title": "Bassline Discovery service",
     "version": "0.2.0",
-    "description": "Independent extraction API. SQL Server, full monolith feature adapter parity and production deployment remain pending."
+    "description": "Independent Discovery API with SQL Server persistence and configured static UI. Remaining adapter/evidence limits are documented in ui/README.md and CLAUDE_HANDOFF.md."
   },
   "paths": {
     "/health": {
@@ -2861,6 +2861,315 @@
           }
         ]
       }
+    },
+    "/api/moderation/": {
+      "get": {
+        "operationId": "moderationQueue",
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModerationQueue"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid or expired bearer",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient review permission",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Record not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Own database unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method not allowed",
+            "headers": {
+              "Allow": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/moderation/venues/{venue_id}/review/": {
+      "post": {
+        "operationId": "reviewVenue",
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VenueReviewResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid or expired bearer",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient review permission",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Record not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Own database unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method not allowed",
+            "headers": {
+              "Allow": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VenueReviewWrite"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "venue_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        ]
+      }
+    },
+    "/api/moderation/reports/{report_id}/review/": {
+      "post": {
+        "operationId": "reviewEventReport",
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportReviewResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid or expired bearer",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient review permission",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Record not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Own database unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method not allowed",
+            "headers": {
+              "Allow": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReportReviewWrite"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "report_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        ]
+      }
     }
   },
   "components": {
@@ -4092,7 +4401,8 @@
           "instagram_url",
           "spotify_url",
           "apple_music_url",
-          "soundcloud_url"
+          "soundcloud_url",
+          "can_moderate"
         ],
         "properties": {
           "id": {
@@ -4122,6 +4432,10 @@
           },
           "soundcloud_url": {
             "type": "string"
+          },
+          "can_moderate": {
+            "type": "boolean",
+            "description": "Current account has venue or report review permission; server rechecks every review."
           }
         },
         "additionalProperties": false
@@ -4300,6 +4614,221 @@
           }
         },
         "additionalProperties": false
+      },
+      "ModerationCapabilities": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "venues",
+          "reports",
+          "hide_events"
+        ],
+        "properties": {
+          "venues": {
+            "type": "boolean"
+          },
+          "reports": {
+            "type": "boolean"
+          },
+          "hide_events": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PendingVenue": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "name",
+          "address",
+          "timezone",
+          "review_status",
+          "latitude",
+          "longitude"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "name": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "timezone": {
+            "type": "string"
+          },
+          "review_status": {
+            "type": "string",
+            "enum": [
+              "pending"
+            ]
+          },
+          "latitude": {
+            "type": "string",
+            "description": "Validated decimal coordinate"
+          },
+          "longitude": {
+            "type": "string",
+            "description": "Validated decimal coordinate"
+          }
+        }
+      },
+      "PendingReport": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "event_id",
+          "event_title",
+          "reason",
+          "explanation",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "event_id": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "event_title": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "explanation": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "pending"
+            ]
+          }
+        }
+      },
+      "ModerationQueue": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "capabilities",
+          "pending_venues",
+          "pending_reports"
+        ],
+        "properties": {
+          "capabilities": {
+            "$ref": "#/components/schemas/ModerationCapabilities"
+          },
+          "pending_venues": {
+            "type": "array",
+            "maxItems": 200,
+            "items": {
+              "$ref": "#/components/schemas/PendingVenue"
+            }
+          },
+          "pending_reports": {
+            "type": "array",
+            "maxItems": 200,
+            "items": {
+              "$ref": "#/components/schemas/PendingReport"
+            }
+          }
+        }
+      },
+      "VenueReviewWrite": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "status",
+          "review_note"
+        ],
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "approved",
+              "rejected"
+            ]
+          },
+          "review_note": {
+            "type": "string",
+            "maxLength": 2000
+          }
+        }
+      },
+      "ReportReviewWrite": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "status",
+          "resolution_note",
+          "hide_event"
+        ],
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "dismissed",
+              "actioned"
+            ]
+          },
+          "resolution_note": {
+            "type": "string",
+            "maxLength": 2000
+          },
+          "hide_event": {
+            "type": "boolean"
+          }
+        }
+      },
+      "VenueReviewResult": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "approved",
+              "rejected"
+            ]
+          }
+        }
+      },
+      "ReportReviewResult": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "dismissed",
+              "actioned"
+            ]
+          }
+        }
       }
     }
   }

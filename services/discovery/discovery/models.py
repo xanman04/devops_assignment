@@ -346,6 +346,7 @@ class EventReport(models.Model):
     resolution_note = models.TextField(blank=True)
 
     class Meta:
+        permissions = [("hide_reported_event", "Can hide an event while reviewing its report")]
         constraints = [
             models.CheckConstraint(condition=Q(status__in=["pending", "dismissed", "actioned"]), name="report_valid_status"),
             models.CheckConstraint(condition=Q(reason__in=["incorrect_information", "spam_scam", "safety_concern", "other"]), name="report_valid_reason"),
