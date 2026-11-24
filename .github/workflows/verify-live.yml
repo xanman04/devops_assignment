@@ -1,0 +1,71 @@
+name: Verify deployed Azure release
+
+on:
+  workflow_dispatch:
+    inputs:
+      operation:
+        description: Verify with controlled outages, or recover after a lost runner
+        type: choice
+        default: verify
+        options: [verify, recover]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: student-azure-production
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    if: github.ref == 'refs/heads/main' && vars.AZURE_DEPLOYMENT_READY == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      PREFIX: ${{ vars.PREFIX }}
+      RESOURCE_GROUP: ${{ vars.RESOURCE_GROUP }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      DISCOVERY_DB_PASSWORD: ${{ secrets.DISCOVERY_DB_PASSWORD }}
+      DJANGO_SECRET_KEY: ${{ secrets.DISCOVERY_SECRET_KEY }}
+      LIVE_CHECK_PASSWORD: ${{ secrets.LIVE_CHECK_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: tools/browser/package-lock.json
+      - run: npm ci --prefix tools/browser
+        if: inputs.operation == 'verify'
+      - run: npx --prefix tools/browser playwright install --with-deps chromium
+        if: inputs.operation == 'verify'
+      - uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - name: Validate release and prepare restricted fixture
+        if: inputs.operation == 'verify'
+        run: python tools/live_release.py prepare
+      - name: Exercise real browser participation and both service failures
+        if: inputs.operation == 'verify'
+        run: node tools/browser/check_participation_live.cjs
+      - name: Always restore stopped apps and remove temporary SQL firewall rule
+        if: always() && inputs.operation == 'verify'
+        run: python tools/live_release.py restore
+      - name: Explicit recovery if a killed runner lost its markers
+        if: inputs.operation == 'recover'
+        run: python tools/live_release.py recover
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: live-release-evidence
+          path: ${{ runner.temp }}/bassline-live-evidence/
+          if-no-files-found: warn

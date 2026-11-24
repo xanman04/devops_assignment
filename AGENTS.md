@@ -1,9 +1,28 @@
 # Bassline Assignment 2 — instructions for every agent
 
-## Current handoff — read before implementation
+## November 24 active work and extended deadline
+
+The owner reports a one-week extension: **November 29, 2026 at 23:59 Europe/Paris**.
+This supersedes the November 22 deadline and the dated November 21–22 work blocks.
+Latest verified main at start of today's work: `17adff951ff284dc2d238c4c58025922051ad6ac`,
+[successful CD 45179414430](https://github.com/xanman04/devops_assignment/actions/runs/45179414430).
+There are **13 non-merge A2 code commits across seven dates**, including the necessary
+November 23 SQL Server correction. The six-date/minimum-count conditions are covered;
+do not create more commits to satisfy an obsolete daily quota.
+
+Today's two substantial outcomes are (1) repeatable production migration/participation/
+partial-failure verification with recovery and (2) restoring venue/report moderation to
+the static UI. Keep all related code, tests, review corrections and factual AI fields
+inside those outcomes. The working total after both is 15, not a number to pad toward.
+The map fix, slug migration, ADR 10 and monolith archive were merged November 23;
+older notes saying these are pending are historical. `RELEASE_VERIFICATION.md` describes
+the new explicit production exercise; it is not a push/PR CI test and must run only
+when CD has no running/pending run. Its live result is pending until actually executed.
+
+## November 20 handoff snapshot — superseded by active update above
 - Read [CLAUDE_HANDOFF.md](CLAUDE_HANDOFF.md) for verified progress, deployment, remaining work and the known map regression. Read [COMMIT_TIMELINE.md](COMMIT_TIMELINE.md) for the actual commit ledger and blocked-out November 21–22 work plan.
 - As verified November 20: 11 substantive A2 commits across SIX dates; deployed main is 181474919a9451414fd6a6087e6d681c8a737c0a, main CD 44745670962 succeeded. The six-day requirement is already covered; do not force more daily commits.
-- The working forward plan is two substantial remaining milestones (13 total); 12 is preferred if the work genuinely fits. No count-padding, per-prompt rows, tiny fixes, documentation-only bookkeeping or automatic daily quota. All timing is Europe/Paris; deadline November 22 at 23:59, with early completion buffers in the timeline.
+- The working forward plan is two substantial remaining milestones (13 total); 12 is preferred if the work genuinely fits. No count-padding, per-prompt rows, tiny fixes, documentation-only bookkeeping or automatic daily quota. All timing is Europe/Paris; deadline November 29 at 23:59 (owner-reported one-week extension on November 24), with early completion buffers in the timeline.
 - **Owner: "DO NOT LEAVE ME WITH A WALL OF PROMPTS TO FILL OUT AGAIN."** One grouped AI_USAGE row per coherent commit. Only the owner writes the own-words field. Automatic commits are active-session milestone commits, never a timer, prompt or edit trigger.
 - These handoff documentation changes are intentionally uncommitted for the next substantial milestone; do not create a separate handoff/ledger/hash commit. The small map patch is preview-verified only, not applied or deployed; batch it with runtime/UI completion.
 - CURRENT AZURE AUTHORITY: the November 20 student guide supersedes the original brief's class RG/shared SP/Static Web App/2 GB SQL details. Use own student group, Storage static website, scoped OIDC and free-offer SQL limits. The historical Azure section below is not current provisioning authorization.
@@ -30,7 +49,7 @@
 - At least 12 NEW commits after the Assignment 1 submission, across at least SIX distinct calendar days. No single day may contain more than 40% of the Assignment 2 commits. They must be pushed; the professor checks push timestamps.
 - Identify the actual Assignment 1 submitted baseline before counting. Track qualifying commits and dates, plus observed push evidence. Local commit dates alone do not establish when work reached GitHub.
 - Use real work on real dates. Push completed milestones on their actual workdays. Do not accumulate everything locally for one final push, backdate, create empty commits, split trivial edits, manufacture failures, or rewrite history to manufacture compliance.
-- Deadline is November 22, 2026 at 23:59. Use Europe/Paris for planning, and confirm any different official course timezone. November 17 is the mathematical last starting date for six days through November 22 inclusive, requiring work and pushes every day. Starting earlier gives flexibility.
+- Deadline is November 29, 2026 at 23:59, following the one-week extension reported by the owner on November 24. Use Europe/Paris for planning, and confirm any different official course timezone. November 17 is the mathematical last starting date for six days through November 22 inclusive, requiring work and pushes every day. Starting earlier gives flexibility.
 - Twelve commits evenly spread as two on each of six days satisfy the numbers, but this is an illustration, never permission to split a coherent milestone. At a final total of 12, four commits on one day fit the cap; five do not.
 - Evaluate distribution against the planned final total. Early in the project one day's share may temporarily exceed 40%; do not pad the denominator to fix it. Before committing, review counts and remaining genuine milestones and flag a cadence risk early.
 - ADR entries 6–10 must themselves span at least THREE distinct commit dates. Plan authentic decision work on those dates.

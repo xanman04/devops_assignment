@@ -1,7 +1,26 @@
 # Bassline Assignment 2 — Claude handoff
 
-Prepared November 20, 2026, after the first successful Azure deployment.
+Prepared November 20; active state updated November 24 below. Historical snapshots follow.
 This records verified state and open work; it does not claim the assignment is done.
+
+## November 24 active work and extended deadline
+
+The owner reports a one-week extension: **November 29, 2026 at 23:59 Europe/Paris**.
+This supersedes the November 22 deadline and the dated November 21–22 work blocks.
+Latest verified main at start of today's work: `17adff951ff284dc2d238c4c58025922051ad6ac`,
+[successful CD 45179414430](https://github.com/xanman04/devops_assignment/actions/runs/45179414430).
+There are **13 non-merge A2 code commits across seven dates**, including the necessary
+November 23 SQL Server correction. The six-date/minimum-count conditions are covered;
+do not create more commits to satisfy an obsolete daily quota.
+
+Today's two substantial outcomes are (1) repeatable production migration/participation/
+partial-failure verification with recovery and (2) restoring venue/report moderation to
+the static UI. Keep all related code, tests, review corrections and factual AI fields
+inside those outcomes. The working total after both is 15, not a number to pad toward.
+The map fix, slug migration, ADR 10 and monolith archive were merged November 23;
+older notes saying these are pending are historical. `RELEASE_VERIFICATION.md` describes
+the new explicit production exercise; it is not a push/PR CI test and must run only
+when CD has no running/pending run. Its live result is pending until actually executed.
 
 ## Start here
 

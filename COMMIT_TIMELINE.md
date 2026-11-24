@@ -1,13 +1,32 @@
 # Assignment 2 commit timeline and remaining work blocks
 
-Verified November 20, 2026. All planning times below are **Europe/Paris**.
+Ledger initially verified November 20; active update November 24 below. All planning times below are **Europe/Paris**.
 Read this with [AGENTS.md](AGENTS.md) and [CLAUDE_HANDOFF.md](CLAUDE_HANDOFF.md).
 The owner requires minimal, substantial commits and one grouped AI-log row per
 coherent commit. This schedule is a work plan, never permission to pad history.
 
-## Requirements and present position
+## November 24 active work and extended deadline
 
-- Deadline: **November 22, 2026 at 23:59**; confirm any different official course timezone.
+The owner reports a one-week extension: **November 29, 2026 at 23:59 Europe/Paris**.
+This supersedes the November 22 deadline and the dated November 21–22 work blocks.
+Latest verified main at start of today's work: `17adff951ff284dc2d238c4c58025922051ad6ac`,
+[successful CD 45179414430](https://github.com/xanman04/devops_assignment/actions/runs/45179414430).
+There are **13 non-merge A2 code commits across seven dates**, including the necessary
+November 23 SQL Server correction. The six-date/minimum-count conditions are covered;
+do not create more commits to satisfy an obsolete daily quota.
+
+Today's two substantial outcomes are (1) repeatable production migration/participation/
+partial-failure verification with recovery and (2) restoring venue/report moderation to
+the static UI. Keep all related code, tests, review corrections and factual AI fields
+inside those outcomes. The working total after both is 15, not a number to pad toward.
+The map fix, slug migration, ADR 10 and monolith archive were merged November 23;
+older notes saying these are pending are historical. `RELEASE_VERIFICATION.md` describes
+the new explicit production exercise; it is not a push/PR CI test and must run only
+when CD has no running/pending run. Its live result is pending until actually executed.
+
+## Requirements and November 20 position
+
+- Extended deadline: **November 29, 2026 at 23:59** (owner report November 24); confirm any different official course timezone.
 - Minimum **12 new meaningful commits**, across **six different calendar days**,
   with no day containing more than **40%** of the final Assignment 2 commits.
 - Count real implementation milestones, not automatic PR merge commits.
@@ -45,11 +64,11 @@ batched in one PR, the merge proves the commit was remote by the merge time.
 | Nov 20 | `623b164` | Same-SHA CI/CD and secure bootstrap | [Push CI](https://github.com/xanman04/devops_assignment/actions/runs/44723732828) created 11:58:47; [PR 8](https://github.com/xanman04/devops_assignment/pull/8) merged 12:02:06 |
 | Nov 20 | `c96f8d8` | Actual Azure launch, official schema and live verification | [Push CI](https://github.com/xanman04/devops_assignment/actions/runs/44744678768) created 14:28:57; [PR 9](https://github.com/xanman04/devops_assignment/pull/9) merged 14:35:36 |
 
-Current deployed main: `181474919a9451414fd6a6087e6d681c8a737c0a`.
+November 20 deployed main: `181474919a9451414fd6a6087e6d681c8a737c0a`.
 [Main CD succeeded](https://github.com/xanman04/devops_assignment/actions/runs/44745670962).
 This is a working deployment, **not the final submission tag/SHA yet**.
 
-## Remaining blocks — plan established at the November 20 handoff
+## Historical remaining blocks — November 20 plan, superseded by extension
 
 These blocks are the current forward plan, not a claim that each hour was
 reserved earlier. No unattended work is scheduled. An agent must be actively
@@ -117,3 +136,22 @@ adds migrations `discovery` 0014/0015, the map fix, ADR 10 and the archived mono
 Nov 16, 18, 20 and 23. Still open: Azure after-migration evidence (collect from the merged
 main deployment), authenticated UI -> Groups -> Discovery flow and partial failure on
 Azure, the 4-5 page report and README consolidation (commit 13), the `submission` tag.
+
+## November 23 remote milestones and November 24 plan
+
+| Date | Commit | Actual outcome / evidence |
+|---|---|---|
+| Nov 23 | `91d0bed` | Genre slug migration, monolith archive, map fix and ADR 10; first SQL Server CI failed genuinely: [45177595901](https://github.com/xanman04/devops_assignment/actions/runs/45177595901) |
+| Nov 23 | `6a88845` | Necessary SQL Server migration correction; [PR 10](https://github.com/xanman04/devops_assignment/pull/10) merged; main CD [45179414430](https://github.com/xanman04/devops_assignment/actions/runs/45179414430) passed |
+
+The earlier Nov 23 note's count of 12 omitted the subsequently required repair commit;
+current verified Git count is 13. Daily distribution is 1/2/1/2/2/3/2 on Nov 15–20 and23.
+There were no Nov21/22 commits; nothing is backdated.
+
+| Date | Substantial work block | Commit boundary |
+|---|---|---|
+| Nov 24 | Reproducible main-only Azure release exercise, reserved nonprivileged fixture, migration retention/applied-record audit, authenticated browser flow, actual service stops and recovery | One release-verification milestone, working number14; related tests/docs/review fixes grouped |
+| Nov 24 | Permission-gated venue/report moderation APIs and matching static UI, OpenAPI and authorization/browser checks; record actual release-exercise evidence | One moderation milestone, working number15; merge only passing exact-head CI, then verify same-SHA CD |
+| Nov25–27 | Remaining required legacy UI parity/persistent media, evidence gaps, report preparation and owner explanations | Batch genuine remaining outcomes; no automatic commit per day or prompt |
+| Nov28 | Submission audit, report evidence consistency, actual costs and remaining owner explanations | Reserve a recovery buffer; do not fabricate failed runs or author understanding |
+| Nov29, target by21:00 | Verify final main/CD/data, check tag conflicts, push exact `submission` tag and submit full matching SHA/repo/live URL/report | Hard deadline23:59 Paris; keep app live through grades; no self-hash/bookkeeping commit |
