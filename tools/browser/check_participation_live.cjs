@@ -36,6 +36,20 @@ async function login(page, username) {
 async function screenshot(page, name) {
   await page.screenshot({path: path.join(directory, name+'.png'), fullPage: true});
 }
+async function fixtureIds(owner, guest) {
+  return Promise.all([owner, guest].map(page => page.evaluate(async () => (await import('./api.js')).currentUser().id)));
+}
+async function leaveManagedGroups(page, ids) {
+  await page.evaluate(async ({eventId, ids}) => {
+    const {api} = await import('./api.js');
+    const mine = await api('groups', '/api/groups/mine/');
+    for (const group of mine.groups) {
+      if (group.event_id === eventId && ids.includes(group.owner_id) && /^Release verification [0-9]+$/.test(group.name)) {
+        await api('groups', `/api/groups/${group.id}/leave/`, {method: 'POST', data: {}});
+      }
+    }
+  }, {eventId: fixture.event_id, ids});
+}
 
 (async () => {
   assert.equal(process.env.GITHUB_ACTIONS, 'true');
@@ -50,6 +64,9 @@ async function screenshot(page, name) {
     guest = await browser.newPage({viewport: {width: 390, height: 844}});
     owner.on('dialog', dialog => dialog.accept()); guest.on('dialog', dialog => dialog.accept());
     await login(owner, fixture.owner_username); await login(guest, fixture.guest_username);
+    // A previous failed exercise may have left memberships. Only leave reserved fixture groups.
+    const ids = await fixtureIds(owner, guest);
+    await leaveManagedGroups(guest, ids); await leaveManagedGroups(owner, ids);
     const groupName = 'Release verification '+config.run_id;
     await go(owner, 'create-group/'+fixture.event_id);
     await owner.getByLabel('Group name', {exact: true}).fill(groupName);
@@ -57,6 +74,7 @@ async function screenshot(page, name) {
     await owner.getByLabel('Who can join?', {exact: true}).selectOption('approval_required');
     await owner.getByRole('button', {name: 'Create group', exact: true}).click();
     await owner.getByRole('heading', {name: 'Chat', exact: true}).waitFor({timeout: 60000});
+    assert.equal(await owner.getByRole('button', {name: 'Delete group', exact: true}).count(), 0, 'Regular owner has no moderator-delete permission');
     groupId = new URL(owner.url()).hash.split('/')[1];
     assert(/^[1-9][0-9]*$/.test(groupId));
     await go(guest, 'group/'+groupId);
@@ -106,19 +124,22 @@ async function screenshot(page, name) {
     phase = success ? 'cleanup' : phase;
     try {
       await control('restore');
-      if (owner && groupId) {
-        // Delete only this run's fixture-owned group, through the authorized API.
-        await owner.evaluate(async ({id, expectedName}) => {
-          const {api, currentUser} = await import('./api.js');
-          const group = await api('groups', '/api/groups/'+id+'/');
-          if (group.name !== expectedName || group.owner_id !== currentUser()?.id) throw Error('Unexpected cleanup target');
-          await api('groups', '/api/groups/'+id+'/delete/', {method: 'DELETE'});
-        }, {id: groupId, expectedName: 'Release verification '+config.run_id});
+      if (owner && guest && groupId) {
+        // Direct group deletion is moderator-only. Ordinary fixture members leave;
+        // the existing domain rule deletes the group after its final member leaves.
+        await login(owner, fixture.owner_username); await login(guest, fixture.guest_username);
+        const ids = await fixtureIds(owner, guest);
+        await leaveManagedGroups(guest, ids); await leaveManagedGroups(owner, ids);
+        const remaining = await fetch(config.urls.groups+'/api/groups/'+groupId+'/', {signal: AbortSignal.timeout(30000)});
+        assert.equal(remaining.status, 404, 'The emptied fixture group must be removed');
       }
       evidence.recovered = true;
     } catch {
       success = false; evidence.recovered = false;
       evidence.cleanup_group_id = groupId || null;
+    }
+    if (!success) {
+      try {if (owner) await screenshot(owner, 'failed-owner'); if (guest) await screenshot(guest, 'failed-guest');} catch {}
     }
     await browser.close();
     evidence.success = success; evidence.last_phase = phase; evidence.finished_at = new Date().toISOString();

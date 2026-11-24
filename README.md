@@ -1,376 +1,42 @@
 # Bassline
 
-## Assignment 2 progress
+Bassline helps people discover music events and find attendance groups. Assignment 2 separates the existing Python/Django application into two JSON services and a static HTML/CSS/JavaScript UI.
 
-Agent handoff: [CLAUDE_HANDOFF.md](CLAUDE_HANDOFF.md). Commit history, strict
-automatic-commit policy and remaining work blocks: [COMMIT_TIMELINE.md](COMMIT_TIMELINE.md).
+Live application: **https://xcieu2023ui.z1.web.core.windows.net/**.
 
-The professor's November 20 student deployment guide (local course file
-`C:/School/devops/class_content/a2-azure-deployment-guide.pdf`)
-supersedes the original shared-class Azure contract. Use an own Azure for
-Students subscription, Storage static website and GitHub OIDC identity. The
-Terraform runtime is in [infra/](infra/README.md). The first live deployment
-completed on November 20 in Germany West Central. No class service-principal secret or
-Static Web App token is needed.
-See [AZURE_DEPLOYMENT.md](AZURE_DEPLOYMENT.md) for secure initial setup and
-same-commit CI/CD. A publish-only run while setup is pending is not live CD.
+## Run locally
 
-Live UI: **https://xcieu2023ui.z1.web.core.windows.net/**.
-The [first successful main deployment](https://github.com/xanman04/devops_assignment/actions/runs/44742390475)
-deployed `7bd8ba217b4ac9216bee99860c6c076c958de595`; both APIs reported this exact
-SHA and healthy own databases. Read-only browser verification passed at desktop
-and mobile sizes, including API CORS. Discovery contains seeded genres/artists;
-the initial deployment has no public events. Live participation and the later
-data-preserving migration still need their own evidence.
-
-The local Assignment 2 checkout is `devops_assignment2`; `devops_assignment1`
-is retained at its recorded Assignment 1 baseline. Both use the same remote
-repository and shared commit history. Run Assignment 2 work from its own checkout.
-
-The complete local stack now starts with `docker compose up --build`.
-See [LOCAL_DEVELOPMENT.md](LOCAL_DEVELOPMENT.md) for ports, single-service
-operation, private local credentials, data volumes and SQL Server verification.
-The nginx UI serves the static Discovery interface at http://localhost:8080.
-It includes public event search/details, the map with list fallback, genres and
-credited artist profiles. CI also runs real-browser checks at desktop/mobile sizes.
-
-Groups is now independently runnable in
-[`services/groups`](services/groups/README.md). It validates Discovery bearer
-identity and event availability over HTTP with timeouts, stores its own
-attendance data, handles peer failure and protects create retries with
-per-account idempotency receipts. Public group summaries and health remain
-available during a Discovery outage. CI includes the Groups coverage gates and
-a real two-process HTTP boundary check.
-
-Discovery now has an independent JSON-only runtime in
-[`services/discovery`](services/discovery/README.md), with its own database,
-account/event models, event notifications, migrations, expiring bearer identity,
-health checks and request logs. It has no dependency on Groups. See
-[`SERVICE_BOUNDARIES.md`](SERVICE_BOUNDARIES.md) and ADR 6 for the extraction design.
-The Assignment 1 monolith is archived and no longer shipped in this tree (see
-"Archived Assignment 1 monolith" below). Both services support SQL Server, with
-stable-ID export/import tooling and ADR 7. See [DATA_MIGRATION.md](DATA_MIGRATION.md).
-GitHub Actions checks the extracted services, and checks the split export/import
-against the archived monolith.
-
-The first extraction milestone adds public JSON event details at
-`GET /api/events/<event_id>/`. It reuses Discovery's public visibility rules,
-including for signed-in owners and admins. The response includes event ID,
-title, start/end timestamps, cancellation status, and venue ID/name/timezone.
-Unavailable and missing events return the same JSON 404. Writes return 405.
-The incremental contract is in `discovery/event-api.openapi.json`.
-
-This endpoint is also available in the extracted Discovery runtime and is used
-by Groups participation actions. The static UI now also supports accounts, profile editing, event forms, follows,
-notifications, group participation, private approvals and live chat. Group writes
-exercise the required UI → Groups → Discovery server-side HTTP flow. Remaining
-legacy UI adapters and the remaining Azure migration/partial-failure evidence are still pending.
-See [ui/README.md](ui/README.md) for runtime configuration and browser checks.
-
-Run the endpoint regression checks from `services/discovery` with
-`python manage.py test discovery.test_event_api --noinput`.
-
-## Archived Assignment 1 monolith
-
-The single-process Django application from Assignment 1 (`accounts/`, `discovery/`,
-`groups/`, `notifications/`, `config/`, `templates/`, `static/`, `manage.py`,
-`app.py`, its two root test files and the poster/photo build tools) is **not part of
-this tree**. It is preserved, unchanged, at the git tag `archive/a1-monolith`
-(commit `181474919a9451414fd6a6087e6d681c8a737c0a`):
-
-```text
-git checkout archive/a1-monolith      # browse or run it (README of that tag applies)
-git archive archive/a1-monolith | tar -x -C ../a1-monolith
-```
-
-CI uses that tag only as the source database for the split export/import check
-(`tools/check_split_import.py`, with `MONOLITH_ROOT` pointing at a checkout of the tag).
-The sections below from "A music-first event discovery application" to "Testing status"
-describe that monolith as built in Assignment 1 and are kept for context; to run the
-current system use [LOCAL_DEVELOPMENT.md](LOCAL_DEVELOPMENT.md) (Docker Compose).
-`SCHEMA.md` and `ROUTES.md` likewise describe the monolith.
-
-A music-first event discovery application: find nearby events by genre and date, hear what their music sounds like through listening references, and find people to attend with.
-
-The idea comes from difficulty discovering smaller and niche events. It is built around electronic music (22 broad genres and 251 subgenres), and the genre system could be extended to other kinds of music. Attendees and independent event organizers are the intended users.
-
-**Status:** discovery/group services and Django workflows are implemented. The map and browsing layout are now connected to Django at `/`, `/discover/`, `/my-events/`, and `/groups/`. The professor approved the proposal, as reported by the author on September 24. Bassline is the current working title.
-
-## Features
-
-### Desktop UI prototype
-
-The functional desktop interface is at **http://localhost:8000/**. The earlier standalone visual prototype is still available at **http://localhost:8000/ui/** as a design reference; it has placeholder content and no database/API connection.
-
-Click the sidebar to visit Near me, Discover, My events, Groups, and Profile. Near me has an illustrative draggable/zoomable map, placeholder pins, date controls, and a searchable/collapsible genre filter panel. Selected genre chips invert to colored fills; generic genre labels are not taxonomy decisions. Map position/date/genre state survives navigation and, where permitted, refresh within the same browser tab using sessionStorage. Pin previews contain only title, venue, local date/time, and genre tags; Show more opens a detail layout. Groups contains only My groups and Requests. Search, profile edits, and event creation demonstrate layouts without saving real data; following a placeholder changes only prototype state. Mobile layout work remains deferred.
-
-Pins now use larger teardrops anchored at their tips. Selecting another pin replaces the floating preview, including when expanded details are open. The map supports trackpad pinch, two-finger touch pinch, mouse-wheel zoom, and dragging. Zoom follows the gesture position. The 310px sidebar uses labeled navigation and a single Profile destination. Date/genre controls sit toward the bottom with more space above than below; their button/icon sizes are preserved. Short desktop windows can scroll the sidebar when needed.
-
-Discover displays an Upcoming events poster gallery, a compact Playing near me lineup, colored Genres, and an Artists & DJs directory. Its main title and short intro lead into single-line section headings without numbers or extra subtitles. Event posters appear at their full portrait proportions with captions below on a dark framed backdrop. Search also shows matching subgenres with links to their expanded descriptions. Rows without matches disappear, and a single no-results message appears when nothing matches. The nearby row uses browser location permission to find linked performers at public events within 30 km, soonest first; it shows a location-access message when permission is unavailable. Each performer appears once, linked to their profile. My events displays Followed events and Your listings together; Groups displays My groups and Requests together. Scroll each carousel or use its previous/next buttons; horizontal scrolling stops at the row's ends and the scrollbars stay hidden.
-
-The live Discover page also has seven curated real DJ profiles with locally bundled, credited photos and linked songs and past sets (about ten of each for the six artists; Carl Cox, a DJ only, has sets only). They are loaded automatically on the first start of an empty database; `.\.venv\Scripts\python.exe manage.py seed_djs` can also be run by hand. The command can be rerun safely without overwriting admin edits. Admins can edit listening links within each artist/DJ profile. [DJ_SOURCES.md](DJ_SOURCES.md) records the artist, image, and recording sources.
-
-Every genre page carries representative songs where they belong: three for the broad genre sit under its description ("Hear the genre"), and each subgenre card lists its own one or two ("Hear it") when expanded, with a ♪ count on the closed card. They are loaded automatically on the first start (439 YouTube links covering all 22 genres and 251 subgenres); `.\.venv\Scripts\python.exe manage.py seed_genre_songs` can also be run by hand. It is safe to rerun and keeps admin edits. An event's "Explore the sound" section is built from the same songs automatically: about four for the event's genres (its own subgenres first), plus songs and sets from any lineup artist with curated links, so existing and future events need no extra data entry.
-
-The Django home page uses the approved dark sidebar and MapLibre vector map. Date controls and searchable category/subgenre chips feed the existing public map API. Multiple genres match either or both; selecting subgenres narrows their selected parent genre, while other selected genres remain included. Subgenres show only those under selected categories, or all when no category is selected. Clicking a venue pin opens a floating panel with real matching events. The sidebar search routes to Discover on every page and searches public events, venues, performers, broad genres, subgenre names and descriptions, and curated listening references. Discover reads those records; My events reads the signed-in user's follows/listings; Groups reads their memberships/requests. The full activity page remains available for older records. Restart `app.py` after static-file edits because WhiteNoise caches file metadata; when using `manage.py runserver`, run `manage.py collectstatic --noinput` before restarting.
-
-The live map keeps additional tile zoom levels in memory and retains pending lower-detail tiles during zooming so revisiting an area can render more smoothly. New areas still depend on tile-provider and network response times.
-
-The interface bundles the Funnel Display variable font in `static/fonts/`, with its SIL Open Font License beside the font file. Change the `font-family` in `static/app.css` to trial another typeface; the standalone `/ui/` prototype has a separate setting in `static/prototype/style.css`.
-
-### Event discovery
-
-- Location-centered map with a default-city fallback when browser location is unavailable or declined; free panning and zooming with automatic result refresh.
-- Muted dark basemap and broad-category-colored venue pins. Multiple matching events share an ombre pin with an event count; selecting it opens events ordered by date.
-- Next 14 days shown by default, with date controls and genre filters supporting ANY (OR) or ALL (AND) matching. No genre selection means all genres.
-- Event details include venue, date/time, genres, description, an app-derived typical tempo estimate from admin-curated category/tag ranges, listening links, and an optional external ticket link.
-- Admin-curated Explore Genres directory with consistent names, colors, descriptions, and representative artists/tracks/sets. Event-specific listening references support mixed or hard-to-classify music.
-- Registered users submit events and edit their own listings. Existing approved venues are selectable; proposed new locations require admin review before their events become public.
-- Valid listings at approved venues publish immediately. Users can report events; admins can review reports, hide listings, and deactivate accounts.
-
-### Attendance groups
-
-- An event's “Attending alone?” section displays discoverable groups.
-- Groups have a name, description, capacity, and optional uploaded photo.
-- Public groups allow immediate joining; private groups remain visible but require creator approval. Hidden invite-only groups are out of scope.
-- One group membership per user per event, including the owner in capacity. Approved private-group offers do not reserve spaces; accepting can atomically switch groups. Owner departure transfers ownership by seniority; empty groups are deleted.
-- A members-only, text-based group chat stores messages with author and timestamp. The chat updates by itself: the page checks for new messages every few seconds while it is open and sends your own in the background, using ordinary requests, with no WebSocket or extra service.
-- Username/password accounts use Django authentication. Groups and memberships belong to accounts rather than browser-only identities.
-
-### Following and classification
-
-- Events require one or more broad color categories and can have multiple detailed subgenre tags. Tempo is estimated from curated ranges, not supplied by event creators.
-
-In Django admin, enter each broad category color as `#RRGGBB` text and supply a typical numeric BPM minimum and maximum for categories and subgenre tags. BPM maxima may exceed 200. A selected tag's range replaces its parent category's broad range for that component. With multiple tags or categories, the displayed estimate spans the lowest minimum to highest maximum. Updating a curated range updates existing events automatically; event BPM is never stored or entered by organizers. Tags imported without a fixed BPM range use their parent category range; classifications without either range display “Varies”.
-- Users can follow events independently of attendance or groups and receive in-app venue/time/cancellation updates.
-- Groups are optional company for solo attendees, not an attendance requirement or RSVP system.
-- Authors can edit/delete their own messages; admins can remove messages. Group removal permits rejoining; a separate group ban prevents it.
-- Required start/end times support overnight events; changing an event venue never edits another event's location.
-
-## Stack
-
-| Layer | Decision | Reason |
-|---|---|---|
-| Backend | Python and Django | Python is the author's strongest language; authentication, admin, models, and forms serve concrete requirements |
-| Database | SQLite through Django ORM and migrations | Required storage, with integrated relationships and schema evolution |
-| Pages | Django templates, HTML, plain CSS | Familiar tools, responsive layouts, no separate frontend build pipeline |
-| Browser behavior | Plain JavaScript and Django JSON endpoints | Refresh map results without page reloads; no REST framework needed yet |
-| Map | MapLibre GL JS 6.3.0, OpenFreeMap Dark vector style | Smooth vector panning/zooming and custom genre markers; visible attribution and normal browser tile caching |
-| Files | Local group images; file paths in SQLite | Keep data inside the application's configurable data directory |
-
-Dependencies are pinned in the single root `requirements.txt`: Django 5.2.17 LTS, Pillow for image-field support, Waitress for a single-process Windows-compatible server, WhiteNoise for static assets, tzdata for Windows timezones, and Django's transitive dependencies. Verified with Python 3.13.1. Frontend assets must not introduce another package manifest.
-
-## Architecture
-
-One Django project runs as one process, with two logical domain apps sharing one SQLite database:
-
-- **`discovery`:** categories/tags, venues, events, listening references, venue review, event reports, follows/change history, and map filtering.
-- **`groups`:** attendance groups, join requests, memberships, photos, and messages.
-
-Django authentication supplies shared accounts with display names and optional private email; shared notifications support event-change updates and group offers. Request handlers handle HTTP; domain business rules remain separate from page rendering and map JSON responses. Groups references events by identity and obtains necessary event information through a small discovery interface. A future service split would also need to address shared accounts and database relationships; it is not part of this assignment.
-
-```text
-Browser: templates + CSS + JavaScript + MapLibre GL JS
-              |
-       Django pages / JSON
-          /           \
-     discovery       groups
-          \           /
-       Django ORM + SQLite
-       Local image storage
-
-Browser also requests basemap tiles from the selected provider.
-```
-
-Current layout:
-
-```text
-README.md
-ADR.md
-AI_USAGE.md
-DESIGN.md
-DJ_SOURCES.md          # Sources and photo credits for the curated DJ profiles
-SCHEMA.md
-ROUTES.md              # Implemented URL and request-handler contract
-AGENTS.md              # Automatic commit/push workflow during active sessions
-requirements.txt
-manage.py
-app.py                 # Automatic migration/static setup and single-process server
-config/                # Django settings, URL configuration, startup integration
-accounts/              # User model, profile, collection of event cards, genre chart
-notifications/         # Shared in-app notifications
-discovery/             # Models, services, admin forms, map JSON view, tests, migrations
-groups/                # Models, membership/message services, photos, tests, admin, migrations
-test_schema.py         # Focused persistence/integrity checks
-test_web.py            # HTTP form/workflow, permission, privacy, and CSRF checks
-templates/             # Shared layout and discovery/group/account/inbox pages
-static/                # Plain CSS and JavaScript, bundled demo flyers, DJ photos and font
-tools/                 # Manually run scripts that build the flyers and fetch DJ photos
-```
-
-## Running the application
-
-From the repository root, using Python 3.13 (verified on 3.13.1):
+From a clean clone with Docker Desktop's Linux engine running:
 
 ```powershell
-python -m venv .venv
-.venv/Scripts/python.exe -m pip install -r requirements.txt
-.venv/Scripts/python.exe app.py
+docker compose up --build
 ```
 
-On Linux/macOS use `.venv/bin/python` instead. Open http://localhost:8000/ for map discovery. Startup applies committed migrations and collects static assets automatically, then starts Waitress on `0.0.0.0` in one process, without a reloader or frontend server. Restart the process after code changes; it does not auto-reload.
+Open http://localhost:8080. Compose starts Discovery, Groups, SQL Server 2022, an idempotent database initializer and stock nginx serving the same static files used in Azure. Each service has a separate restricted database login. Preserve data volumes when redeploying. [LOCAL_DEVELOPMENT.md](LOCAL_DEVELOPMENT.md) documents local credentials, ports, tests/coverage and single-service operation.
 
-On its first start with an empty database, `app.py` runs `manage.py load_demo_content` once, so a fresh clone opens with a working map and Discover page: the 22 curated genre categories (`discovery/fixtures/genre_categories.json`), the 251 subgenre tags, 7 real DJ profiles with credited photos, 439 representative songs, 24 fictional events at real Madrid venues with bundled flyers, the fictional Pickle Rick's Portal Rave night with its five Psy-Trance DJs and bundled flyer, and the demo accounts described below. This takes a few seconds and is skipped on later starts. Set `SEED_DEMO_DATA=0` to start with an empty database instead. Create an account through the public navigation. Use admin to curate genres and approve proposed venues; then list events and use optional groups through the public pages. Map JavaScript requests browser location permission and falls back to Madrid when unavailable/declined. Pan to explore another area. Map results refresh automatically; the server-rendered upcoming-events list is also usable without JavaScript. Browser date filters span local midnight through the selected end date exclusively; event detail/form times use the venue timezone. No location history is saved to accounts.
+## Boundaries and behavior
 
-The live map uses MapLibre GL JS 6.3.0 directly with [OpenFreeMap's Dark vector style](https://openfreemap.org/quick_start/), adjusted in the browser to a clearer charcoal palette. Map vectors move continuously while the event endpoint refreshes after movement; existing pins remain visible until replacement results arrive. Main navigation keeps the map mounted across Near me, Discover, My events, Groups, Notifications, and Profile, so returning to Near me restores the same view without recreating the WebGL map. Other detail/form links remain normal page loads; the last map center and zoom are kept in session storage for those returns. The map library and tiles require internet access; no API key, Node runtime, or frontend package manifest is needed. Browser geolocation draws only a small dot, and the center control animates back to it. The bottom label contains only the matching event and venue counts. The map position is not saved to accounts. Tile requests reveal the viewed map area to the provider; no offline download or prefetch is provided. The list panel closes with X, Escape, a second click on List, or a map click.
+[Discovery](services/discovery/README.md) owns accounts, events, venues, genres, artists, follows and event reports. [Groups](services/groups/README.md) owns attendance groups, memberships, requests, messages and group notifications. Protected Groups actions validate identity/event eligibility through timed HTTP calls to Discovery; public group summaries and own-database health continue during Discovery failure.
 
-| Environment variable | Default / purpose |
-|---|---|
-| `PORT` | `8000` |
-| `DATA_DIR` | Repository `data/`; SQLite at `DATA_DIR/db.sqlite3`, images at `DATA_DIR/media/groups/`, collected assets at `DATA_DIR/static/` |
-| `DJANGO_SECRET_KEY` | If absent, a generated local key is persisted in `DATA_DIR/.django-secret-key`; set explicitly for future deployment |
-| `DJANGO_ALLOWED_HOSTS` | `localhost,127.0.0.1,[::1]`; add the real hostname/IP for access from another device |
-| `DJANGO_DEBUG` | `0`; use `1` only for local debugging |
-| `SEED_DEMO_DATA` | `1`; set `0` to skip loading the demo content into an empty database |
+The [static UI](ui/README.md) calls both configured API URLs. Tokens stay in memory. Group participation exercises UI to Groups to Discovery server-side calls. Venue/report moderation is independently authorized by the API; hiding a reported event uses a narrow permission. Accounts, event forms, follows, private-group approvals and chat are supported. Persistent user image uploads are deliberately deferred (ADR 10); bundled artwork is supported.
 
-No `.env` file or source edit is required. Runtime data and the virtual environment are ignored by Git. Group photos and uploaded event posters are served through visibility-checked routes; raw media directories are not public.
+See [SERVICE_BOUNDARIES.md](SERVICE_BOUNDARIES.md), [DATA_MIGRATION.md](DATA_MIGRATION.md), each service's openapi.json, [system.yaml](system.yaml) and ADRs 6-10 in [ADR.md](ADR.md). system.yaml lists runtime configuration and read environment variables; secrets have no public defaults. Ordered migrations run under a database lock at startup and are never edited after application.
 
-Optional administration, not required for startup:
+## Checks and deployment
 
-```powershell
-.venv/Scripts/python.exe manage.py createsuperuser
-```
+CI lints/tests each service with at least 70% core coverage, validates contracts/schema/migration drift, builds images, and runs real SQL Server Compose, service-boundary, browser and infrastructure checks. CI never uses Azure SQL. Main CD requires CI at the same SHA, publishes full-SHA GHCR images, applies [Terraform](infra/README.md), uploads configured static UI files and checks both exact-version own-database health endpoints.
 
-Then visit http://localhost:8000/admin/. You can create/edit categories, tags, venues, events, and listening references, and resolve reports. Discovery saves use services. Groups are inspectable; authorized admins can delete a populated group with confirmation and remove selected message content through moderation. Direct group/membership/request/ban/message editing remains disabled to prevent bypassing services. Apart from the demo content loaded on a first start (see above), no users or listings are introduced; the individual seed commands below can also be run by hand.
+[AZURE_DEPLOYMENT.md](AZURE_DEPLOYMENT.md) documents reproducible setup and subsequent pipeline-only changes. The professor's November 20 student guide supersedes the shared-class instructions: own student group, two Consumption Container Apps, two free-offer SQL databases, Storage static hosting and scoped GitHub OIDC.
 
-To add your own listing (the demo content already provides examples): create a genre category, add a venue and set its review status to approved, then add a future event with at least one category. Optional tags must belong to selected categories. Event forms interpret and display date/time in the selected venue's IANA timezone, storing UTC. Changing venue reinterprets the entered wall-clock times in its timezone; confirm those times when moving an event. Ambiguous/nonexistent daylight-saving times are rejected. Admins may inspect pending locations; they are never returned publicly.
+[RELEASE_VERIFICATION.md](RELEASE_VERIFICATION.md) covers explicit production participation/outage checks, recovery and the selected-account moderator grant. The first November 24 run passed participation/outages but failed fixture cleanup; restoration succeeded and the correction is batched with moderation. [Migration evidence](evidence/azure/) contains real retained rows/applied records; original November 23 startup console logs were not recovered. Local tests do not substitute for production proof.
 
-### Discovery services and map endpoint
+## Handoff and submission
 
-`discovery/services.py` is the supported business-operation boundary:
+[CLAUDE_HANDOFF.md](CLAUDE_HANDOFF.md) records dated progress/open work; [COMMIT_TIMELINE.md](COMMIT_TIMELINE.md) records the ledger and remote evidence. [AGENTS.md](AGENTS.md) requires few cohesive milestone commits and one grouped [AI_USAGE.md](AI_USAGE.md) row per commit; the owner alone writes the own-words explanations. The owner reports the extended deadline as November 29, 2026 at 23:59 Europe/Paris. Final report, explanations and matching tagged/deployed full SHA remain submission work.
 
-| Operations | Rules |
-|---|---|
-| `save_category`, `save_tag`, `save_genre_reference` | Admin permissions, validated curated values, category/tag consistency; tags already used cannot move to a different category |
-| `save_venue` | Logged-in users propose locations; only authorized admins edit/review shared venues; changed location details notify followers of affected events |
-| `save_event` | Creator/admin edits, timezone-aware start/end, valid category/tag selections, venue access, cancellation, separate admin-only hiding |
-| `get_event`, `search_events`, `map_pins`, `tempo_estimate` | Public visibility, overlap/date/bounds/genre filtering, venue aggregation, derived typical tempo |
-| `follow_event`, `unfollow_event` | Idempotent user/event following, separate from group membership or attendance |
-| `report_event`, `review_report` | Reports require review; authorized admins can hide an event when marking a report actioned |
-| `save_event_reference`, `delete_event_reference` | Creator/admin-owned external listening links, separate from the curated directory |
+## Archived Assignment 1
 
-`notifications/services.py` supplies recipient-scoped `inbox` and `mark_read` operations. Relevant edits produce one EventChange with before/after snapshots and one notification per active follower, inside the edit transaction. Failed notification writes roll back the edit. No alerts are generated for unchanged saves or title-only changes. Notification summaries omit coordinates and private event text; raw snapshots remain admin-only history. Public pages provide event tracking/report forms and a recipient-only inbox.
-
-Read-only map endpoint: `GET /api/map/events/`. Optional query parameters:
-
-- `start`, `end`: ISO datetimes with timezone, e.g. `2026-10-01T00:00:00Z`; default is now through the next 14 days.
-- `categories`, `tags`: comma-separated IDs; empty means unrestricted.
-- `match`: `any` (default) or `all`, applied across the selected category/tag IDs.
-- `bounds`: `south,west,north,east`; west greater than east handles a viewport crossing the date line.
-
-Example: `/api/map/events/?bounds=48,2,49,3&match=any`. Results contain venue coordinates, distinct category colors, counts, and matching event cards ordered by start time. Only approved-venue, unhidden, uncancelled, categorized events overlapping the requested interval appear. The interval is start-inclusive/end-exclusive; ongoing events match. Cancelled events remain available through authorized detail pages but not the map. Invalid queries return 400; queries over 1,000 events ask for narrower filters rather than returning misleading partial pin counts. Templates escape text, and JavaScript builds popup/card text using DOM text nodes.
-
-Admins with user-delete permission can delete unreferenced accounts through Django's confirmation page. Referenced accounts remain protected: Django lists blocking event/group/message records rather than cascading deletion. Deactivate those accounts when their history should remain.
-
-No self-authored Dockerfile, Compose configuration, CI workflow, IaC, external database/cache/queue, or public deployment belongs in this assignment.
-
-## Curated electronic subgenres
-
-The supplied `discovery/fixtures/electronic_subgenres_v1.csv` contains 251 subgenre tags. The first start imports it into the 22 broad categories automatically; to run it by hand (the categories must already exist):
-
-```powershell
-.venv/Scripts/python.exe manage.py import_subgenres --dry-run
-.venv/Scripts/python.exe manage.py import_subgenres
-```
-
-The importer uses each CSV `pitch` as the tag description and its BPM columns as curated tempo references. It maps the CSV label `EBM / Industrial` to the existing `Industrial / EBM` category, preserves all six ranges whose maxima exceed 200, and leaves Drone's unspecified tempo blank so its parent Ambient / Experimental range applies. The Hard Dance / Hardcore broad category remains at 150–200 BPM. It does not create categories, change their colors, or copy research-source notes into the database. A repeat run leaves matching tags untouched and stops if an existing tag has been edited; `--update` explicitly replaces those edits with CSV values. The supplied classifications and descriptions have not been independently fact-checked.
-
-## Optional demo data
-
-```powershell
-.venv/Scripts/python.exe manage.py seed_demo
-```
-
-Adds five fictional users (`demo_organizer`, `demo_alex`, `demo_sam`, `demo_jo`, `demo_morgan`) and five clearly labeled fictional Paris-area venues: three approved fixture states, one pending, and one rejected. These are synthetic locations, not real venue recommendations or verification. New demo accounts have password `Demo-music-2026!` and no staff/admin permissions. The command is explicit and runs automatically only as part of `load_demo_content` on the first start of an empty database.
-
-`seed_demo` never creates or changes genres or subgenre tags. Without a category selection, no events/groups are created, so venues alone do not produce map pins. After curating a genre in admin, select its existing ID:
-
-```powershell
-.venv/Scripts/python.exe manage.py seed_demo --category 1
-# Repeat --category for mixed-category examples, using actual existing IDs.
-# Explicitly refresh this fixture's event dates later if needed:
-.venv/Scripts/python.exe manage.py seed_demo --category 1 --refresh-dates
-```
-
-Optional scenarios include six listings (four public/upcoming, one awaiting venue approval, one cancelled), overlapping events, two groups, a pending request, an approved switch offer, messages, follows, and notifications. Event/group transitions use domain services. Synthetic venue review states and account fixtures use direct validated model creation; they do not claim a real review occurred. Genre references/BPM/colors remain unchanged.
-
-Unchanged reruns create no duplicates, reset no passwords, and preserve demo profiles, venue edits, memberships, and requests. Reserved usernames require their original `@example.invalid` demo email marker; conflicting accounts abort without changes. Renaming/removing fixtures or editing those markers can require manual reconciliation. No reset/deletion command is included. `--refresh-dates` updates matching fixture event times with normal follower notices; classification/cancellation remain unchanged. All seed writes roll back together on failure. SQLite demo data stays ignored by Git.
-
-### Madrid classroom listings
-
-After running `seed_demo` and importing the curated electronic subgenres, run:
-
-```powershell
-.venv/Scripts/python.exe manage.py seed_madrid_demo
-# Later, explicitly move existing fixture dates into the upcoming two weeks:
-.venv/Scripts/python.exe manage.py seed_madrid_demo --refresh-dates
-```
-
-This adds **24 fictional events at 14 real Madrid venues**. The command uses the five existing `demo_*` accounts as organizers; it creates no users, genres, tags, ticket links, or real-event copies. It also creates fictional performer profiles for the demo lineups and links them to their event records, without replacing existing profiles or event edits. It assigns organizers deterministically so reruns do not change ownership. Existing venue edits and passwords are preserved, and reruns add no duplicate listings. The `--refresh-dates` option uses the normal event service, so followers receive ordinary date-change notifications. Events are placed on typical late-night, early-evening and Sunday listening slots, all in `Europe/Madrid`. Event titles, lineups, descriptions and 24 bundled fictional flyers are original. Four venues have one single-category event each, producing solid-color pins alongside blended multi-genre pins. The in-app demo labels are hidden so the interface can be evaluated as a realistic product; these nights are still invented, and nobody should travel to a venue expecting one. The map opens on Madrid if there is no saved camera or usable browser location; normal near-me centering still takes precedence when available.
-
-On rerun, descriptions carrying the old in-app disclaimer are replaced with the clean fixture description. Other event edits are preserved.
-
-Venue names and addresses were checked against the [RA Madrid club directory](https://ra.co/clubs/es/madrid), [Madrid tourism listings](https://www.esmadrid.com/noche/clamores), and [Goya Social Club](https://goyasocialclub.com/contact/) and [Lula Club](https://lula.club/contact) venue pages. Coordinates came from [OpenStreetMap Nominatim](https://nominatim.openstreetmap.org/) venue matches or street-address matches on September 30, 2026. Street-address coordinates can differ from the actual entrance. These records are approved only as classroom fixtures; that status does not imply organizer affiliation, a real event, or a safety assessment. No RA/Fever listing text, lineup, ticket URL, or poster was imported. Four original backgrounds were made with the built-in image-generation tool, then `tools/build_demo_posters.py` added the invented titles and lineups to produce 24 compressed WebP flyers. `Event.demo_poster` retains the bundled artwork path for these fixtures. Event creators and admins can now upload a JPG, PNG, or WebP poster (maximum 5 MiB); the app converts it to a metadata-free JPEG, shows it in preference to the demo artwork, and supports replacement/removal.
-
-## Testing status
-
-```powershell
-.venv/Scripts/python.exe manage.py check
-.venv/Scripts/python.exe manage.py makemigrations --check --dry-run
-.venv/Scripts/python.exe manage.py test
-```
-
-**216 tests pass** (measured October 4, 2026) across schema, discovery, groups, accounts, HTTP, and demo data. These cover permissions, rollback, filters, timezone/DST, notifications, membership switching, offers/capacity, bans/ownership, messages, image processing and replacement, private event posters, performer deduplication and nearby selection, separate-connection SQLite races, CSRF, forged form fields, private venue/message access, and automatic tempo recalculation. Migration consistency and live public page/static asset responses were also checked.
-
-### Coverage
-
-Coverage is measured with coverage.py, which is not in `requirements.txt` (install it with `pip install coverage`; it is a test tool, not an application dependency):
-
-```powershell
-.venv/Scripts/python.exe -m pip install coverage
-.venv/Scripts/python.exe -m coverage run --source=accounts,config,discovery,groups,notifications --omit="*/migrations/*,*/tests.py,*/test_*.py,*/management/commands/*,*/admin.py" manage.py test
-.venv/Scripts/python.exe -m coverage report
-```
-
-Result (October 4, 2026): **96%** statement coverage of the selected Python production code (2,296 statements, 97 missed), and **95%** for the three `services.py` files that hold the business logic (716 statements, 35 missed), against the course's 70% core-logic requirement. Migrations, tests, admin files and management commands are excluded, and no JavaScript or branch coverage was measured. A `.coverage` data file is written to the working directory; it is ignored by Git.
-
-Database constraints guard row-level invariants. Both domains' services validate and use transactions; raw ORM writes can bypass these rules and are not a supported interface. SQLite uses IMMEDIATE transactions and a timeout; handlers translate competing lock failures into retry responses. Pages use GET for reads, POST plus CSRF for writes, and redirects after successful saves. There are no automated JavaScript tests; browser behavior was checked by hand and with simulated input.
-
-### Group services
-
-`groups/services.py` implements group creation/settings, public joining, private requests/review/acceptance/cancellation, confirmed switching, leaving with seniority ownership handover, admin-only populated-group deletion, removal/bans, member-only messages, and checked photo access. A creator is a member: one group per user per event applies to creating and joining alike. Groups remain optional social coordination, never an attendance record.
-
-New groups, joins, requests, and offer acceptance close at event start and freeze on cancellation/hiding. Existing members may coordinate during/after the event or cancellation; former members lose message access. Offers reserve no capacity; public/private mode changes retain existing members and pending requests. Request approval/rejection, owner transfer, removal/ban, and new requests generate in-app notices; messages do not.
-
-Photos accept JPG/PNG/WebP up to 5 MiB and 20 megapixels, reject animation/invalid contents, resize to a maximum 1,600-pixel edge, and save a fresh JPEG without input metadata. Group descriptions allow 2,000 characters and messages 4,000. Old images delete after commit; newly written files are removed on a failed service write. Database and filesystem are not one transaction: callers respect the service boundary, and production maintenance must handle crash-orphaned files. Photo views check group visibility and disable shared caching.
-
-## Scope boundaries
-
-Deferred: React/React Native frontend, native mobile app, ticket purchasing integrations, automated event imports, venue partnerships, verified organizer accounts, push or email notifications, hidden invite-only groups, audio hosting, and community editing of the genre directory. Listening references are external links, not an uploaded music catalog.
-
-Venue approval means a location record was reviewed, not that an event or organizer is guaranteed safe. Reports trigger review rather than automatic bans or removal. Location history is not part of the product.
-
-## Project records and submission
-
-- [ADR.md](ADR.md): required architecture decisions and their tradeoffs.
-- [AI_USAGE.md](AI_USAGE.md): meaningful AI interactions and author explanations.
-- [DESIGN.md](DESIGN.md): detailed agreed behavior, proposed details, and unresolved questions.
-- [SCHEMA.md](SCHEMA.md): schema, relationships, constraints, target workflows, and current implementation boundary.
-- [ROUTES.md](ROUTES.md): implemented step-2 URLs, forms, and handler behavior.
-
-Deadline: **October 4, 2026, 23:59**; confirm the submission timezone in the course portal. Final deliverables also include a 4–5 page report with SDLC reasoning, SMART goals, matching architecture/schema diagrams, and the course AI-disclosure statement, plus the written comprehension check.
-
-History requirements: at least 12 meaningful commits across at least 6 calendar days, no day exceeding 40% of all commits, pushed as work progresses. Generic “Initial commit” messages do not count. The final ADR log must contain exactly five entries spanning at least three distinct commit dates. Do not fabricate dates or defer all pushes to submission day.
+The original monolith is preserved at tag archive/a1-monolith (181474919a9451414fd6a6087e6d681c8a737c0a); read that tag's README for its runtime. CI uses it only for split export/import regression. SCHEMA.md and ROUTES.md describe the historical monolith; current service models and OpenAPI documents describe Assignment 2. The separate local A1 checkout stays at recorded baseline 33bf6d10fa11cfb9a63586dcb4ab2fb33eb8d384; both checkouts share the same remote history.
 
 ## Copyright
 

@@ -1,0 +1,130 @@
+{
+  "observed_at_utc": "2026-11-24T11:14:57.138887+00:00",
+  "sha": "5844b7e881a388cc73799fdbe435212e79da1823",
+  "baseline": "evidence/azure/2026-11-23-before-slug-migration.json",
+  "preserved_categories": [
+    {
+      "id": 1,
+      "name": "Dubstep / 140",
+      "slug": "dubstep-140"
+    },
+    {
+      "id": 2,
+      "name": "Hard Techno",
+      "slug": "hard-techno"
+    },
+    {
+      "id": 3,
+      "name": "Hard Dance / Hardcore",
+      "slug": "hard-dance-hardcore"
+    },
+    {
+      "id": 4,
+      "name": "Mainstage / Commercial EDM",
+      "slug": "mainstage-commercial-edm"
+    },
+    {
+      "id": 5,
+      "name": "Latin Electronic",
+      "slug": "latin-electronic"
+    },
+    {
+      "id": 6,
+      "name": "Drum & Bass",
+      "slug": "drum-bass"
+    },
+    {
+      "id": 7,
+      "name": "Afro Electronic",
+      "slug": "afro-electronic"
+    },
+    {
+      "id": 8,
+      "name": "Breaks / Breakbeat",
+      "slug": "breaks-breakbeat"
+    },
+    {
+      "id": 9,
+      "name": "Indie Dance",
+      "slug": "indie-dance"
+    },
+    {
+      "id": 10,
+      "name": "Psy-Trance",
+      "slug": "psy-trance"
+    },
+    {
+      "id": 11,
+      "name": "Brazilian Funk",
+      "slug": "brazilian-funk"
+    },
+    {
+      "id": 12,
+      "name": "Electro",
+      "slug": "electro"
+    },
+    {
+      "id": 13,
+      "name": "Trap / Future Bass",
+      "slug": "trap-future-bass"
+    },
+    {
+      "id": 14,
+      "name": "UK Garage / Bassline",
+      "slug": "uk-garage-bassline"
+    },
+    {
+      "id": 15,
+      "name": "House",
+      "slug": "house"
+    },
+    {
+      "id": 16,
+      "name": "Bass / Club",
+      "slug": "bass-club"
+    },
+    {
+      "id": 17,
+      "name": "Trance",
+      "slug": "trance"
+    },
+    {
+      "id": 18,
+      "name": "Techno",
+      "slug": "techno"
+    },
+    {
+      "id": 19,
+      "name": "Nu Disco / Disco",
+      "slug": "nu-disco-disco"
+    },
+    {
+      "id": 20,
+      "name": "Dance / Pop",
+      "slug": "dance-pop"
+    },
+    {
+      "id": 21,
+      "name": "Ambient / Experimental",
+      "slug": "ambient-experimental"
+    },
+    {
+      "id": 22,
+      "name": "Industrial / EBM",
+      "slug": "industrial-ebm"
+    }
+  ],
+  "applied_records": [
+    {
+      "name": "0014_genrecategory_slug",
+      "applied_at": "2026-11-23T13:04:46.005745+00:00"
+    },
+    {
+      "name": "0015_genrecategory_slug_unique",
+      "applied_at": "2026-11-23T13:04:46.833232+00:00"
+    }
+  ],
+  "limit": "Applied database records and public before/after rows; not an original startup console log.",
+  "source_run": "https://github.com/xanman04/devops_assignment/actions/runs/45382213269",
+  "source_run_outcome": "Migration/participation/outage checks completed; later fixture cleanup failed; separate app restoration succeeded. This is not an overall successful exercise."
+}

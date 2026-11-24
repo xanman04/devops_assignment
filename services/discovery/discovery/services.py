@@ -517,7 +517,7 @@ def review_report(*, actor, report_id, status, resolution_note="", hide_event=Fa
         raise ValidationError("A dismissed report cannot hide an event.")
     report = EventReport.objects.select_related("event").get(pk=report_id)
     if hide_event:
-        require_permission(actor, "discovery.change_event")
+        require_permission(actor, "discovery.hide_reported_event")
         report.event.moderation_hidden = True
         report.event.save(update_fields=["moderation_hidden", "updated_at"])
     report.status, report.resolution_note = status, resolution_note.strip()

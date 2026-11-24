@@ -71,7 +71,9 @@ export async function detail(root, id, signal) {
   root.append(action('Leave group', async () => {
     await api('groups', `/api/groups/${id}/leave/`, {method: 'POST', data: {}, signal}); location.hash = 'groups';
   }, owned ? 'Leave this group? Ownership passes to the longest-standing member, or the empty group is deleted.' : 'Leave this group?'));
-  if (owned) root.append(link('Edit group', `#edit-group/${id}`), action('Delete group', async () => {
+  if (owned) root.append(link('Edit group', `#edit-group/${id}`));
+  const canDelete = currentUser().permissions?.some(p => ['groups.*', 'groups.delete_attendancegroup'].includes(p));
+  if (owned && canDelete) root.append(action('Delete group', async () => {
     await api('groups', `/api/groups/${id}/delete/`, {method: 'DELETE', signal}); location.hash = 'groups';
   }, 'Delete this group and its chat? This cannot be undone.'));
   if (owned) {

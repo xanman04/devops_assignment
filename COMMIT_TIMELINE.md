@@ -1,5 +1,16 @@
 # Assignment 2 commit timeline and remaining work blocks
 
+## November 24 moderation release
+
+PR 11 preserved b5d6b23eea1f93ca7313b95f5f8358f8a08d106d; main 5844b7e881a388cc73799fdbe435212e79da1823 passed [CD 45381034872](https://github.com/xanman04/devops_assignment/actions/runs/45381034872). That is substantive A2 commit 14 on the eighth date. The second milestone restores permission-gated moderation and corrects real live-check cleanup; on merge, total 15 with daily counts 1,2,1,2,2,3,2,2 (largest 20%). No daily quota or bookkeeping commit is needed.
+
+The owner selected existing username `admin` for venue review, report review and reported-event hiding only. The post-CD moderator operation refuses a missing/inactive account and preserves passwords, staff and superuser flags. Migration 0016 introduces the narrow hide_reported_event permission; general event editing is not granted. One grouped AI row covers the whole milestone; only the owner writes its explanation.
+
+[First live exercise 45382213269](https://github.com/xanman04/devops_assignment/actions/runs/45382213269) verified participation and both actual service outages, then failed moderator-only group deletion during cleanup. Separate restoration succeeded. Corrected cleanup uses guest-then-owner membership leave, including stale managed fixture groups; a successful rerun after deployment is still needed. Actual retained rows and applied migration timestamps are in evidence/azure/2026-11-24-after-slug-migration.json; original November 23 startup console logs remain unavailable.
+
+Remaining: corrected live verification and explicit admin grant after CD, final report/evidence selection, owner AI explanations, baseline/LMS audit and matching full-SHA submission tag. No final tag exists. Deadline November 29 at 23:59 Europe/Paris is owner-reported. The historical November 20 snapshots and November 21-22 blocks below are superseded by this section.
+
+
 Ledger initially verified November 20; active update November 24 below. All planning times below are **Europe/Paris**.
 Read this with [AGENTS.md](AGENTS.md) and [CLAUDE_HANDOFF.md](CLAUDE_HANDOFF.md).
 The owner requires minimal, substantial commits and one grouped AI-log row per

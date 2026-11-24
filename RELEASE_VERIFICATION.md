@@ -28,7 +28,7 @@ the Discovery image. Existing unrelated names, privileged accounts or password
 mismatches cause a refusal. Preparation is atomic, limited to these records and
 uses the restricted Discovery database identity. It never resets/drop databases
 or changes ordinary accounts. The controlled future event remains for reuse;
-the run-created attendance group is deleted through the authorized Groups API.
+the fixture members leave through the ordinary Groups API, which deletes the final empty group. The check also removes stale groups matching only the reserved fixture event, fixture owners and run-name pattern; it never grants group-moderator permissions.
 
 The runner needs temporary SQL connectivity while preparing the fixture; its
 own-IP rule is named `<prefix>-verify-<run-id>` and removed afterward. Passwords
@@ -81,3 +81,17 @@ does not erase the genuine failed/fixed SQL Server CI runs from November 23.
 Tools/tests: `tools/live_release.py`, `tools/browser/check_participation_live.cjs`,
 `prepare_live_check` in Discovery, fixture tests and `tools/test_live_release.py`.
 CI runs only the local/fake recovery tests; no Azure credentials enter those jobs.
+
+## Selected moderator account
+
+After successful CD, and with no pending/running production operation, the owner may explicitly grant review access to an existing account:
+
+```powershell
+gh workflow run verify-live.yml --repo xanman04/devops_assignment --ref main -f operation=moderator -f moderator_username=admin
+```
+
+The owner selected `admin` on November 24. This does not create an account, reset a password or alter staff/superuser flags. `grant_moderator` adds only `discovery.change_venue`, `discovery.change_eventreport` and the narrow `discovery.hide_reported_event` permission introduced by migration 0016. It deliberately does not grant general event editing. Missing or inactive accounts cause a refusal; the owner must register first if absent. The operation uses the deployed Discovery image, scoped temporary firewall access and the same always-run cleanup. Inspect `moderator-grant.json` for the actual result; an intended grant is not a completed grant.
+
+## November 24 first exercise
+
+[Run 45382213269](https://github.com/xanman04/devops_assignment/actions/runs/45382213269) verified browser participation and both actual service outages, but failed final fixture cleanup: an ordinary owner cannot use the moderator-only group-delete endpoint. Its separate restoration step succeeded and both services recovered. The corrected check uses guest-then-owner leave, including stale managed groups; a later successful run is still required. The retained migration audit is independently valid, with its provenance and logging limitation recorded under `evidence/azure/`.
