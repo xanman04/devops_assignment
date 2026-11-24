@@ -34,6 +34,9 @@ services:
       DJANGO_SECRET_KEY:
         description: Independent Discovery signing key, supplied from a GitHub secret.
         secret: true
+      LIVE_CHECK_PASSWORD:
+        description: Secret used only by the explicitly dispatched prepare_live_check management command; absent from the normal app environment.
+        secret: true
       DJANGO_SETTINGS_MODULE:
         description: Django settings module selected by serve.py/manage.py.
         default: config.settings
