@@ -50,9 +50,10 @@ new login is published only after identity validation. Private DOM is cleared
 on session changes. Nothing secret is stored in browser persistent storage.
 
 This is the core static UI conversion, not complete legacy-page parity. Still
-pending: image upload/crop controls, moderator/curation screens, owner listening
-reference editing, profile collection/badge displays, ban-management controls,
-and richer map date/subgenre filters and nearby-artist browsing. These are
+pending: image upload/crop controls (deliberately deferred, ADR 10), owner listening
+reference editing, profile collection/badge displays and nearby-artist browsing.
+The Near me map now filters by genre, subgenre and a 7/30-day window, and group owners
+see and lift bans on the group page; moderator screens were restored November 24. These are
 tracked conversion work, not reasons to create small follow-up commits. Azure
 publication and read-only desktop/mobile browser checks passed on November 20;
 see [deployment evidence](../AZURE_DEPLOYMENT.md). Live-map network behavior,

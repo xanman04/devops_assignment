@@ -97,6 +97,17 @@ export async function detail(root, id, signal) {
     await api('groups', `/api/groups/${id}/messages/`, {method: 'POST', data: {body: data.get('body')}, signal}); form.reset(); await poll();
   }), members);
   let signature = '', timer;
+  const bans = el('section', {'aria-label': 'Banned people'});
+  if (owned) root.append(bans);
+  async function showBans() {
+    const data = await api('groups', `/api/groups/${id}/bans/`, {signal});
+    if (signal.aborted) return;
+    bans.replaceChildren(el('h2', {}, 'Banned people'), data.bans.length ? el('div', {}, data.bans.map(b => el('div', {class: 'ui-row'},
+      el('span', {}, `${b.display_name} · ${date(b.issued_at)}${b.reason ? ` · ${b.reason}` : ''}`),
+      action('Lift ban', async () => {
+        await api('groups', `/api/bans/${b.id}/lift/`, {method: 'POST', data: {}, signal}); await showBans();
+      }, 'Allow this person to join the group again?')))) : message('Nobody is banned from this group.'));
+  }
   async function poll() {
     clearTimeout(timer);
     if (signal.aborted || !currentUser()) return;
@@ -118,7 +129,11 @@ export async function detail(root, id, signal) {
         members.replaceChildren(el('h2', {}, 'Members'), ...data.members.map(m => el('div', {class: 'ui-row'}, el('span', {}, m.user__display_name),
           owned && m.user_id !== currentUser().id && action('Remove member', async () => {
             await api('groups', `/api/groups/${id}/members/${m.user_id}/remove/`, {method: 'POST', data: {}, signal}); signature = ''; await poll();
-          }, 'Remove this member from the group?'))));
+          }, 'Remove this member from the group?'),
+          owned && m.user_id !== currentUser().id && action('Remove and ban', async () => {
+            await api('groups', `/api/groups/${id}/members/${m.user_id}/remove/`, {method: 'POST', data: {ban: true, reason: 'Removed by the group owner'}, signal}); signature = ''; await poll();
+          }, 'Remove this member and stop them from rejoining until you lift the ban?'))));
+        if (owned) await showBans();
       }
     } catch (error) {
       if (!signal.aborted) {status.hidden = false; status.textContent = `${error.message} Chat will retry shortly.`;}

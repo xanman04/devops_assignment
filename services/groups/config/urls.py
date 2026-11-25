@@ -10,6 +10,7 @@ urlpatterns = [
     path("api/groups/<int:group_id>/edit/", api.edit),
     path("api/groups/<int:group_id>/delete/", api.delete_group),
     path("api/groups/<int:group_id>/requests/", api.requests),
+    path("api/groups/<int:group_id>/bans/", api.bans),
     path("api/groups/<int:group_id>/members/<int:user_id>/remove/", api.remove),
     path("api/groups/<int:group_id>/chat/", api.chat),
     path("api/groups/<int:group_id>/messages/", api.post_message),

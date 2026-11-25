@@ -86,11 +86,20 @@ export async function near(root, filters, signal) {
   const genres = await api('discovery', '/api/genres/', {signal});
   if (signal.aborted) return;
   const select = el('select', {'aria-label': 'Genre'}, el('option', {value: ''}, 'All genres'), genres.categories.map(c => el('option', {value: c.id}, c.name)));
+  const tagSelect = el('select', {'aria-label': 'Subgenre', disabled: true}, el('option', {value: ''}, 'All subgenres'));
+  const windowSelect = el('select', {'aria-label': 'When'}, el('option', {value: ''}, 'Any date'),
+    el('option', {value: '7'}, 'Next 7 days'), el('option', {value: '30'}, 'Next 30 days'));
   const mode = button('Show list', () => { list.hidden = !list.hidden; mode.textContent = list.hidden ? 'Show list' : 'Hide list'; });
   const locate = button('Use my location', () => navigator.geolocation?.getCurrentPosition(position => {
     if (!signal.aborted && map) map.flyTo({center: [position.coords.longitude, position.coords.latitude], zoom: 12});
   }, () => { status.textContent = 'Location unavailable. You can move the map or browse the list.'; }, {timeout: 7000}));
-  filters.append(el('label', {class: 'ui-filter'}, 'Music', select), mode, locate);
+  filters.append(el('label', {class: 'ui-filter'}, 'Music', select), el('label', {class: 'ui-filter'}, 'Subgenre', tagSelect),
+    el('label', {class: 'ui-filter'}, 'When', windowSelect), mode, locate);
+  function fillTags() {
+    const tags = genres.tags.filter(t => String(t.category_id) === select.value);
+    tagSelect.replaceChildren(el('option', {value: ''}, 'All subgenres'), tags.map(t => el('option', {value: t.id}, t.name)));
+    tagSelect.disabled = !tags.length;
+  }
   let map, markers = [], events = [], timer, generation = 0;
   function render() {
     if (signal.aborted) return;
@@ -117,12 +126,21 @@ export async function near(root, filters, signal) {
   async function load() {
     const version = ++generation;
     try {
-      const data = await api('discovery', `/api/browse/?${new URLSearchParams(select.value ? {category: select.value} : {})}`, {signal});
+      const query = new URLSearchParams();
+      if (select.value) query.set('category', select.value);
+      if (tagSelect.value) query.set('tag', tagSelect.value);
+      if (windowSelect.value) {
+        const day = offset => new Date(Date.now() + offset * 86400000).toISOString().slice(0, 10);
+        query.set('from', day(0)); query.set('to', day(Number(windowSelect.value)));
+      }
+      const data = await api('discovery', `/api/browse/?${query}`, {signal});
       if (version !== generation || signal.aborted) return;
       events = data.events; render();
     } catch (error) { if (!signal.aborted) status.textContent = error.message; }
   }
-  select.addEventListener('change', load);
+  select.addEventListener('change', () => { fillTags(); load(); });
+  tagSelect.addEventListener('change', load);
+  windowSelect.addEventListener('change', load);
   signal.addEventListener('abort', () => {clearTimeout(timer); map?.remove();}, {once: true});
   await load();
   try {

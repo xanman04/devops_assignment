@@ -1,6 +1,8 @@
 """Public static-client projections. Visibility stays in Discovery's domain layer."""
+from datetime import date, datetime, time, timedelta, timezone
 from pathlib import PurePosixPath
 
+from django.core.exceptions import ValidationError
 from django.db.models import Q
 from django.http import FileResponse, JsonResponse
 from django.views.decorators.http import require_GET
@@ -48,7 +50,20 @@ def event_json(event):
 @endpoint
 def browse(request):
     categories = request.GET.getlist("category")
-    events = services.search_events(category_ids=categories, unbounded=True).prefetch_related("performers")
+    events = services.search_events(category_ids=categories, tag_ids=request.GET.getlist("tag"),
+                                    unbounded=True).prefetch_related("performers")
+    # Optional calendar-day window (UTC), inclusive: ?from=2026-12-01&to=2026-12-07
+    try:
+        day_from = date.fromisoformat(request.GET["from"]) if request.GET.get("from") else None
+        day_to = date.fromisoformat(request.GET["to"]) if request.GET.get("to") else None
+    except ValueError:
+        raise ValidationError("Dates must use YYYY-MM-DD.")
+    if day_from and day_to and day_to < day_from:
+        raise ValidationError("The end date must not be before the start date.")
+    if day_from:
+        events = events.filter(starts_at__gte=datetime.combine(day_from, time.min, tzinfo=timezone.utc))
+    if day_to:
+        events = events.filter(starts_at__lt=datetime.combine(day_to + timedelta(days=1), time.min, tzinfo=timezone.utc))
     query = request.GET.get("q", "").strip()[:200]
     if query:
         events = events.filter(Q(title__icontains=query) | Q(description__icontains=query)
