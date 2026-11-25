@@ -41,6 +41,19 @@ class ContentTests(TestCase):
             self.assertNotIn(private, detail)
         self.assertEqual(self.client.get(f'/api/events/{self.event.pk}/poster/').status_code, 404)
 
+    def test_browse_filters_by_day_window_and_subgenre(self):
+        day = self.event.starts_at.date()
+        window = lambda **query: self.client.get('/api/browse/', query)
+        self.assertEqual(len(window(**{'from': day.isoformat(), 'to': day.isoformat()}).json()['events']), 1)
+        self.assertEqual(window(**{'from': (day + timedelta(days=1)).isoformat()}).json()['events'], [])
+        self.assertEqual(window(**{'to': (day - timedelta(days=1)).isoformat()}).json()['events'], [])
+        for bad in ({'from': '2026-13-40'}, {'to': 'tomorrow'}, {'from': '2026-12-02', 'to': '2026-12-01'}, {'tag': 'x'}):
+            self.assertEqual(window(**bad).status_code, 400, bad)
+        tag = services.save_tag(actor=self.admin, data={'category': self.category, 'name': 'Deep', 'description': 'Deeper'})
+        self.assertEqual(window(tag=tag.pk).json()['events'], [])
+        self.event.tags.add(tag)
+        self.assertEqual(len(window(tag=tag.pk).json()['events']), 1)
+
     def test_genre_is_reachable_by_stable_slug(self):
         self.assertEqual(self.category.slug, 'house')
         by_id = self.client.get(f'/api/genres/{self.category.pk}/').json()

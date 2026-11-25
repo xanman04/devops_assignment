@@ -258,8 +258,13 @@ class GroupsApiTests(TransactionTestCase):
         self.assertEqual(self.call(remove, {'ban': True, 'reason': 'Abuse'}).status_code, 200)
         self.assertEqual(self.action(group_id, 'join').status_code, 403)
         ban = GroupBan.objects.get()
+        listing = f'/api/groups/{group_id}/bans/'
+        self.assertEqual(self.call(listing, actor='guest', method='get').status_code, 403)
+        listed = self.call(listing, method='get').json()['bans']
+        self.assertEqual([(b['id'], b['user_id'], b['reason']) for b in listed], [(ban.pk, 2, 'Abuse')])
         self.assertEqual(self.call(f'/api/bans/{ban.pk}/lift/', actor='guest').status_code, 403)
         self.assertEqual(self.call(f'/api/bans/{ban.pk}/lift/').status_code, 200)
+        self.assertEqual(self.call(listing, method='get').json()['bans'], [])
         self.assertEqual(self.action(group_id, 'join').status_code, 200)
         self.assertEqual(self.call(remove).status_code, 200)
         self.assertEqual(self.call(f'/api/groups/{group_id}/members/1/remove/', {'ban': True}).status_code, 400)

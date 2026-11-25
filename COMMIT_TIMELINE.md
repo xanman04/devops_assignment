@@ -1,3 +1,7 @@
+## November 25 UI parity milestone
+
+Milestone 16 (working number): group ban management (`GET /api/groups/{group_id}/bans/`, "Remove and ban" and "Lift ban" in the group page) and richer Near-me filters (`tag`, `from`, `to` on `/api/browse/`, subgenre and 7/30-day selectors). One grouped AI row; owner explanation pending. Still pending UI parity: owner listening-reference editing, profile collection/badges and nearby artists; image upload is deferred by ADR 10. Remaining: report and evidence selection, owner explanations, baseline/LMS audit, submission tag by Nov 29 23:59.
+
 # Assignment 2 commit timeline and remaining work blocks
 
 ## November 24 moderation release

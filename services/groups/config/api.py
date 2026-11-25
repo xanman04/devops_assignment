@@ -196,6 +196,16 @@ def requests(request, group_id):
     return JsonResponse({"requests": list(group.join_requests.values("id", "applicant_id", "status", "requested_at"))})
 
 
+@require_GET
+@endpoint()
+def bans(request, group_id):
+    group = AttendanceGroup.objects.get(pk=group_id)
+    services._manager(request.actor, group)
+    active = group.bans.filter(lifted_at__isnull=True).select_related("user").order_by("-issued_at", "-id")
+    return JsonResponse({"bans": [{"id": b.pk, "user_id": b.user_id, "display_name": b.user.display_name,
+        "reason": b.reason, "issued_at": b.issued_at} for b in active[:200]]})
+
+
 @require_http_methods(["POST"])
 @endpoint()
 def request_action(request, request_id, action):
