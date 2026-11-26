@@ -51,7 +51,8 @@ on session changes. Nothing secret is stored in browser persistent storage.
 
 This is the core static UI conversion, not complete legacy-page parity. Still
 pending: image upload/crop controls (deliberately deferred, ADR 10), owner listening
-reference editing, profile collection/badge displays and nearby-artist browsing.
+reference editing and profile collection/badge displays. The Near me panel lists the
+artists playing at the events currently shown, linking to each artist page.
 The Near me map now filters by genre, subgenre and a 7/30-day window, and group owners
 see and lift bans on the group page; moderator screens were restored November 24. These are
 tracked conversion work, not reasons to create small follow-up commits. Azure

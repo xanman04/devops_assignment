@@ -53,6 +53,8 @@ start=timezone.now()+timedelta(days=2)
 event=services.save_event(actor=owner,category_ids=[category.pk],data={'venue':venue,'title':'Browser <img src=x onerror=alert(1)> night','description':'Safe fixture description','starts_at':start,'ends_at':start+timedelta(hours=4)})
 event.demo_poster='demo-posters/blue-hour.webp'
 event.save(update_fields=['demo_poster'])
+from discovery.models import DJProfile
+event.performers.add(DJProfile.objects.create(name='Browser <b>artist</b>', description='Fixture performer', display_order=999))
 services.save_venue(actor=guest,data={'name':'Review <img src=x onerror=alert(1)> venue','address':'Madrid','latitude':'40.4','longitude':'-3.7','timezone':'Europe/Madrid'})
 services.report_event(actor=guest,event_id=event.pk,reason='other',explanation='Review <script>alert(1)</script> safely as text')
 '''
