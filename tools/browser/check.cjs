@@ -33,6 +33,8 @@ const {chromium} = require(process.env.PLAYWRIGHT_CORE_PATH || 'playwright');
     await page.goto(process.env.BROWSER_UI_URL+'/#near');
     await root.getByText('The map could not load.', {exact: false}).waitFor();
     await root.getByRole('link', {name: 'Browser <img src=x onerror=alert(1)> night'}).waitFor();
+    await root.getByRole('heading', {name: 'Artists playing here'}).waitFor();
+    await root.getByRole('link', {name: 'Browser <b>artist</b>', exact: true}).waitFor();
     const artifacts = path.resolve('tools/browser/artifacts');
     fs.mkdirSync(artifacts, {recursive: true});
     await page.goto(process.env.BROWSER_UI_URL+'/#discover');
