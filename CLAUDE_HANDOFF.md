@@ -1,5 +1,14 @@
 # Bassline Assignment 2 — Claude handoff
 
+## November 27 state (supersedes the dated sections below)
+
+All planned implementation is in milestone 18: listening-link editing and the profile
+collection complete UI parity apart from image upload (ADR 10). Open items are the owner's
+own-words AI_USAGE cells and report AI disclosure, the optional `admin` moderator grant
+(the account does not exist yet; run 45387120564 was refused), the baseline/LMS audit and the
+`submission` tag. Do not tag before the owner's explanations are committed and that SHA has
+deployed successfully.
+
 ## November 24 moderation release
 
 PR 11 preserved b5d6b23eea1f93ca7313b95f5f8358f8a08d106d; main 5844b7e881a388cc73799fdbe435212e79da1823 passed [CD 45381034872](https://github.com/xanman04/devops_assignment/actions/runs/45381034872). That is substantive A2 commit 14 on the eighth date. The second milestone restores permission-gated moderation and corrects real live-check cleanup; on merge, total 15 with daily counts 1,2,1,2,2,3,2,2 (largest 20%). No daily quota or bookkeeping commit is needed.

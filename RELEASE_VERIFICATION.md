@@ -94,4 +94,11 @@ The owner selected `admin` on November 24. This does not create an account, rese
 
 ## November 24 first exercise
 
-[Run 45382213269](https://github.com/xanman04/devops_assignment/actions/runs/45382213269) verified browser participation and both actual service outages, but failed final fixture cleanup: an ordinary owner cannot use the moderator-only group-delete endpoint. Its separate restoration step succeeded and both services recovered. The corrected check uses guest-then-owner leave, including stale managed groups; a later successful run is still required. The retained migration audit is independently valid, with its provenance and logging limitation recorded under `evidence/azure/`.
+[Run 45382213269](https://github.com/xanman04/devops_assignment/actions/runs/45382213269) verified browser participation and both actual service outages, but failed final fixture cleanup: an ordinary owner cannot use the moderator-only group-delete endpoint. Its separate restoration step succeeded and both services recovered. The corrected check uses guest-then-owner leave, including stale managed groups.
+
+[Run 45387120564](https://github.com/xanman04/devops_assignment/actions/runs/45387120564) was the
+moderator operation: it was refused because no account named `admin` existed in the
+deployed database, so no permission was granted. Register the account in the live
+UI first, then dispatch the operation again.
+[Run 45387312865](https://github.com/xanman04/devops_assignment/actions/runs/45387312865) passed the
+corrected participation, outage and cleanup exercise. The retained migration audit is independently valid, with its provenance and logging limitation recorded under `evidence/azure/`.

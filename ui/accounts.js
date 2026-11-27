@@ -1,4 +1,5 @@
 import {api, currentUser, session} from './api.js';
+import {collectionSection} from './collection.js';
 import {el, link, button, heading, message, field, formAction, date} from './dom.js';
 import {cards} from './discovery.js';
 
@@ -60,6 +61,7 @@ export async function profile(root, signal) {
     const person = currentUser();
     sessionName(saved.display_name || saved.username, person);
   }));
+  await collectionSection(root, signal);
 }
 function sessionName(name, person) {
   if (person) person.display_name = name;
@@ -74,7 +76,7 @@ export async function myEvents(root, signal) {
   root.append(el('h2', {}, 'Followed events'), data.followed.length ? cards(data.followed) : message('No followed events yet. Explore Discover to find a night.'),
     el('h2', {}, 'Your listings'), ...data.owned.map(event => el('article', {class: 'ui-row'},
       el('div', {}, el('h3', {}, event.title), el('p', {}, `${event.venue.name} · ${date(event.starts_at, event.venue.timezone)}`), event.cancelled && el('p', {}, 'Cancelled')),
-      link('Edit event', `#edit-event/${event.id}`), link('Public page', `#event/${event.id}`),
+      link('Edit event', `#edit-event/${event.id}`), link('Listening links', `#event-references/${event.id}`), link('Public page', `#event/${event.id}`),
       !event.cancelled && action('Cancel event', async () => {await api('discovery', `/api/events/${event.id}/cancel/`, {method: 'POST', data: {}, signal}); location.hash = 'my-events'; window.dispatchEvent(new HashChangeEvent('hashchange'));}, 'Cancel this event? It will remain visible with a cancellation label.'))));
 }
 

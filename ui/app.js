@@ -3,6 +3,7 @@ import {discover, eventDetail, genre, artist, near} from './discovery.js';
 import * as accounts from './accounts.js';
 import * as groups from './groups.js';
 import {moderation} from './moderation.js';
+import {listeningLinks} from './references.js';
 
 let active;
 export async function route() {
@@ -15,7 +16,7 @@ export async function route() {
   const [name = 'near', id] = (path || 'near').split('/');
   const section = ['group', 'create-group', 'edit-group', 'event-groups'].includes(name) ? 'groups'
     : ['event', 'genre', 'artist'].includes(name) ? 'discover'
-    : ['create-event', 'edit-event', 'propose-venue'].includes(name) ? 'my-events'
+    : ['create-event', 'edit-event', 'event-references', 'propose-venue'].includes(name) ? 'my-events'
     : ['login', 'register', 'moderation'].includes(name) ? 'profile' : name;
   document.querySelectorAll('.live-nav a').forEach(a => a.hash === `#${section}` ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'));
   document.title = 'Bassline';
@@ -32,6 +33,7 @@ export async function route() {
     else if (name === 'moderation') await moderation(root, signal);
     else if (name === 'my-events') await accounts.myEvents(root, signal);
     else if (name === 'create-event' || name === 'edit-event') await accounts.eventForm(root, name === 'edit-event' ? id : null, signal);
+    else if (name === 'event-references' && /^\d+$/.test(id)) await listeningLinks(root, id, signal);
     else if (name === 'propose-venue') await accounts.proposeVenue(root, signal);
     else if (name === 'notifications') await accounts.notifications(root, signal);
     else if (name === 'groups') await groups.mine(root, signal);
