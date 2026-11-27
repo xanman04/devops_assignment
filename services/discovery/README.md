@@ -1,9 +1,8 @@
 # Discovery service extraction
 
 Run commands in this folder. The service needs only this folder and its pinned
-dependencies, with no imports from the root monolith or Groups. It owns an
-independent database and exposes JSON only. The original runtime remains a
-regression reference during extraction.
+dependencies, with no imports from the archived monolith or Groups. It owns an
+independent database and exposes JSON only.
 
 ## Local operation
 
@@ -79,7 +78,7 @@ python -m coverage report --fail-under=70
 ```
 
 The copied domain tests exercise the existing business rules. Tests for the
-retired admin/templates remain in the root monolith suite; they are not service
+retired admin/templates stayed with the archived monolith; they are not service
 routes. New HTTP tests cover authentication, expiry/revocation, active accounts,
 ownership, rejected fields, event writes, inbox isolation, health and CORS.
 
@@ -98,7 +97,7 @@ The Dockerfile and complete local Compose stack are documented in
 LOCAL_SECRETS_DIR and DATABASE_HOST/NAME/USER from separate private credential
 volumes. SEED_TAXONOMY defaults to 0 standalone and 1 in Compose.
 
-Core static public/account/group workflows are implemented. Remaining image,
-moderation/curation and reference adapters, system.yaml/schema validation and
-Azure deployment are pending. CI includes service/monolith, image/SQL Server,
-HTTP-boundary and real-browser checks. No Azure credentials are used by tests.
+The static UI uses these routes for accounts, events, moderation, listening links
+and the profile collection. Image upload is deferred (ADR 10). CI includes service,
+archived-import, image/SQL Server, HTTP-boundary, real-browser and system.yaml
+checks. No Azure credentials are used by tests.

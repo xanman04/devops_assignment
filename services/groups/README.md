@@ -21,7 +21,7 @@ its own process first for protected actions and group participation.
 | PORT | 8000 | Set to a different port, e.g. 8001, when running beside Discovery |
 | ALLOWED_HOSTS | localhost,127.0.0.1,testserver | Comma-separated request hosts |
 | UI_ORIGIN | http://localhost:8080 | Only permitted browser CORS origin |
-| VERSION | development | Git SHA supplied during later deployment |
+| VERSION | development | Git SHA supplied by deployment |
 
 `openapi.json` describes the current JSON routes. Obtain a bearer credential
 from Discovery and send it in the Authorization header. Groups validates it
@@ -98,8 +98,6 @@ role grants are resolved in Discovery using natural permission keys.
 The Dockerfile and complete local stack are documented in
 [LOCAL_DEVELOPMENT.md](../../LOCAL_DEVELOPMENT.md). Compose supplies
 LOCAL_SECRETS_DIR and DATABASE_HOST/NAME/USER from this service's private volume.
-Remaining work includes actual deployment data transfer, complete seed
-transfer, full static UI, group-photo upload adapters, system description
-and Azure.
-Existing photo validation/storage rules are retained in the domain layer;
-only existing processed-photo reads are currently exposed over HTTP.
+Existing photo validation/storage rules are retained in the domain layer; only
+existing processed-photo reads are exposed over HTTP, and uploads are deferred
+(ADR 10).

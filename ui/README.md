@@ -2,8 +2,8 @@
 
 `docker compose up --build` serves these same HTML, CSS and JavaScript files
 through stock nginx at http://localhost:8080. There is no UI Dockerfile,
-framework or build step. The root Django templates remain the Assignment 1
-regression reference.
+framework or build step. The Assignment 1 Django templates are preserved at the
+`archive/a1-monolith` tag.
 
 `config.js` is generated at runtime from `config.js.template` using the public
 Discovery and Groups origins. It contains no secrets. Deployments must generate
@@ -37,7 +37,8 @@ the separate Compose job verifies real SQL Server and the container images.
 `PLAYWRIGHT_CORE_PATH` optionally selects an installed Playwright module.
 
 Authenticated routes include `#login`, `#register`, `#profile`, `#my-events`,
-`#create-event`, `#edit-event/<id>`, `#propose-venue`, `#notifications`, `#groups`,
+`#create-event`, `#edit-event/<id>`, `#event-references/<id>`, `#propose-venue`,
+`#moderation`, `#notifications`, `#groups`,
 `#event-groups/<event-id>`, `#create-group/<event-id>`, `#group/<id>` and
 `#edit-group/<id>`. Groups writes validate identity/event facts through Discovery
 server-side; the browser does not join databases. A Groups outage leaves public
@@ -49,13 +50,23 @@ polling. Late responses from an old credential cannot clear a newer login. A
 new login is published only after identity validation. Private DOM is cleared
 on session changes. Nothing secret is stored in browser persistent storage.
 
-This is the core static UI conversion, not complete legacy-page parity. Still
-pending: image upload/crop controls (deliberately deferred, ADR 10), owner listening
-reference editing and profile collection/badge displays. The Near me panel lists the
-artists playing at the events currently shown, linking to each artist page.
-The Near me map now filters by genre, subgenre and a 7/30-day window, and group owners
-see and lift bans on the group page; moderator screens were restored November 24. These are
-tracked conversion work, not reasons to create small follow-up commits. Azure
-publication and read-only desktop/mobile browser checks passed on November 20;
-see [deployment evidence](../AZURE_DEPLOYMENT.md). Live-map network behavior,
-authenticated participation and partial-failure evidence still need verification.
+## Converted pages and limits
+
+The Near me map filters by genre, subgenre and a 7/30-day window, and lists the
+artists playing at the events shown. Event organisers (and authorised event
+editors) manage the public listening links of an event from My events. The
+profile page shows the signed-in person's collection: event cards, the
+achievements those cards prove and the remaining locked slots. Attendance
+check-in does not exist, so only imported or seeded cards appear; a new account
+sees an empty collection. Group owners manage bans on the group page, and
+moderators review venues and reports.
+
+Image upload and cropping are the deliberately deferred pages (ADR 10). The
+Assignment 1 genre radar chart is not reproduced; the collection lists the
+underlying cards and achievements.
+
+Azure publication and read-only desktop/mobile browser checks passed on
+November 20 (see [deployment evidence](../AZURE_DEPLOYMENT.md)). Authenticated
+participation and both partial-failure cases were verified in production on
+November 24 (see [release verification](../RELEASE_VERIFICATION.md)). The map
+depends on a third-party renderer and tile provider.

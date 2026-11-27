@@ -5,7 +5,7 @@ from django.db import IntegrityError
 from django.http import JsonResponse, QueryDict
 from django.views.decorators.http import require_GET, require_http_methods
 from accounts.forms import RegistrationForm, AccountSettingsForm
-from discovery import services
+from discovery import collection, services
 from discovery.forms import EventForm
 from discovery.models import Event
 from notifications import services as notices
@@ -15,6 +15,7 @@ from .content_api import event_json
 from .throttle import limited
 
 PROFILE_FIELDS = {'display_name', 'bio', 'email', 'instagram_url', 'spotify_url', 'apple_music_url', 'soundcloud_url'}
+REFERENCE_TEXT = ('title', 'artist_credit', 'url', 'kind')
 
 
 def validated(form):
@@ -131,6 +132,66 @@ def cancel_event(request, event_id):
         category_ids=list(event.categories.values_list('pk', flat=True)),
         tag_ids=list(event.tags.values_list('pk', flat=True)), cancelled=True)
     return JsonResponse({'status': 'ok'})
+
+
+def editable_event(actor, event_id):
+    # Hidden events stay indistinguishable from missing ones; public events of others are refused.
+    event = services.get_event(event_id=event_id, actor=actor)
+    services.require_event_editor(actor, event)
+    return event
+
+
+def reference_data(request):
+    data = body(request)
+    if set(data) != services.REFERENCE_FIELDS or not all(isinstance(data[field], str) for field in REFERENCE_TEXT):
+        raise ValueError()
+    order = data['display_order']
+    if type(order) is not int or not 0 <= order <= 2147483647:
+        raise ValidationError('display_order: Use a whole number from 0 to 2147483647.')
+    return data
+
+
+def reference_row(reference):
+    return {'id': reference.pk, **{field: getattr(reference, field) for field in sorted(services.REFERENCE_FIELDS)}}
+
+
+@require_http_methods(['GET', 'POST'])
+@endpoint
+def event_references(request, event_id):
+    actor, _ = identity(request)
+    event = editable_event(actor, event_id)
+    if request.method == 'GET':
+        return JsonResponse({'event': {'id': event.pk, 'title': event.title},
+            'references': [reference_row(r) for r in event.listening_references.all()]})
+    reference = services.save_event_reference(actor=actor, event_id=event_id, data=reference_data(request))
+    return JsonResponse(reference_row(reference), status=201)
+
+
+@require_http_methods(['PUT'])
+@endpoint
+def event_reference(request, event_id, reference_id):
+    actor, _ = identity(request)
+    editable_event(actor, event_id)
+    reference = services.save_event_reference(actor=actor, event_id=event_id,
+        reference_id=reference_id, data=reference_data(request))
+    return JsonResponse(reference_row(reference))
+
+
+@require_http_methods(['POST'])
+@endpoint
+def delete_event_reference(request, event_id, reference_id):
+    actor, _ = identity(request)
+    # The lookup is scoped to the event in the path, so an ID from another event is a 404.
+    editable_event(actor, event_id).listening_references.get(pk=reference_id)
+    services.delete_event_reference(actor=actor, reference_id=reference_id)
+    return JsonResponse({'status': 'ok'})
+
+
+@require_GET
+@endpoint
+def my_collection(request):
+    user, _ = identity(request)
+    return JsonResponse(collection.collection_for(user))
 
 
 @require_http_methods(['POST'])

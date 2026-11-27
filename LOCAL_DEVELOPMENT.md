@@ -8,8 +8,8 @@ docker compose up --build
 
 Open http://localhost:8080. It serves the static public and account/group
 workflows described in [ui/README.md](ui/README.md). Discovery is at localhost:8000 and
-Groups at localhost:8001. Each service has GET /health. The root Django app
-remains the Assignment 1 reference during UI migration.
+Groups at localhost:8001. Each service has GET /health. The commands in this
+file are the same in PowerShell, bash and zsh.
 
 The stack has exactly two domain service images/Dockerfiles. SQL Server is a
 stock 2022 image with two databases. The static file server is stock nginx with
@@ -55,8 +55,8 @@ import after the target has been seeded or otherwise populated; follow the
 offline first-import sequence in DATA_MIGRATION.md.
 
 The nginx entrypoint renders public API URLs from environment variables into
-/tmp/config.js. The same static source files can later be deployed to Static
-Web Apps with deployment-generated configuration. API base URLs belong in
+/tmp/config.js. Deployment uploads the same static source files to the Azure
+Storage static website with generated configuration. API base URLs belong in
 configuration, not application JavaScript literals.
 
 ## Operating a single service
@@ -92,6 +92,43 @@ development project and its data are separate. Do not rename a personal-data
 project to match the checker's disposable project prefix.
 
 GitHub Actions repeats this SQL Server/Compose check on every push and PR,
-alongside the root regression and service lint/OpenAPI/coverage gates. Image
-publication, Azure deployment and system.yaml/schema validation remain later
-milestones. All database testing is local or on the GitHub runner.
+alongside the service lint, OpenAPI, migration-drift and coverage gates, the
+two-process boundary check, the browser check, infrastructure tests,
+`system.yaml` validation and the archived-monolith import check. Publication and
+deployment run only for main ([AZURE_DEPLOYMENT.md](AZURE_DEPLOYMENT.md)). All
+database testing is local or on the GitHub runner.
+
+## Unit tests and coverage without Docker
+
+Use Python 3.13 and a virtual environment. Linux and macOS:
+
+```bash
+python3 -m venv .venv && . .venv/bin/activate
+export DJANGO_SECRET_KEY="$(python -c 'import secrets; print(secrets.token_urlsafe(48))')"
+cd services/discovery
+python -m pip install -r requirements-dev.txt
+python -m coverage run --source=discovery,accounts,notifications,config --omit='*/migrations/*,*/test*.py' manage.py test discovery config --noinput
+python -m coverage report --fail-under=70
+cd ../groups
+python -m pip install -r requirements-dev.txt
+python -m coverage run --source=groups,notifications,config --omit='*/migrations/*,*/test*.py' manage.py test config --noinput
+python -m coverage report --fail-under=70
+```
+
+Windows PowerShell:
+
+```powershell
+py -3.13 -m venv .venv; .\.venv\Scripts\Activate.ps1
+$env:DJANGO_SECRET_KEY = python -c "import secrets; print(secrets.token_urlsafe(48))"
+cd services\discovery
+python -m pip install -r requirements-dev.txt
+python -m coverage run --source=discovery,accounts,notifications,config --omit='*/migrations/*,*/test*.py' manage.py test discovery config --noinput
+python -m coverage report --fail-under=70
+cd ..\groups
+python -m pip install -r requirements-dev.txt
+python -m coverage run --source=groups,notifications,config --omit='*/migrations/*,*/test*.py' manage.py test config --noinput
+python -m coverage report --fail-under=70
+```
+
+These runs use disposable SQLite test databases. Browser checks are described in
+[ui/README.md](ui/README.md).

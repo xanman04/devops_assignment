@@ -55,6 +55,11 @@ event.demo_poster='demo-posters/blue-hour.webp'
 event.save(update_fields=['demo_poster'])
 from discovery.models import DJProfile
 event.performers.add(DJProfile.objects.create(name='Browser <b>artist</b>', description='Fixture performer', display_order=999))
+from discovery.models import EventCard
+for number in range(1, 4):
+    past=timezone.now()-timedelta(days=7*number)
+    attended=services.save_event(actor=owner,category_ids=[category.pk],data={'venue':venue,'title':f'Attended <b>night</b> {number}','description':'Past fixture','starts_at':past,'ends_at':past+timedelta(hours=4)})
+    EventCard.objects.create(user=guest,event=attended)
 services.save_venue(actor=guest,data={'name':'Review <img src=x onerror=alert(1)> venue','address':'Madrid','latitude':'40.4','longitude':'-3.7','timezone':'Europe/Madrid'})
 services.report_event(actor=guest,event_id=event.pk,reason='other',explanation='Review <script>alert(1)</script> safely as text')
 '''

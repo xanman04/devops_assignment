@@ -1,3 +1,13 @@
+## November 27 remaining UI parity and submission documentation
+
+Milestone 18: organiser listening-link editing (`/api/events/{event_id}/references/`) and the
+profile collection (`/api/account/collection/`), closing the last non-deferred UI parity items,
+with the README setup/variable tables, the ADR 9 testing update and corrected stale notes.
+No migration. The November 24 moderator grant (run 45387120564) was refused because no `admin`
+account exists, so it is still open. Remaining: owner AI explanations and AI disclosure,
+register `admin` and run the grant if wanted, final report check, baseline/LMS audit and the
+`submission` tag on the final deployed SHA by November 29 23:59 Europe/Paris.
+
 ## November 26 nearby artists
 
 Milestone 17: the Near me panel lists the artists playing at the events shown, closing the
