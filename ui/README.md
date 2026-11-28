@@ -58,12 +58,12 @@ editors) manage the public listening links of an event from My events. The
 profile page shows the signed-in person's collection: event cards, the
 achievements those cards prove and the remaining locked slots. Attendance
 check-in does not exist, so only imported or seeded cards appear; a new account
-sees an empty collection. Group owners manage bans on the group page, and
+sees an empty collection. The profile also shows the bio, music links and a genre
+chart drawn from the collected cards. Group owners manage bans on the group page, and
 moderators review venues and reports.
 
-Image upload and cropping are the deliberately deferred pages (ADR 10). The
-Assignment 1 genre radar chart is not reproduced; the collection lists the
-underlying cards and achievements.
+Image upload and cropping are the deliberately deferred pages (ADR 10), so demo
+accounts and groups show no pictures.
 
 Azure publication and read-only desktop/mobile browser checks passed on
 November 20 (see [deployment evidence](../AZURE_DEPLOYMENT.md)). Authenticated

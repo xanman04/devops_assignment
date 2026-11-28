@@ -1,0 +1,16 @@
+# Discovery startup console output while migrations 0017/0018 were applied to Azure SQL.
+# Source: az containerapp logs show (read-only), polled during deployment run 46165808729,
+# commit 095958e1aaccbdbfcbca4e2782f36542c6700ab6, revision xc-ieu2023-discovery--latest.
+# Columns: Azure timestamp (UTC), console line as returned by Azure. Empty lines omitted.
+
+2026-11-28T16:39:54.343Z  Operations to perform:
+2026-11-28T16:39:54.343Z  Apply all migrations: accounts, auth, contenttypes, discovery, notifications, sessions
+2026-11-28T16:39:54.353Z  Running migrations:
+2026-11-28T16:39:54.365Z  Applying discovery.0017_genretag_slug...
+2026-11-28T16:39:55.331Z  discovery_genretag: 251 existing rows given a slug
+2026-11-28T16:39:55.340Z  OK
+2026-11-28T16:39:55.341Z  Applying discovery.0018_genretag_slug_unique...
+2026-11-28T16:39:56.956Z  OK
+2026-11-28T16:39:58.240Z  Curated Discovery taxonomy is present; existing rows retained.
+2026-11-28T16:39:58.572Z  DJ profiles: 0 created, 7 retained, 0 skipped (missing categories); 0 listening links added.
+2026-11-28T16:40:03.096Z  Genre songs: 0 created, 0 extended to more genres, 0 genre/subgenre pairs skipped (not in the database).

@@ -1,6 +1,6 @@
 import {api, currentUser, session} from './api.js';
 import {collectionSection} from './collection.js';
-import {el, link, button, heading, message, field, formAction, date} from './dom.js';
+import {el, link, external, button, heading, message, field, formAction, date} from './dom.js';
 import {cards} from './discovery.js';
 
 export function requireAccount(root) {
@@ -54,6 +54,9 @@ export async function profile(root, signal) {
   const user = await api('discovery', '/api/account/', {signal});
   if (signal.aborted) return;
   root.append(heading(user.display_name || user.username, `@${user.username}`));
+  if (user.bio) root.append(el('p', {class: 'ui-prose'}, user.bio));
+  const socials = [['Instagram', user.instagram_url], ['Spotify', user.spotify_url], ['Apple Music', user.apple_music_url], ['SoundCloud', user.soundcloud_url]].filter(([, url]) => url);
+  if (socials.length) root.append(el('div', {class: 'ui-tags'}, socials.map(([label, url]) => external(label, url))));
   if (user.can_moderate) root.append(link('Review venues and reports', '#moderation', {class: 'button'}));
   const form = el('form', {class: 'ui-form'}, profileFields.map(([label, name, type, maxlength]) => field(label, name, type, {value: user[name], maxlength})), el('button', {type: 'submit'}, 'Save profile'));
   root.append(formAction(form, async data => {

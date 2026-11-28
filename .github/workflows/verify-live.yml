@@ -4,10 +4,14 @@ on:
   workflow_dispatch:
     inputs:
       operation:
-        description: Verify with controlled outages, or recover after a lost runner
+        description: Verify with controlled outages, recover, grant a moderator or load demo content
         type: choice
         default: verify
-        options: [verify, recover, moderator]
+        options: [verify, recover, moderator, demo]
+      refresh_demo_dates:
+        description: Also move existing demo events forward from today (demo operation only)
+        type: boolean
+        default: false
       moderator_username:
         description: Existing Bassline username selected by the owner (moderator operation only)
         type: string
@@ -37,6 +41,8 @@ jobs:
       DJANGO_SECRET_KEY: ${{ secrets.DISCOVERY_SECRET_KEY }}
       LIVE_CHECK_PASSWORD: ${{ secrets.LIVE_CHECK_PASSWORD }}
       MODERATOR_USERNAME: ${{ inputs.moderator_username }}
+      DEMO_ACCOUNT_PASSWORD: ${{ secrets.DEMO_ACCOUNT_PASSWORD }}
+      DEMO_REFRESH_DATES: ${{ inputs.refresh_demo_dates }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -65,6 +71,9 @@ jobs:
       - name: Grant only selected existing account review permissions
         if: inputs.operation == 'moderator'
         run: python tools/live_release.py moderator
+      - name: Load fictional demo accounts, events and groups
+        if: inputs.operation == 'demo'
+        run: python tools/live_release.py demo
       - name: Always restore stopped apps and remove temporary SQL firewall rule
         if: always() && inputs.operation != 'recover'
         run: python tools/live_release.py restore

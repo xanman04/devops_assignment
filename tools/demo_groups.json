@@ -1,0 +1,60 @@
+[
+ {
+  "name": "Solo Attenders",
+  "description": "I need people to go with",
+  "capacity": 6,
+  "joining_mode": "public",
+  "event": "Blue Hour Circuit",
+  "owner": "demo_sam",
+  "members": [
+   "demo_alex",
+   "rick_sanchez",
+   "morty_smith"
+  ],
+  "banned": [],
+  "messages": [
+   {
+    "author": "demo_sam",
+    "body": "Hello everyone"
+   },
+   {
+    "author": "demo_alex",
+    "body": "Hi Sam"
+   },
+   {
+    "author": "demo_alex",
+    "body": "Can't wait"
+   },
+   {
+    "author": "rick_sanchez",
+    "body": "And thats the wayyyyy the news goes"
+   },
+   {
+    "author": "morty_smith",
+    "body": "Aw geez rick"
+   }
+  ]
+ },
+ {
+  "name": "Smith Family",
+  "description": "Smith family only, broh.",
+  "capacity": 6,
+  "joining_mode": "approval_required",
+  "event": "Pickle Rick's Portal Rave",
+  "owner": "rick_sanchez",
+  "members": [
+   "space_beth",
+   "beth_smith",
+   "jerry_smith",
+   "summer_smith",
+   "morty_smith"
+  ],
+  "banned": [
+   {
+    "user": "gene_gilligan",
+    "reason": "Screw you Gene"
+   }
+  ],
+  "messages": []
+ }
+]

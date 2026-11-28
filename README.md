@@ -4,6 +4,9 @@ Bassline helps people discover music events and find attendance groups. Assignme
 
 Live application: **https://xcieu2023ui.z1.web.core.windows.net/**.
 
+The events, accounts and groups on the live site are fictional demo content, loaded on request
+(see [release verification](RELEASE_VERIFICATION.md#demo-content)).
+
 ## Run locally
 
 From a clean clone with Docker Desktop's Linux engine running:
@@ -58,6 +61,7 @@ Variables read by the services (Compose and Azure supply them):
 | `TRUST_CONTAINER_APPS_INGRESS` | Discovery | `0` | Trust the Azure proxy address for rate limits |
 | `LIVE_CHECK_PASSWORD` | Discovery | none (secret) | Operator command for release verification only |
 | `MODERATOR_USERNAME` | Discovery | empty | Operator command that grants review permissions |
+| `DEMO_ACCOUNT_PASSWORD` | Discovery | none (secret) | Operator command that loads demo content |
 | `DISCOVERY_URL` | Groups | `http://localhost:8000` | Peer base URL |
 | `DISCOVERY_TIMEOUT_S` | Groups | `2` (Azure sets `5`) | Timeout for every peer call |
 

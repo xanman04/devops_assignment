@@ -1,0 +1,1742 @@
+{
+ "users": [
+  {
+   "username": "demo_organizer",
+   "display_name": "Demo Organizer",
+   "bio": "Mid-week techno, weekend everything else.",
+   "instagram_url": "https://www.instagram.com/demoorganizer/",
+   "spotify_url": "https://open.spotify.com/user/demoorganizer",
+   "apple_music_url": "",
+   "soundcloud_url": ""
+  },
+  {
+   "username": "demo_alex",
+   "display_name": "Demo Alex",
+   "bio": "Warehouse nights and long drives to festivals.",
+   "instagram_url": "https://www.instagram.com/demoalex/",
+   "spotify_url": "https://open.spotify.com/user/demoalex",
+   "apple_music_url": "",
+   "soundcloud_url": ""
+  },
+  {
+   "username": "demo_sam",
+   "display_name": "Demo Sam",
+   "bio": "Rave enthusiast",
+   "instagram_url": "https://www.instagram.com/demosam/",
+   "spotify_url": "https://open.spotify.com/user/demosam",
+   "apple_music_url": "",
+   "soundcloud_url": ""
+  },
+  {
+   "username": "demo_jo",
+   "display_name": "Demo Jo",
+   "bio": "Warehouse nights and long drives to festivals.",
+   "instagram_url": "https://www.instagram.com/demojo/",
+   "spotify_url": "https://open.spotify.com/user/demojo",
+   "apple_music_url": "",
+   "soundcloud_url": ""
+  },
+  {
+   "username": "demo_morgan",
+   "display_name": "Demo Morgan",
+   "bio": "Mid-week techno, weekend everything else.",
+   "instagram_url": "https://www.instagram.com/demomorgan/",
+   "spotify_url": "https://open.spotify.com/user/demomorgan",
+   "apple_music_url": "",
+   "soundcloud_url": ""
+  },
+  {
+   "username": "rick_sanchez",
+   "display_name": "Rick Sanchez",
+   "bio": "Wubba Lubba Dub Dub!",
+   "instagram_url": "https://www.instagram.com/rickandmorty/",
+   "spotify_url": "",
+   "apple_music_url": "",
+   "soundcloud_url": ""
+  },
+  {
+   "username": "morty_smith",
+   "display_name": "Morty Smith",
+   "bio": "Aw, geez",
+   "instagram_url": "https://www.instagram.com/rickandmorty/",
+   "spotify_url": "",
+   "apple_music_url": "",
+   "soundcloud_url": ""
+  },
+  {
+   "username": "summer_smith",
+   "display_name": "Summer Smith",
+   "bio": "",
+   "instagram_url": "https://www.instagram.com/rickandmorty/",
+   "spotify_url": "",
+   "apple_music_url": "",
+   "soundcloud_url": ""
+  },
+  {
+   "username": "jerry_smith",
+   "display_name": "Jerry Smith",
+   "bio": "",
+   "instagram_url": "https://www.instagram.com/rickandmorty/",
+   "spotify_url": "",
+   "apple_music_url": "",
+   "soundcloud_url": ""
+  },
+  {
+   "username": "beth_smith",
+   "display_name": "Beth Smith",
+   "bio": "",
+   "instagram_url": "https://www.instagram.com/rickandmorty/",
+   "spotify_url": "",
+   "apple_music_url": "",
+   "soundcloud_url": ""
+  },
+  {
+   "username": "space_beth",
+   "display_name": "Space Beth",
+   "bio": "Beth, but space.",
+   "instagram_url": "https://www.instagram.com/rickandmorty/",
+   "spotify_url": "",
+   "apple_music_url": "",
+   "soundcloud_url": ""
+  },
+  {
+   "username": "gene_gilligan",
+   "display_name": "Neighbor Gene",
+   "bio": "fishing enthusiast",
+   "instagram_url": "https://www.instagram.com/rickandmorty/",
+   "spotify_url": "",
+   "apple_music_url": "",
+   "soundcloud_url": ""
+  }
+ ],
+ "venues": [
+  {
+   "name": "Demo: Canal Room",
+   "address": "Fictional demo venue — not a real address or destination.",
+   "latitude": "48.871000",
+   "longitude": "2.363000",
+   "timezone": "Europe/Paris",
+   "review_status": "approved"
+  },
+  {
+   "name": "Demo: Left Bank Studio",
+   "address": "Fictional demo venue — not a real address or destination.",
+   "latitude": "48.849000",
+   "longitude": "2.343000",
+   "timezone": "Europe/Paris",
+   "review_status": "approved"
+  },
+  {
+   "name": "Demo: Northside Hall",
+   "address": "Fictional demo venue — not a real address or destination.",
+   "latitude": "48.889000",
+   "longitude": "2.351000",
+   "timezone": "Europe/Paris",
+   "review_status": "approved"
+  },
+  {
+   "name": "Demo: Proposed Space",
+   "address": "Fictional demo venue — not a real address or destination.",
+   "latitude": "48.862000",
+   "longitude": "2.379000",
+   "timezone": "Europe/Paris",
+   "review_status": "pending"
+  },
+  {
+   "name": "Demo: Rejected Proposal",
+   "address": "Fictional demo venue — not a real address or destination.",
+   "latitude": "48.858000",
+   "longitude": "2.324000",
+   "timezone": "Europe/Paris",
+   "review_status": "rejected"
+  },
+  {
+   "name": "Fabrik",
+   "address": "Avenida de la Industria 82, Humanes de Madrid",
+   "latitude": "40.265301",
+   "longitude": "-3.840565",
+   "timezone": "Europe/Madrid",
+   "review_status": "approved"
+  },
+  {
+   "name": "Sala Villanos",
+   "address": "Calle de Bernardino Obregón 18, Madrid",
+   "latitude": "40.403937",
+   "longitude": "-3.700005",
+   "timezone": "Europe/Madrid",
+   "review_status": "approved"
+  },
+  {
+   "name": "Sala Siroco",
+   "address": "Calle de San Dimas 3, Madrid",
+   "latitude": "40.426920",
+   "longitude": "-3.707737",
+   "timezone": "Europe/Madrid",
+   "review_status": "approved"
+  },
+  {
+   "name": "Café Berlín",
+   "address": "Costanilla de los Ángeles 20, Madrid",
+   "latitude": "40.419538",
+   "longitude": "-3.707964",
+   "timezone": "Europe/Madrid",
+   "review_status": "approved"
+  },
+  {
+   "name": "Sala El Sol",
+   "address": "Calle de los Jardines 3, Madrid",
+   "latitude": "40.418979",
+   "longitude": "-3.701625",
+   "timezone": "Europe/Madrid",
+   "review_status": "approved"
+  },
+  {
+   "name": "Mondo Disko",
+   "address": "Calle de Alcalá 20, Madrid",
+   "latitude": "40.417827",
+   "longitude": "-3.698938",
+   "timezone": "Europe/Madrid",
+   "review_status": "approved"
+  },
+  {
+   "name": "La Riviera",
+   "address": "Paseo Bajo de la Virgen del Puerto, Madrid",
+   "latitude": "40.412955",
+   "longitude": "-3.722134",
+   "timezone": "Europe/Madrid",
+   "review_status": "approved"
+  },
+  {
+   "name": "Sala Mon",
+   "address": "Calle de Hilarión Eslava 36, Madrid",
+   "latitude": "40.435766",
+   "longitude": "-3.716496",
+   "timezone": "Europe/Madrid",
+   "review_status": "approved"
+  },
+  {
+   "name": "Specka",
+   "address": "Calle de Orense 26, Madrid",
+   "latitude": "40.451569",
+   "longitude": "-3.694916",
+   "timezone": "Europe/Madrid",
+   "review_status": "approved"
+  },
+  {
+   "name": "The Bassement",
+   "address": "Calle de Galileo 26, Madrid",
+   "latitude": "40.432557",
+   "longitude": "-3.710202",
+   "timezone": "Europe/Madrid",
+   "review_status": "approved"
+  },
+  {
+   "name": "Goya Social Club",
+   "address": "Calle de Goya 43, Madrid",
+   "latitude": "40.425401",
+   "longitude": "-3.682926",
+   "timezone": "Europe/Madrid",
+   "review_status": "approved"
+  },
+  {
+   "name": "Lula Club",
+   "address": "Gran Vía 54, Madrid",
+   "latitude": "40.421235",
+   "longitude": "-3.707137",
+   "timezone": "Europe/Madrid",
+   "review_status": "approved"
+  },
+  {
+   "name": "El Sótano",
+   "address": "Calle de las Maldonadas 6, Madrid",
+   "latitude": "40.410940",
+   "longitude": "-3.707705",
+   "timezone": "Europe/Madrid",
+   "review_status": "approved"
+  },
+  {
+   "name": "Sala Clamores",
+   "address": "Calle de Alburquerque 14, Madrid",
+   "latitude": "40.431110",
+   "longitude": "-3.700993",
+   "timezone": "Europe/Madrid",
+   "review_status": "approved"
+  }
+ ],
+ "artists": [
+  {
+   "name": "Pickle Rick",
+   "description": "Headliner. Turned himself into a pickle to skip the family therapy and has not stopped since. Rolling full-on psytrance with acid-green bass and a lot of unexplained science.",
+   "origin": "Dimension C-137",
+   "active_since": 2017,
+   "photo": "djs/pickle_rick.webp",
+   "photo_credit": "Character art supplied by the project owner (Rick and Morty); classroom demo only",
+   "display_order": 900,
+   "categories": [
+    "Psy-Trance"
+   ]
+  },
+  {
+   "name": "Squanchy",
+   "description": "Squanches the room with fast, bouncy progressive psytrance and a very loose relationship with the clock.",
+   "origin": "Squanch Planet",
+   "active_since": 2019,
+   "photo": "djs/squanchy.webp",
+   "photo_credit": "Character art supplied by the project owner (Rick and Morty); classroom demo only",
+   "display_order": 901,
+   "categories": [
+    "Psy-Trance"
+   ]
+  },
+  {
+   "name": "Birdperson",
+   "description": "Calm, precise forest psy built on slow-building layers; every drop arrives exactly when promised.",
+   "origin": "Bird World",
+   "active_since": 2015,
+   "photo": "djs/birdperson.webp",
+   "photo_credit": "Character art supplied by the project owner (Rick and Morty); classroom demo only",
+   "display_order": 902,
+   "categories": [
+    "Psy-Trance"
+   ]
+  },
+  {
+   "name": "Evil Morty",
+   "description": "Dark, hypnotic night-time psytrance with a patient build and a sudden turn.",
+   "origin": "The Citadel",
+   "active_since": 2020,
+   "photo": "djs/evil_morty.webp",
+   "photo_credit": "Character art supplied by the project owner (Rick and Morty); classroom demo only",
+   "display_order": 903,
+   "categories": [
+    "Psy-Trance"
+   ]
+  },
+  {
+   "name": "Gazorp",
+   "description": "Hi-tech psy from a planet with strict rules and a very loud sound system.",
+   "origin": "Gazorpazorp",
+   "active_since": 2018,
+   "photo": "djs/gazorp.webp",
+   "photo_credit": "Character art supplied by the project owner (Rick and Morty); classroom demo only",
+   "display_order": 904,
+   "categories": [
+    "Psy-Trance"
+   ]
+  },
+  {
+   "name": "Luna Vela",
+   "description": "House sounds across Madrid club nights.",
+   "origin": "",
+   "active_since": null,
+   "photo": "",
+   "photo_credit": "",
+   "display_order": 1000,
+   "categories": [
+    "House"
+   ]
+  },
+  {
+   "name": "Cero Norte",
+   "description": "House sounds across Madrid club nights.",
+   "origin": "",
+   "active_since": null,
+   "photo": "",
+   "photo_credit": "",
+   "display_order": 1000,
+   "categories": [
+    "House"
+   ]
+  },
+  {
+   "name": "Eira Sanz",
+   "description": "Techno sounds across Madrid club nights.",
+   "origin": "",
+   "active_since": null,
+   "photo": "",
+   "photo_credit": "",
+   "display_order": 1000,
+   "categories": [
+    "Techno"
+   ]
+  },
+  {
+   "name": "Teo Flux",
+   "description": "Techno sounds across Madrid club nights.",
+   "origin": "",
+   "active_since": null,
+   "photo": "",
+   "photo_credit": "",
+   "display_order": 1000,
+   "categories": [
+    "Techno"
+   ]
+  },
+  {
+   "name": "Mina Rota",
+   "description": "Drum & Bass sounds across Madrid club nights.",
+   "origin": "",
+   "active_since": null,
+   "photo": "",
+   "photo_credit": "",
+   "display_order": 1000,
+   "categories": [
+    "Drum & Bass"
+   ]
+  },
+  {
+   "name": "Delta Sur",
+   "description": "Drum & Bass sounds across Madrid club nights.",
+   "origin": "",
+   "active_since": null,
+   "photo": "",
+   "photo_credit": "",
+   "display_order": 1000,
+   "categories": [
+    "Drum & Bass"
+   ]
+  },
+  {
+   "name": "Nexo 44",
+   "description": "Techno, Electro sounds across Madrid club nights.",
+   "origin": "",
+   "active_since": null,
+   "photo": "",
+   "photo_credit": "",
+   "display_order": 1000,
+   "categories": [
+    "Electro",
+    "Techno"
+   ]
+  },
+  {
+   "name": "Mara Luz",
+   "description": "Techno, Electro sounds across Madrid club nights.",
+   "origin": "",
+   "active_since": null,
+   "photo": "",
+   "photo_credit": "",
+   "display_order": 1000,
+   "categories": [
+    "Electro",
+    "Techno"
+   ]
+  },
+  {
+   "name": "Solena",
+   "description": "House, Nu Disco / Disco sounds across Madrid club nights.",
+   "origin": "",
+   "active_since": null,
+   "photo": "",
+   "photo_credit": "",
+   "display_order": 1000,
+   "categories": [
+    "House",
+    "Nu Disco / Disco"
+   ]
+  },
+  {
+   "name": "Roda",
+   "description": "House, Nu Disco / Disco sounds across Madrid club nights.",
+   "origin": "",
+   "active_since": null,
+   "photo": "",
+   "photo_credit": "",
+   "display_order": 1000,
+   "categories": [
+    "House",
+    "Nu Disco / Disco"
+   ]
+  },
+  {
+   "name": "Ivo Raíz",
+   "description": "Dubstep / 140, Bass / Club sounds across Madrid club nights.",
+   "origin": "",
+   "active_since": null,
+   "photo": "",
+   "photo_credit": "",
+   "display_order": 1000,
+   "categories": [
+    "Dubstep / 140",
+    "Bass / Club"
+   ]
+  },
+  {
+   "name": "Nara 140",
+   "description": "Dubstep / 140, Bass / Club sounds across Madrid club nights.",
+   "origin": "",
+   "active_since": null,
+   "photo": "",
+   "photo_credit": "",
+   "display_order": 1000,
+   "categories": [
+    "Dubstep / 140",
+    "Bass / Club"
+   ]
+  },
+  {
+   "name": "Vanta R",
+   "description": "Hard Techno, Hard Dance / Hardcore sounds across Madrid club nights.",
+   "origin": "",
+   "active_since": null,
+   "photo": "",
+   "photo_credit": "",
+   "display_order": 1000,
+   "categories": [
+    "Hard Techno",
+    "Hard Dance / Hardcore"
+   ]
+  },
+  {
+   "name": "Doble Fase",
+   "description": "Hard Techno, Hard Dance / Hardcore sounds across Madrid club nights.",
+   "origin": "",
+   "active_since": null,
+   "photo": "",
+   "photo_credit": "",
+   "display_order": 1000,
+   "categories": [
+    "Hard Techno",
+    "Hard Dance / Hardcore"
+   ]
+  },
+  {
+   "name": "Alba Brava",
+   "description": "Latin Electronic, House sounds across Madrid club nights.",
+   "origin": "",
+   "active_since": null,
+   "photo": "",
+   "photo_credit": "",
+   "display_order": 1000,
+   "categories": [
+    "Latin Electronic",
+    "House"
+   ]
+  },
+  {
+   "name": "Pálida",
+   "description": "Latin Electronic, House sounds across Madrid club nights.",
+   "origin": "",
+   "active_since": null,
+   "photo": "",
+   "photo_credit": "",
+   "display_order": 1000,
+   "categories": [
+    "Latin Electronic",
+    "House"
+   ]
+  },
+  {
+   "name": "Lado B",
+   "description": "Indie Dance, Nu Disco / Disco sounds across Madrid club nights.",
+   "origin": "",
+   "active_since": null,
+   "photo": "",
+   "photo_credit": "",
+   "display_order": 1000,
+   "categories": [
+    "Indie Dance",
+    "Nu Disco / Disco"
+   ]
+  },
+  {
+   "name": "Vera Modul",
+   "description": "Indie Dance, Nu Disco / Disco sounds across Madrid club nights.",
+   "origin": "",
+   "active_since": null,
+   "photo": "",
+   "photo_credit": "",
+   "display_order": 1000,
+   "categories": [
+    "Indie Dance",
+    "Nu Disco / Disco"
+   ]
+  },
+  {
+   "name": "Iria Nube",
+   "description": "Ambient / Experimental sounds across Madrid club nights.",
+   "origin": "",
+   "active_since": null,
+   "photo": "",
+   "photo_credit": "",
+   "display_order": 1000,
+   "categories": [
+    "Ambient / Experimental"
+   ]
+  },
+  {
+   "name": "Cometa Gris",
+   "description": "Ambient / Experimental sounds across Madrid club nights.",
+   "origin": "",
+   "active_since": null,
+   "photo": "",
+   "photo_credit": "",
+   "display_order": 1000,
+   "categories": [
+    "Ambient / Experimental"
+   ]
+  },
+  {
+   "name": "Cinta 09",
+   "description": "Electro, Breaks / Breakbeat sounds across Madrid club nights.",
+   "origin": "",
+   "active_since": null,
+   "photo": "",
+   "photo_credit": "",
+   "display_order": 1000,
+   "categories": [
+    "Breaks / Breakbeat",
+    "Electro"
+   ]
+  },
+  {
+   "name": "Leo Vértice",
+   "description": "Electro, Breaks / Breakbeat sounds across Madrid club nights.",
+   "origin": "",
+   "active_since": null,
+   "photo": "",
+   "photo_credit": "",
+   "display_order": 1000,
+   "categories": [
+    "Breaks / Breakbeat",
+    "Electro"
+   ]
+  },
+  {
+   "name": "Río K",
+   "description": "UK Garage / Bassline, Drum & Bass sounds across Madrid club nights.",
+   "origin": "",
+   "active_since": null,
+   "photo": "",
+   "photo_credit": "",
+   "display_order": 1000,
+   "categories": [
+    "Drum & Bass",
+    "UK Garage / Bassline"
+   ]
+  },
+  {
+   "name": "Vale Senda",
+   "description": "UK Garage / Bassline, Drum & Bass sounds across Madrid club nights.",
+   "origin": "",
+   "active_since": null,
+   "photo": "",
+   "photo_credit": "",
+   "display_order": 1000,
+   "categories": [
+    "Drum & Bass",
+    "UK Garage / Bassline"
+   ]
+  },
+  {
+   "name": "Aro N",
+   "description": "Techno, Hard Techno sounds across Madrid club nights.",
+   "origin": "",
+   "active_since": null,
+   "photo": "",
+   "photo_credit": "",
+   "display_order": 1000,
+   "categories": [
+    "Hard Techno",
+    "Techno"
+   ]
+  },
+  {
+   "name": "Prisma Cero",
+   "description": "Techno, Hard Techno sounds across Madrid club nights.",
+   "origin": "",
+   "active_since": null,
+   "photo": "",
+   "photo_credit": "",
+   "display_order": 1000,
+   "categories": [
+    "Hard Techno",
+    "Techno"
+   ]
+  },
+  {
+   "name": "Amara Sol",
+   "description": "House, Afro Electronic sounds across Madrid club nights.",
+   "origin": "",
+   "active_since": null,
+   "photo": "",
+   "photo_credit": "",
+   "display_order": 1000,
+   "categories": [
+    "Afro Electronic",
+    "House"
+   ]
+  },
+  {
+   "name": "Duna K",
+   "description": "House, Afro Electronic sounds across Madrid club nights.",
+   "origin": "",
+   "active_since": null,
+   "photo": "",
+   "photo_credit": "",
+   "display_order": 1000,
+   "categories": [
+    "Afro Electronic",
+    "House"
+   ]
+  },
+  {
+   "name": "Nila Mar",
+   "description": "Indie Dance, House sounds across Madrid club nights.",
+   "origin": "",
+   "active_since": null,
+   "photo": "",
+   "photo_credit": "",
+   "display_order": 1000,
+   "categories": [
+    "Indie Dance",
+    "House"
+   ]
+  },
+  {
+   "name": "Bosco V",
+   "description": "Indie Dance, House sounds across Madrid club nights.",
+   "origin": "",
+   "active_since": null,
+   "photo": "",
+   "photo_credit": "",
+   "display_order": 1000,
+   "categories": [
+    "Indie Dance",
+    "House"
+   ]
+  },
+  {
+   "name": "Cora 7",
+   "description": "Techno, Trance sounds across Madrid club nights.",
+   "origin": "",
+   "active_since": null,
+   "photo": "",
+   "photo_credit": "",
+   "display_order": 1000,
+   "categories": [
+    "Trance",
+    "Techno"
+   ]
+  },
+  {
+   "name": "Elian K",
+   "description": "Techno, Trance sounds across Madrid club nights.",
+   "origin": "",
+   "active_since": null,
+   "photo": "",
+   "photo_credit": "",
+   "display_order": 1000,
+   "categories": [
+    "Trance",
+    "Techno"
+   ]
+  },
+  {
+   "name": "Lira Oeste",
+   "description": "Nu Disco / Disco sounds across Madrid club nights.",
+   "origin": "",
+   "active_since": null,
+   "photo": "",
+   "photo_credit": "",
+   "display_order": 1000,
+   "categories": [
+    "Nu Disco / Disco"
+   ]
+  },
+  {
+   "name": "Polo Magnet",
+   "description": "Nu Disco / Disco sounds across Madrid club nights.",
+   "origin": "",
+   "active_since": null,
+   "photo": "",
+   "photo_credit": "",
+   "display_order": 1000,
+   "categories": [
+    "Nu Disco / Disco"
+   ]
+  },
+  {
+   "name": "Kael Mar",
+   "description": "Drum & Bass, Breaks / Breakbeat sounds across Madrid club nights.",
+   "origin": "",
+   "active_since": null,
+   "photo": "",
+   "photo_credit": "",
+   "display_order": 1000,
+   "categories": [
+    "Drum & Bass",
+    "Breaks / Breakbeat"
+   ]
+  },
+  {
+   "name": "Senda 22",
+   "description": "Drum & Bass, Breaks / Breakbeat sounds across Madrid club nights.",
+   "origin": "",
+   "active_since": null,
+   "photo": "",
+   "photo_credit": "",
+   "display_order": 1000,
+   "categories": [
+    "Drum & Bass",
+    "Breaks / Breakbeat"
+   ]
+  },
+  {
+   "name": "Vela D",
+   "description": "Trance, Psy-Trance sounds across Madrid club nights.",
+   "origin": "",
+   "active_since": null,
+   "photo": "",
+   "photo_credit": "",
+   "display_order": 1000,
+   "categories": [
+    "Psy-Trance",
+    "Trance"
+   ]
+  },
+  {
+   "name": "Orión Azul",
+   "description": "Trance, Psy-Trance sounds across Madrid club nights.",
+   "origin": "",
+   "active_since": null,
+   "photo": "",
+   "photo_credit": "",
+   "display_order": 1000,
+   "categories": [
+    "Psy-Trance",
+    "Trance"
+   ]
+  },
+  {
+   "name": "Mara Viento",
+   "description": "House sounds across Madrid club nights.",
+   "origin": "",
+   "active_since": null,
+   "photo": "",
+   "photo_credit": "",
+   "display_order": 1000,
+   "categories": [
+    "House"
+   ]
+  },
+  {
+   "name": "Nico Valle",
+   "description": "House sounds across Madrid club nights.",
+   "origin": "",
+   "active_since": null,
+   "photo": "",
+   "photo_credit": "",
+   "display_order": 1000,
+   "categories": [
+    "House"
+   ]
+  },
+  {
+   "name": "Vera Hex",
+   "description": "Techno sounds across Madrid club nights.",
+   "origin": "",
+   "active_since": null,
+   "photo": "",
+   "photo_credit": "",
+   "display_order": 1000,
+   "categories": [
+    "Techno"
+   ]
+  },
+  {
+   "name": "Óscar Lumen",
+   "description": "Techno sounds across Madrid club nights.",
+   "origin": "",
+   "active_since": null,
+   "photo": "",
+   "photo_credit": "",
+   "display_order": 1000,
+   "categories": [
+    "Techno"
+   ]
+  },
+  {
+   "name": "Iria Break",
+   "description": "Drum & Bass sounds across Madrid club nights.",
+   "origin": "",
+   "active_since": null,
+   "photo": "",
+   "photo_credit": "",
+   "display_order": 1000,
+   "categories": [
+    "Drum & Bass"
+   ]
+  },
+  {
+   "name": "Surco 5",
+   "description": "Drum & Bass sounds across Madrid club nights.",
+   "origin": "",
+   "active_since": null,
+   "photo": "",
+   "photo_credit": "",
+   "display_order": 1000,
+   "categories": [
+    "Drum & Bass"
+   ]
+  },
+  {
+   "name": "Ada Kora",
+   "description": "Afro Electronic sounds across Madrid club nights.",
+   "origin": "",
+   "active_since": null,
+   "photo": "",
+   "photo_credit": "",
+   "display_order": 1000,
+   "categories": [
+    "Afro Electronic"
+   ]
+  },
+  {
+   "name": "Selma Sur",
+   "description": "Afro Electronic sounds across Madrid club nights.",
+   "origin": "",
+   "active_since": null,
+   "photo": "",
+   "photo_credit": "",
+   "display_order": 1000,
+   "categories": [
+    "Afro Electronic"
+   ]
+  }
+ ],
+ "events": [
+  {
+   "title": "Blue Hour Circuit",
+   "description": "Deep, melodic house building into a late-night peak.",
+   "ticket_url": "",
+   "poster": "demo-posters/blue-hour.webp",
+   "creator": "demo_organizer",
+   "venue": "Mondo Disko",
+   "start_time": "21:00",
+   "minutes": 360,
+   "categories": [
+    "House"
+   ],
+   "tags": [
+    [
+     "House",
+     "Deep House"
+    ],
+    [
+     "House",
+     "Progressive House"
+    ]
+   ],
+   "performers": [
+    "Luna Vela",
+    "Cero Norte"
+   ]
+  },
+  {
+   "title": "Subsuelo / Frequencies",
+   "description": "A stripped-back, rolling techno session for the long room.",
+   "ticket_url": "",
+   "poster": "demo-posters/subsuelo.webp",
+   "creator": "demo_organizer",
+   "venue": "The Bassement",
+   "start_time": "22:00",
+   "minutes": 420,
+   "categories": [
+    "Techno"
+   ],
+   "tags": [
+    [
+     "Techno",
+     "Raw Techno"
+    ],
+    [
+     "Techno",
+     "Hypnotic Techno"
+    ]
+   ],
+   "performers": [
+    "Eira Sanz",
+    "Teo Flux"
+   ]
+  },
+  {
+   "title": "Naranja Subterránea",
+   "description": "Liquid selections give way to fast jungle breaks.",
+   "ticket_url": "",
+   "poster": "demo-posters/naranja.webp",
+   "creator": "demo_morgan",
+   "venue": "Sala Siroco",
+   "start_time": "23:00",
+   "minutes": 360,
+   "categories": [
+    "Drum & Bass"
+   ],
+   "tags": [
+    [
+     "Drum & Bass",
+     "Liquid DnB"
+    ],
+    [
+     "Drum & Bass",
+     "Jungle"
+    ]
+   ],
+   "performers": [
+    "Mina Rota",
+    "Delta Sur"
+   ]
+  },
+  {
+   "title": "Pulso de Tetuán",
+   "description": "Acid lines, electro pressure and late-night techno.",
+   "ticket_url": "",
+   "poster": "demo-posters/pulso.webp",
+   "creator": "demo_morgan",
+   "venue": "Specka",
+   "start_time": "23:00",
+   "minutes": 420,
+   "categories": [
+    "Electro",
+    "Techno"
+   ],
+   "tags": [
+    [
+     "Techno",
+     "Acid Techno"
+    ],
+    [
+     "Electro",
+     "Electro"
+    ]
+   ],
+   "performers": [
+    "Nexo 44",
+    "Mara Luz"
+   ]
+  },
+  {
+   "title": "Tarde de Club",
+   "description": "An early session of warm grooves and disco-rooted house.",
+   "ticket_url": "",
+   "poster": "demo-posters/tarde-club.webp",
+   "creator": "demo_sam",
+   "venue": "Café Berlín",
+   "start_time": "18:00",
+   "minutes": 300,
+   "categories": [
+    "House",
+    "Nu Disco / Disco"
+   ],
+   "tags": [
+    [
+     "House",
+     "Funky House"
+    ],
+    [
+     "Nu Disco / Disco",
+     "Nu Disco"
+    ]
+   ],
+   "performers": [
+    "Solena",
+    "Roda"
+   ]
+  },
+  {
+   "title": "Fractal / 140",
+   "description": "Low-end pressure, spacious 140 and left-field club rhythms.",
+   "ticket_url": "",
+   "poster": "demo-posters/fractal.webp",
+   "creator": "demo_alex",
+   "venue": "Sala Mon",
+   "start_time": "23:00",
+   "minutes": 420,
+   "categories": [
+    "Dubstep / 140",
+    "Bass / Club"
+   ],
+   "tags": [
+    [
+     "Dubstep / 140",
+     "Deep Dubstep"
+    ],
+    [
+     "Bass / Club",
+     "UK Bass"
+    ]
+   ],
+   "performers": [
+    "Ivo Raíz",
+    "Nara 140"
+   ]
+  },
+  {
+   "title": "Cromo Rojo",
+   "description": "A large-room night that climbs from driving techno to harder edges.",
+   "ticket_url": "",
+   "poster": "demo-posters/cromo.webp",
+   "creator": "demo_alex",
+   "venue": "Fabrik",
+   "start_time": "22:00",
+   "minutes": 540,
+   "categories": [
+    "Hard Techno",
+    "Hard Dance / Hardcore"
+   ],
+   "tags": [
+    [
+     "Hard Techno",
+     "Hard Techno"
+    ],
+    [
+     "Hard Dance / Hardcore",
+     "Hardstyle"
+    ]
+   ],
+   "performers": [
+    "Vanta R",
+    "Doble Fase"
+   ]
+  },
+  {
+   "title": "Ritmos Cruzados",
+   "description": "Latin percussion and house rhythms in a room-sized session.",
+   "ticket_url": "",
+   "poster": "demo-posters/ritmos.webp",
+   "creator": "demo_alex",
+   "venue": "Sala Villanos",
+   "start_time": "20:00",
+   "minutes": 360,
+   "categories": [
+    "Latin Electronic",
+    "House"
+   ],
+   "tags": [
+    [
+     "House",
+     "Piano House"
+    ],
+    [
+     "Latin Electronic",
+     "Latin Club"
+    ]
+   ],
+   "performers": [
+    "Alba Brava",
+    "Pálida"
+   ]
+  },
+  {
+   "title": "Cintas Magnéticas",
+   "description": "Guitar-adjacent electronic dance and luminous disco.",
+   "ticket_url": "",
+   "poster": "demo-posters/cintas.webp",
+   "creator": "demo_organizer",
+   "venue": "Sala El Sol",
+   "start_time": "21:00",
+   "minutes": 360,
+   "categories": [
+    "Indie Dance",
+    "Nu Disco / Disco"
+   ],
+   "tags": [
+    [
+     "Indie Dance",
+     "Indie Dance"
+    ],
+    [
+     "Nu Disco / Disco",
+     "Italo Disco"
+    ]
+   ],
+   "performers": [
+    "Lado B",
+    "Vera Modul"
+   ]
+  },
+  {
+   "title": "Neblina de Domingo",
+   "description": "A slower listening session of texture, space and soft pulse.",
+   "ticket_url": "",
+   "poster": "demo-posters/neblina.webp",
+   "creator": "demo_alex",
+   "venue": "Café Berlín",
+   "start_time": "19:00",
+   "minutes": 240,
+   "categories": [
+    "Ambient / Experimental"
+   ],
+   "tags": [
+    [
+     "Ambient / Experimental",
+     "Ambient"
+    ],
+    [
+     "Ambient / Experimental",
+     "Downtempo"
+    ]
+   ],
+   "performers": [
+    "Iria Nube",
+    "Cometa Gris"
+   ]
+  },
+  {
+   "title": "Surco y Señal",
+   "description": "Breakbeat cuts and sharp electro turns.",
+   "ticket_url": "",
+   "poster": "demo-posters/surco.webp",
+   "creator": "demo_sam",
+   "venue": "Specka",
+   "start_time": "22:00",
+   "minutes": 360,
+   "categories": [
+    "Breaks / Breakbeat",
+    "Electro"
+   ],
+   "tags": [
+    [
+     "Breaks / Breakbeat",
+     "Breakbeat"
+    ],
+    [
+     "Electro",
+     "Modern Electro"
+    ]
+   ],
+   "performers": [
+    "Cinta 09",
+    "Leo Vértice"
+   ]
+  },
+  {
+   "title": "La Otra Orilla",
+   "description": "Two-step swing flowing into soulful drum and bass.",
+   "ticket_url": "",
+   "poster": "demo-posters/otra-orilla.webp",
+   "creator": "demo_jo",
+   "venue": "Sala Siroco",
+   "start_time": "23:00",
+   "minutes": 360,
+   "categories": [
+    "Drum & Bass",
+    "UK Garage / Bassline"
+   ],
+   "tags": [
+    [
+     "Drum & Bass",
+     "Liquid DnB"
+    ],
+    [
+     "UK Garage / Bassline",
+     "UK Garage"
+    ]
+   ],
+   "performers": [
+    "Río K",
+    "Vale Senda"
+   ]
+  },
+  {
+   "title": "Presión Continua",
+   "description": "Percussive hardgroove with a tougher final stretch.",
+   "ticket_url": "",
+   "poster": "demo-posters/presion.webp",
+   "creator": "demo_jo",
+   "venue": "The Bassement",
+   "start_time": "23:00",
+   "minutes": 420,
+   "categories": [
+    "Hard Techno",
+    "Techno"
+   ],
+   "tags": [
+    [
+     "Techno",
+     "Raw Techno"
+    ],
+    [
+     "Hard Techno",
+     "Hard Techno"
+    ]
+   ],
+   "performers": [
+    "Aro N",
+    "Prisma Cero"
+   ]
+  },
+  {
+   "title": "Patio Eléctrico",
+   "description": "Warm house, polyrhythm and a late Afro-electronic turn.",
+   "ticket_url": "",
+   "poster": "demo-posters/patio.webp",
+   "creator": "demo_jo",
+   "venue": "Mondo Disko",
+   "start_time": "23:00",
+   "minutes": 360,
+   "categories": [
+    "Afro Electronic",
+    "House"
+   ],
+   "tags": [
+    [
+     "House",
+     "Deep House"
+    ],
+    [
+     "Afro Electronic",
+     "Amapiano"
+    ]
+   ],
+   "performers": [
+    "Amara Sol",
+    "Duna K"
+   ]
+  },
+  {
+   "title": "Luz Baja",
+   "description": "A live-room feel that settles into low-slung house.",
+   "ticket_url": "",
+   "poster": "demo-posters/luz-baja.webp",
+   "creator": "demo_alex",
+   "venue": "Sala Villanos",
+   "start_time": "20:00",
+   "minutes": 360,
+   "categories": [
+    "Indie Dance",
+    "House"
+   ],
+   "tags": [
+    [
+     "House",
+     "Deep House"
+    ],
+    [
+     "Indie Dance",
+     "Indie Dance"
+    ]
+   ],
+   "performers": [
+    "Nila Mar",
+    "Bosco V"
+   ]
+  },
+  {
+   "title": "Carbono",
+   "description": "Driving techno opening into a wide, melodic sunrise set.",
+   "ticket_url": "",
+   "poster": "demo-posters/carbon.webp",
+   "creator": "demo_sam",
+   "venue": "Fabrik",
+   "start_time": "22:00",
+   "minutes": 540,
+   "categories": [
+    "Trance",
+    "Techno"
+   ],
+   "tags": [
+    [
+     "Techno",
+     "Peak-Time / Driving"
+    ],
+    [
+     "Trance",
+     "Progressive Trance"
+    ]
+   ],
+   "performers": [
+    "Cora 7",
+    "Elian K"
+   ]
+  },
+  {
+   "title": "Disco de Sombra",
+   "description": "Analog synths, space disco and a playful dancefloor.",
+   "ticket_url": "",
+   "poster": "demo-posters/disco-sombra.webp",
+   "creator": "demo_jo",
+   "venue": "Sala El Sol",
+   "start_time": "22:00",
+   "minutes": 360,
+   "categories": [
+    "Nu Disco / Disco"
+   ],
+   "tags": [
+    [
+     "Nu Disco / Disco",
+     "Italo Disco"
+    ],
+    [
+     "Nu Disco / Disco",
+     "Space Disco"
+    ]
+   ],
+   "performers": [
+    "Lira Oeste",
+    "Polo Magnet"
+   ]
+  },
+  {
+   "title": "Marea Baja",
+   "description": "A broad-room bass night built around breaks and jungle.",
+   "ticket_url": "",
+   "poster": "demo-posters/marea.webp",
+   "creator": "demo_sam",
+   "venue": "La Riviera",
+   "start_time": "21:00",
+   "minutes": 420,
+   "categories": [
+    "Drum & Bass",
+    "Breaks / Breakbeat"
+   ],
+   "tags": [
+    [
+     "Drum & Bass",
+     "Jungle"
+    ],
+    [
+     "Breaks / Breakbeat",
+     "Breaks"
+    ]
+   ],
+   "performers": [
+    "Kael Mar",
+    "Senda 22"
+   ]
+  },
+  {
+   "title": "Norte Magnético",
+   "description": "A gradual climb from melodic trance into psychedelic momentum.",
+   "ticket_url": "",
+   "poster": "demo-posters/norte.webp",
+   "creator": "demo_alex",
+   "venue": "Sala Mon",
+   "start_time": "23:00",
+   "minutes": 420,
+   "categories": [
+    "Psy-Trance",
+    "Trance"
+   ],
+   "tags": [
+    [
+     "Trance",
+     "Uplifting Trance"
+    ],
+    [
+     "Psy-Trance",
+     "Progressive Psy"
+    ]
+   ],
+   "performers": [
+    "Vela D",
+    "Orión Azul"
+   ]
+  },
+  {
+   "title": "Cierre en Azul",
+   "description": "A relaxed Sunday finish with layered electronic textures.",
+   "ticket_url": "",
+   "poster": "demo-posters/cierre.webp",
+   "creator": "demo_jo",
+   "venue": "Café Berlín",
+   "start_time": "19:00",
+   "minutes": 300,
+   "categories": [
+    "House",
+    "Ambient / Experimental"
+   ],
+   "tags": [
+    [
+     "House",
+     "Organic House"
+    ],
+    [
+     "Ambient / Experimental",
+     "Downtempo"
+    ]
+   ],
+   "performers": [
+    "Luna Vela",
+    "Iria Nube"
+   ]
+  },
+  {
+   "title": "Goya Deep Sessions",
+   "description": "A focused house night built around warm chords and patient grooves.",
+   "ticket_url": "",
+   "poster": "demo-posters/goya-sessions.webp",
+   "creator": "demo_jo",
+   "venue": "Goya Social Club",
+   "start_time": "23:00",
+   "minutes": 360,
+   "categories": [
+    "House"
+   ],
+   "tags": [
+    [
+     "House",
+     "Deep House"
+    ],
+    [
+     "House",
+     "Funky House"
+    ]
+   ],
+   "performers": [
+    "Mara Viento",
+    "Nico Valle"
+   ]
+  },
+  {
+   "title": "Lula Pulse",
+   "description": "A pure techno arc from hypnotic loops to peak-time drive.",
+   "ticket_url": "",
+   "poster": "demo-posters/lula-pulse.webp",
+   "creator": "demo_jo",
+   "venue": "Lula Club",
+   "start_time": "23:00",
+   "minutes": 420,
+   "categories": [
+    "Techno"
+   ],
+   "tags": [
+    [
+     "Techno",
+     "Peak-Time / Driving"
+    ],
+    [
+     "Techno",
+     "Hypnotic Techno"
+    ]
+   ],
+   "performers": [
+    "Vera Hex",
+    "Óscar Lumen"
+   ]
+  },
+  {
+   "title": "Bajo el Suelo",
+   "description": "A compact bass-room session moving from liquid drums to rougher jungle.",
+   "ticket_url": "",
+   "poster": "demo-posters/sotano-breaks.webp",
+   "creator": "demo_organizer",
+   "venue": "El Sótano",
+   "start_time": "22:00",
+   "minutes": 360,
+   "categories": [
+    "Drum & Bass"
+   ],
+   "tags": [
+    [
+     "Drum & Bass",
+     "Liquid DnB"
+    ],
+    [
+     "Drum & Bass",
+     "Jungle"
+    ]
+   ],
+   "performers": [
+    "Iria Break",
+    "Surco 5"
+   ]
+  },
+  {
+   "title": "Clamores en Movimiento",
+   "description": "Polyrhythmic Afro-electronic selections for a late dancefloor.",
+   "ticket_url": "",
+   "poster": "demo-posters/clamores-afro.webp",
+   "creator": "demo_jo",
+   "venue": "Sala Clamores",
+   "start_time": "23:00",
+   "minutes": 360,
+   "categories": [
+    "Afro Electronic"
+   ],
+   "tags": [
+    [
+     "Afro Electronic",
+     "Amapiano"
+    ],
+    [
+     "Afro Electronic",
+     "Afro House"
+    ]
+   ],
+   "performers": [
+    "Ada Kora",
+    "Selma Sur"
+   ]
+  },
+  {
+   "title": "Pickle Rick's Portal Rave",
+   "description": "It's intergalactic, broh.",
+   "ticket_url": "",
+   "poster": "demo-posters/pickle-rick-portal-rave.webp",
+   "creator": "rick_sanchez",
+   "venue": "The Bassement",
+   "start_time": "21:00",
+   "minutes": 540,
+   "categories": [
+    "Psy-Trance"
+   ],
+   "tags": [
+    [
+     "Psy-Trance",
+     "Psytrance"
+    ],
+    [
+     "Psy-Trance",
+     "Psychedelic"
+    ],
+    [
+     "Psy-Trance",
+     "Hi-Tech Psy"
+    ],
+    [
+     "Psy-Trance",
+     "Psy-Tech"
+    ]
+   ],
+   "performers": [
+    "Pickle Rick",
+    "Squanchy",
+    "Birdperson",
+    "Evil Morty",
+    "Gazorp"
+   ]
+  }
+ ],
+ "follows": {
+  "demo_sam": [
+   "Pulso de Tetuán",
+   "Fractal / 140"
+  ],
+  "rick_sanchez": [
+   "Naranja Subterránea",
+   "Cromo Rojo",
+   "Cierre en Azul",
+   "Pickle Rick's Portal Rave"
+  ],
+  "morty_smith": [
+   "Blue Hour Circuit",
+   "Pickle Rick's Portal Rave"
+  ],
+  "summer_smith": [
+   "Pickle Rick's Portal Rave"
+  ],
+  "jerry_smith": [
+   "Pickle Rick's Portal Rave"
+  ],
+  "beth_smith": [
+   "Pickle Rick's Portal Rave"
+  ],
+  "space_beth": [
+   "Pickle Rick's Portal Rave"
+  ],
+  "gene_gilligan": [
+   "Pickle Rick's Portal Rave"
+  ]
+ },
+ "cards": {
+  "demo_organizer": [
+   "Blue Hour Circuit",
+   "Subsuelo / Frequencies",
+   "Naranja Subterránea",
+   "Pulso de Tetuán",
+   "Tarde de Club",
+   "Fractal / 140",
+   "Cromo Rojo",
+   "Ritmos Cruzados",
+   "Neblina de Domingo",
+   "Surco y Señal",
+   "La Otra Orilla",
+   "Presión Continua",
+   "Patio Eléctrico",
+   "Luz Baja",
+   "Carbono",
+   "Marea Baja",
+   "Norte Magnético",
+   "Cierre en Azul",
+   "Goya Deep Sessions",
+   "Lula Pulse",
+   "Bajo el Suelo",
+   "Clamores en Movimiento"
+  ],
+  "demo_alex": [
+   "Blue Hour Circuit",
+   "Subsuelo / Frequencies",
+   "Tarde de Club",
+   "Fractal / 140",
+   "Cromo Rojo",
+   "Ritmos Cruzados",
+   "Surco y Señal",
+   "La Otra Orilla",
+   "Presión Continua",
+   "Patio Eléctrico",
+   "Carbono",
+   "Disco de Sombra",
+   "Marea Baja",
+   "Norte Magnético",
+   "Cierre en Azul",
+   "Bajo el Suelo"
+  ],
+  "demo_sam": [
+   "Naranja Subterránea",
+   "Pulso de Tetuán",
+   "Fractal / 140",
+   "Cromo Rojo",
+   "Cintas Magnéticas",
+   "Surco y Señal",
+   "Presión Continua",
+   "Luz Baja",
+   "Carbono",
+   "Cierre en Azul",
+   "Lula Pulse"
+  ],
+  "demo_jo": [
+   "Blue Hour Circuit",
+   "Ritmos Cruzados",
+   "Patio Eléctrico",
+   "Luz Baja",
+   "Cierre en Azul",
+   "Goya Deep Sessions"
+  ],
+  "demo_morgan": [
+   "Surco y Señal",
+   "Marea Baja",
+   "Goya Deep Sessions"
+  ],
+  "rick_sanchez": [
+   "Blue Hour Circuit",
+   "Subsuelo / Frequencies",
+   "Naranja Subterránea",
+   "Tarde de Club",
+   "Fractal / 140",
+   "Cromo Rojo",
+   "Ritmos Cruzados",
+   "Neblina de Domingo",
+   "Surco y Señal",
+   "Presión Continua",
+   "Patio Eléctrico",
+   "Carbono",
+   "Disco de Sombra",
+   "Marea Baja",
+   "Norte Magnético",
+   "Cierre en Azul",
+   "Goya Deep Sessions",
+   "Clamores en Movimiento"
+  ],
+  "morty_smith": [
+   "Blue Hour Circuit",
+   "Subsuelo / Frequencies",
+   "Pulso de Tetuán",
+   "Presión Continua",
+   "Patio Eléctrico",
+   "Carbono",
+   "Lula Pulse",
+   "Bajo el Suelo"
+  ]
+ }
+}

@@ -1,3 +1,10 @@
+## November 28 demo content
+
+Milestone 20: the Assignment 1 demo accounts, venues, events, follows, event cards and both groups
+can be loaded into the live app with upcoming dates (`operation=demo`), and the profile shows bio,
+links and a genre chart. Needs the owner's `DEMO_ACCOUNT_PASSWORD` secret before the load. The
+owner walkthrough follows the load.
+
 ## November 28 second populated-table migration
 
 Milestone 19: `discovery` 0017/0018 add a unique subgenre `slug` to the 251 populated rows,
