@@ -57,3 +57,31 @@ class GenreSlugMigrationTests(TransactionTestCase):
             self.assertEqual(len(set(slugs.values())), len(names))
         finally:
             MigrationExecutor(connection).migrate(current)
+
+
+class GenreTagSlugMigrationTests(TransactionTestCase):
+    """0017/0018 add GenreTag.slug to a populated table without losing or renumbering rows."""
+
+    def test_populated_subgenres_keep_their_rows_and_gain_unique_slugs(self):
+        previous = [('discovery', '0016_report_hide_permission')]
+        executor = MigrationExecutor(connection)
+        current = executor.loader.graph.leaf_nodes()
+        executor.migrate(previous)
+        try:
+            old = executor.loader.project_state(previous).apps
+            Category = old.get_model('discovery', 'GenreCategory')
+            Tag = old.get_model('discovery', 'GenreTag')
+            parents = [Category.objects.create(name=n, slug=n.lower(), color='#112233', description=n)
+                       for n in ('House', 'Techno')]
+            rows = [(parents[0], 'Deep House'), (parents[0], 'Minimal'), (parents[1], 'Minimal'), (parents[1], '///')]
+            before = {Tag.objects.create(category=c, name=n, description=f'About {n}', bpm_min=100, bpm_max=130).pk:
+                      (c.pk, n, f'About {n}', 100, 130) for c, n in rows}
+            executor = MigrationExecutor(connection)
+            executor.migrate(current)
+            Migrated = executor.loader.project_state(current).apps.get_model('discovery', 'GenreTag')
+            after = list(Migrated.objects.order_by('pk'))
+            self.assertEqual({t.pk: (t.category_id, t.name, t.description, t.bpm_min, t.bpm_max) for t in after}, before)
+            # The same name under two genres gets a suffix; a name with nothing slug-safe uses the fallback.
+            self.assertEqual([t.slug for t in after], ['deep-house', 'minimal', 'minimal-2', 'subgenre'])
+        finally:
+            MigrationExecutor(connection).migrate(current)

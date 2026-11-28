@@ -104,7 +104,7 @@ def logout(request):
 def categories(request):
     return JsonResponse({"categories": list(GenreCategory.objects.values(
         "id", "slug", "name", "color", "description", "bpm_min", "bpm_max")),
-        "tags": list(GenreTag.objects.values("id", "name", "category_id", "description", "bpm_min", "bpm_max"))})
+        "tags": list(GenreTag.objects.values("id", "slug", "name", "category_id", "description", "bpm_min", "bpm_max"))})
 
 
 @require_GET

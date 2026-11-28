@@ -66,6 +66,20 @@ class ContentTests(TestCase):
         card = self.client.get('/api/browse/').json()['events'][0]['categories'][0]
         self.assertEqual(card['slug'], 'house')
 
+    def test_subgenres_expose_stable_unique_slugs(self):
+        first = services.save_tag(actor=self.admin, data={'category': self.category, 'name': 'Deep', 'description': 'x'})
+        other = services.save_category(actor=self.admin, data={'name': 'Techno', 'color': '#112233', 'description': 'x'})
+        second = services.save_tag(actor=self.admin, data={'category': other, 'name': 'Deep', 'description': 'x'})
+        self.assertEqual((first.slug, second.slug), ('deep', 'deep-2'))
+        first.name = 'Deeper'
+        first.save(update_fields=['name'])
+        first.refresh_from_db()
+        self.assertEqual(first.slug, 'deep')
+        listed = {t['id']: t['slug'] for t in self.client.get('/api/genres/').json()['tags']}
+        self.assertEqual(listed, {first.pk: 'deep', second.pk: 'deep-2'})
+        detail = self.client.get(f'/api/genres/{self.category.pk}/').json()
+        self.assertEqual([t['slug'] for t in detail['tags']], ['deep'])
+
     def test_new_categories_get_unique_slugs_and_keep_them_when_renamed(self):
         other = services.save_category(actor=self.admin, data={'name': 'house!', 'color': '#112233', 'description': 'x'})
         self.assertEqual(other.slug, 'house-2')

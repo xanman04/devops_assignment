@@ -4102,6 +4102,7 @@
         "type": "object",
         "required": [
           "id",
+          "slug",
           "name",
           "category_id",
           "description",
@@ -4112,6 +4113,9 @@
           "id": {
             "type": "integer",
             "format": "int64"
+          },
+          "slug": {
+            "type": "string"
           },
           "name": {
             "type": "string"
@@ -4874,6 +4878,7 @@
               "type": "object",
               "required": [
                 "id",
+                "slug",
                 "name",
                 "description",
                 "bpm_min",
@@ -4883,6 +4888,9 @@
                 "id": {
                   "type": "integer",
                   "format": "int64"
+                },
+                "slug": {
+                  "type": "string"
                 },
                 "name": {
                   "type": "string"

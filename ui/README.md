@@ -10,7 +10,7 @@ Discovery and Groups origins. It contains no secrets. Deployments must generate
 the same file before publishing to the Azure Storage static website, and configure each API's
 `UI_ORIGIN` to that exact UI origin. Never put passwords or tokens in config.
 
-Public routes include `#near`, `#discover?q=...`, `#event/<id>`, `#genre/<id>` and
+Public routes include `#near`, `#discover?q=...`, `#event/<id>`, `#genre/<slug>`, `#genre/<slug>/<subgenre-slug>` and
 `#artist/<id>`. The map renderer is pinned to MapLibre 6.3.0 and uses OpenFreeMap;
 network/WebGL failure leaves an ordinary event list. Artwork and the Funnel
 Display font are bundled; their existing licenses and `DJ_SOURCES.md` apply.

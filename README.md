@@ -61,6 +61,21 @@ Variables read by the services (Compose and Azure supply them):
 | `DISCOVERY_URL` | Groups | `http://localhost:8000` | Peer base URL |
 | `DISCOVERY_TIMEOUT_S` | Groups | `2` (Azure sets `5`) | Timeout for every peer call |
 
+### Run a single service
+
+Each service starts on its own from its folder, using a local SQLite file when
+`DATABASE_URL` is unset. With `requirements.txt` installed and `DJANGO_SECRET_KEY` set:
+
+```text
+cd services/discovery
+python serve.py
+```
+
+For Groups, use `services/groups`, set `PORT=8001` if Discovery is also running, and
+point `DISCOVERY_URL` at Discovery. Public group pages and health work without it. To
+run one service as a container against local SQL Server, follow
+[LOCAL_DEVELOPMENT.md](LOCAL_DEVELOPMENT.md#operating-a-single-service).
+
 ## Boundaries and behavior
 
 [Discovery](services/discovery/README.md) owns accounts, events, venues, genres, artists, follows and event reports. [Groups](services/groups/README.md) owns attendance groups, memberships, requests, messages and group notifications. Protected Groups actions validate identity/event eligibility through timed HTTP calls to Discovery; public group summaries and own-database health continue during Discovery failure.
@@ -70,6 +85,14 @@ The [static UI](ui/README.md) calls both configured API URLs. Tokens stay in mem
 See [SERVICE_BOUNDARIES.md](SERVICE_BOUNDARIES.md), [DATA_MIGRATION.md](DATA_MIGRATION.md), each service's openapi.json, [system.yaml](system.yaml) and ADRs 6-10 in [ADR.md](ADR.md). system.yaml lists runtime configuration and read environment variables; secrets have no public defaults. Ordered migrations run under a database lock at startup and are never edited after application.
 
 ## Checks and deployment
+
+Deployment: a pull request runs CI; merging to main runs CI again for that commit,
+publishes both images to GHCR, applies Terraform, uploads the UI and checks both
+`/health` endpoints. Initial setup, done once, signs in to the student subscription,
+runs `python tools/azure_bootstrap.py` to create the resource group, state storage,
+pipeline identity and GitHub secrets, lets the first pipeline run create the
+resources, and initialises one restricted SQL user per database. The exact commands,
+prerequisites and order are in [AZURE_DEPLOYMENT.md](AZURE_DEPLOYMENT.md).
 
 CI lints/tests each service with at least 70% core coverage, validates contracts/schema/migration drift, builds images, and runs real SQL Server Compose, service-boundary, browser and infrastructure checks. CI never uses Azure SQL. Main CD requires CI at the same SHA, publishes full-SHA GHCR images, applies [Terraform](infra/README.md), uploads configured static UI files and checks both exact-version own-database health endpoints.
 

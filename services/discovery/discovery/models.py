@@ -50,13 +50,21 @@ class TempoRange(models.Model):
         return f"{self.bpm_min}–{self.bpm_max} BPM"
 
 
-def unique_category_slug(name, taken):
-    """Readable, URL-safe key for a genre name that is not already in `taken`."""
-    base = slugify(name)[:70].strip("-") or "genre"
+def unique_slug(name, taken, fallback):
+    """Readable, URL-safe key for a name that is not already in `taken`."""
+    base = slugify(name)[:70].strip("-") or fallback
     slug, number = base, 2
     while slug in taken:
         slug, number = f"{base}-{number}", number + 1
     return slug
+
+
+def unique_category_slug(name, taken):
+    return unique_slug(name, taken, "genre")
+
+
+def unique_tag_slug(name, taken):
+    return unique_slug(name, taken, "subgenre")
 
 
 class GenreCategory(TempoRange):
@@ -93,6 +101,8 @@ class GenreCategory(TempoRange):
 class GenreTag(TempoRange):
     category = models.ForeignKey(GenreCategory, on_delete=models.PROTECT, related_name="tags")
     name = models.CharField(max_length=80)
+    slug = models.SlugField(max_length=80, unique=True, blank=True,
+                            help_text="Stable key for linking to this subgenre; generated from the name.")
     description = models.TextField()
 
     class Meta(TempoRange.Meta):
@@ -105,6 +115,14 @@ class GenreTag(TempoRange):
         self.name = self.name.strip()
         if not self.name:
             raise ValidationError({"name": "A name is required."})
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            taken = set(GenreTag.objects.exclude(pk=self.pk).values_list("slug", flat=True))
+            self.slug = unique_tag_slug(self.name, taken)
+            if kwargs.get("update_fields") is not None:
+                kwargs["update_fields"] = set(kwargs["update_fields"]) | {"slug"}
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
