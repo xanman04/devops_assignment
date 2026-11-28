@@ -2,6 +2,10 @@
 
 ## November 28 state (supersedes the dated sections below)
 
+Milestone 20 adds the demo content operation (`RELEASE_VERIFICATION.md`, Demo content). The
+owner chose to include the Rick and Morty example. Run it after CD once `DEMO_ACCOUNT_PASSWORD`
+exists, then the owner walks through the site.
+
 Milestone 19 adds the subgenre slug migration (0017/0018). Before any tag: the owner walks
 through the live app in person and reports problems; the owner writes the AI_USAGE
 explanations and the report disclosure; those and the migration evidence are committed and

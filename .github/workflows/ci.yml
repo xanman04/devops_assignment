@@ -47,6 +47,7 @@ jobs:
       - run: node tools/browser/check_api.cjs
       - run: npx --prefix tools/browser playwright install --with-deps chromium
       - run: python tools/check_static_ui.py
+      - run: python tools/check_demo_seed.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:

@@ -82,6 +82,30 @@ Tools/tests: `tools/live_release.py`, `tools/browser/check_participation_live.cj
 `prepare_live_check` in Discovery, fixture tests and `tools/test_live_release.py`.
 CI runs only the local/fake recovery tests; no Azure credentials enter those jobs.
 
+## Demo content
+
+The live databases start with curated genres and artists only. This operation adds the
+Assignment 1 demo set: 12 fictional accounts, 19 venues (including one pending and one rejected
+for moderation), 25 upcoming events with lineups, follows, event cards for the profile collection,
+and the "Solo Attenders" and "Smith Family" groups with their members, messages and ban.
+
+1. The owner adds the repository secret `DEMO_ACCOUNT_PASSWORD` (at least 12 characters, new,
+   not the password that appears in Assignment 1 history). All demo accounts share it. It is never
+   committed or printed.
+2. After successful CD, with no other production run pending:
+
+```powershell
+gh workflow run verify-live.yml --repo xanman04/devops_assignment --ref main -f operation=demo
+```
+
+Add `-f refresh_demo_dates=true` later to move the demo events forward from that day. Events
+are spread over the following 64 days. `seed_demo_content` runs in the deployed Discovery image
+with the temporary firewall rule described above; groups are then created through the public APIs
+by `tools/seed_demo_groups.py`, signed in as the demo accounts, so ordinary rules apply and no
+Groups data is written directly. Repeating the operation adds only what is missing; it refuses an
+existing account it did not create and never resets a password. `demo-content.json` in the run
+artifact records the result. `tools/check_demo_seed.py` exercises the whole load twice in CI.
+
 ## Selected moderator account
 
 After successful CD, and with no pending/running production operation, the owner may explicitly grant review access to an existing account:

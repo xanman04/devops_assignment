@@ -31,3 +31,4 @@
 .ui-cards {list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(140px,100%),1fr));gap:1rem}.ui-card {min-width:0;overflow-wrap:anywhere;background:#252525;border-top:4px solid #8d95a6;border-radius:8px;padding:1rem}.ui-card h3 {margin:.3rem 0}
 .ui-card-bronze {border-top-color:#cd7f32}.ui-card-silver {border-top-color:#c4ccd8}.ui-card-gold {border-top-color:#ffc933}.ui-card-platinum {border-top-color:#d5e6ff}.ui-card-diamond {border-top-color:#7ff0ff}
 .ui-card-locked {display:grid;place-items:center;min-height:6rem;background:none;border:1px dashed #555;color:#999}
+.ui-chart {margin:1.5rem 0;max-width:360px}.ui-chart svg {width:100%;height:auto}.ui-chart figcaption {color:#ccc;margin-top:.5rem}

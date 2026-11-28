@@ -25,3 +25,12 @@ Profile facts (hometown, start year, labels) and the Instagram, YouTube, SoundCl
 ## Genre and subgenre songs
 
 `discovery/management/commands/_genre_songs.py` lists 439 representative songs: at least three per broad genre and at least one for each of the 251 subgenres (183 have two). Each entry says which genre, or which subgenre, it represents. Candidates were chosen by hand for each style, then looked up on YouTube; a match was kept only if the upload's title and channel contained the song and artist, and it was not a cover, remix, lyric edit, slowed version or mashup. All 439 links were then checked against YouTube's oEmbed endpoint. Where a very small style (for example raptor house or hard drum) has almost no released tracks on YouTube, 21 entries are DJ sets or mixes from the scene's own DJs or from Boiler Room, marked as sets. Several subgenres in niche styles rely on community uploads, which can disappear; recheck before relying on any single link. Bassline stores the URL, title and artist only and never copies or embeds audio. `seed_genre_songs` adds missing songs and extra genre links and never edits or removes existing ones.
+
+## Demo content and character art
+
+The demo listings, lineups and accounts loaded by `seed_demo_content` are fictional; real Madrid
+venue names appear only as map locations, with no organizer affiliation. The "Pickle Rick" event,
+its flyer, the five related DJ profiles, their pictures (`ui/assets/djs/`) and the Smith family
+accounts use characters from Rick and Morty. Those characters belong to their rights holders; the
+project owner supplied the character art for a non-commercial classroom demonstration, and no
+right to reuse it is granted here.

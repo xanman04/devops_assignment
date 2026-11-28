@@ -13,6 +13,7 @@ from urllib.request import urlopen
 import uuid
 
 from azure_bootstrap import az
+import seed_demo_groups
 from deploy_azure import health
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -123,8 +124,8 @@ def inspect_release():
     return read('configuration.json')
 
 
-def discovery_command(command_name, additional_environment):
-    if command_name not in {'prepare_live_check', 'grant_moderator'}:
+def discovery_command(command_name, additional_environment, arguments=()):
+    if command_name not in {'prepare_live_check', 'grant_moderator', 'seed_demo_content'}:
         raise ValueError('Unknown operator command.')
     prefix, group = context()
     head = read('configuration.json')['sha']
@@ -142,11 +143,16 @@ def discovery_command(command_name, additional_environment):
         command = ['docker', 'run', '--rm']
         for name in ('DATABASE_URL', 'DJANGO_SECRET_KEY') + additional_environment:
             command.extend(['-e', name])
-        command.extend(['ghcr.io/xanman04/bassline-discovery:'+head, 'python', 'manage.py', command_name])
+        command.extend(['ghcr.io/xanman04/bassline-discovery:'+head, 'python', 'manage.py', command_name, *arguments])
         result = subprocess.run(command, env=environment, capture_output=True, text=True)
         if result.returncode:
             if command_name == 'grant_moderator' and 'That Bassline account does not exist.' in result.stderr:
                 raise ValueError('The selected Bassline account does not exist. Register it first; no account or password was created.')
+            if command_name == 'seed_demo_content':
+                for safe in ('DEMO_ACCOUNT_PASSWORD must contain', 'DEMO_ACCOUNT_PASSWORD was rejected',
+                             'DEMO_ACCOUNT_PASSWORD does not match', 'Refusing to adopt'):
+                    if safe in result.stderr:
+                        raise ValueError('Demo content was not loaded: ' + safe + '. See the operator guide.')
             raise RuntimeError('Operator command failed; database diagnostics withheld. Check the selected existing account and operator guide.')
         return json.loads(result.stdout.strip().splitlines()[-1])
     finally:
@@ -162,6 +168,18 @@ def prepare():
 def grant_moderator():
     inspect_release()
     write('moderator-grant.json', discovery_command('grant_moderator', ('MODERATOR_USERNAME',)))
+
+
+def load_demo(refresh_dates=False):
+    config = inspect_release()
+    if len(os.environ.get('DEMO_ACCOUNT_PASSWORD', '')) < 12:
+        raise ValueError('Set the DEMO_ACCOUNT_PASSWORD repository secret (at least 12 characters) first.')
+    result = {'sha': config['sha'], 'content': discovery_command(
+        'seed_demo_content', ('DEMO_ACCOUNT_PASSWORD',), ('--refresh-dates',) if refresh_dates else ())}
+    # Groups are created through the public APIs, as the demo accounts, after Discovery holds their events.
+    result['groups'] = seed_demo_groups.seed(config['urls']['discovery'], config['urls']['groups'],
+                                             os.environ['DEMO_ACCOUNT_PASSWORD'])
+    write('demo-content.json', result)
 
 
 def audit_migration():
@@ -270,12 +288,13 @@ def recover_all():
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('action', choices=['prepare', 'stop', 'restore', 'recover', 'moderator'])
+    parser.add_argument('action', choices=['prepare', 'stop', 'restore', 'recover', 'moderator', 'demo'])
     parser.add_argument('service', nargs='?', choices=['discovery', 'groups'])
     args = parser.parse_args()
     if args.action == 'prepare': prepare()
     elif args.action == 'restore': restore()
     elif args.action == 'recover': recover_all()
     elif args.action == 'moderator': grant_moderator()
+    elif args.action == 'demo': load_demo(os.environ.get('DEMO_REFRESH_DATES') == 'true')
     elif args.service: stop(args.service)
     else: parser.error('stop requires a service')

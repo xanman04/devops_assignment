@@ -37,6 +37,9 @@ services:
       LIVE_CHECK_PASSWORD:
         description: Secret used only by the explicitly dispatched prepare_live_check management command; absent from the normal app environment.
         secret: true
+      DEMO_ACCOUNT_PASSWORD:
+        description: Shared password of the fictional demo accounts, used only by the explicitly dispatched seed_demo_content command; absent from the normal app environment.
+        secret: true
       MODERATOR_USERNAME:
         description: Existing username selected explicitly for the manual grant_moderator command; never used to create an account or password.
         default: ''

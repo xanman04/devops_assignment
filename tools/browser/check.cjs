@@ -154,6 +154,7 @@ const {chromium} = require(process.env.PLAYWRIGHT_CORE_PATH || 'playwright');
     await collection.getByRole('heading', {name: 'Scene Regular', exact: true}).waitFor();
     await collection.getByRole('link', {name: 'Attended <b>night</b> 1', exact: true}).waitFor();
     assert.equal(await collection.locator('b').count(), 0);
+    await collection.getByRole('img', {name: 'Genre chart. Most collected: House (3)', exact: true}).waitFor();
     assert(await guest.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
     await guest.screenshot({path: path.join(artifacts, 'collection-mobile.png'), fullPage: true});
     await go(guest, 'moderation');
