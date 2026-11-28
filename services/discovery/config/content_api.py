@@ -125,6 +125,6 @@ def genre_response(category):
     references = category.listening_references.prefetch_related("tags")
     return JsonResponse({"id": category.pk, "slug": category.slug, "name": category.name, "description": category.description,
         "color": category.color, "tempo": category.bpm_display,
-        "tags": list(category.tags.values("id", "name", "description", "bpm_min", "bpm_max")),
+        "tags": list(category.tags.values("id", "slug", "name", "description", "bpm_min", "bpm_max")),
         "samples": [{**reference_json(r), "tag_ids": [t.pk for t in r.tags.all()]} for r in references],
         "artists": [artist_json(a) for a in category.djs.all()]})

@@ -13,7 +13,7 @@ export async function route() {
   const filters = document.querySelector('#filters');
   root.replaceChildren(); filters.replaceChildren(); root.className = 'live-main ui-page';
   const [path, query = ''] = location.hash.slice(1).split('?');
-  const [name = 'near', id] = (path || 'near').split('/');
+  const [name = 'near', id, part] = (path || 'near').split('/');
   const section = ['group', 'create-group', 'edit-group', 'event-groups'].includes(name) ? 'groups'
     : ['event', 'genre', 'artist'].includes(name) ? 'discover'
     : ['create-event', 'edit-event', 'event-references', 'propose-venue'].includes(name) ? 'my-events'
@@ -26,7 +26,7 @@ export async function route() {
     if (name === 'near') await near(root, filters, signal);
     else if (name === 'discover') await discover(root, new URLSearchParams(query).get('q'), signal);
     else if (name === 'event' && /^\d+$/.test(id)) {await eventDetail(root, id, signal); if (!signal.aborted) accounts.participation(root, id, signal);}
-    else if (name === 'genre' && /^[-\w]+$/.test(id)) await genre(root, id, signal);
+    else if (name === 'genre' && /^[-\w]+$/.test(id)) await genre(root, id, signal, part);
     else if (name === 'artist' && /^\d+$/.test(id)) await artist(root, id, signal);
     else if (name === 'login' || name === 'register') await accounts.login(root, name === 'register', signal);
     else if (name === 'profile') await accounts.profile(root, signal);

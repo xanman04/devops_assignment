@@ -4,7 +4,7 @@ Five decisions, recorded in the order of the required topics. Entries 1, 2 and 5
 
 ## [1]. Use Django with server-rendered pages and built-in authentication
 Date: 2026-09-24
-Status: Decided
+Status: Superseded by [6]
 Context: Python is the author's strongest language, and attendees need persistent username/password accounts. Admins need to curate genres, review proposed locations and reports, and manage accounts.
 Decision: Use Django with its authentication, admin, ORM, and migrations, serving HTML templates, plain CSS, and JavaScript from the same application. Use built-in Django JSON responses for map queries rather than adding a REST framework.
 Alternatives considered: Flask was considered for its smaller core, but would require assembling more account and administration functionality. React Native/Expo and React were considered for future portability, but add unfamiliar frontend tooling and complicate the one-manifest requirement; plain HTML/CSS matches current experience.
@@ -28,7 +28,7 @@ Consequences: Reusable records keep location review and genre colors consistent,
 
 ## [4]. Testing Approach
 Date: 2026-10-04
-Status: Decided
+Status: Superseded by [9]
 Context: The assignment guidelines require tests and 70% coverage. The app depends on a shared database.
 Decision: I relied on AI to write the automated backend tests as part of building and implementing the services of the app. The interfaces and UI were tested by hand between iterations. I preferred to test the frontend and UI by hand, to experience how the app felt, looked, and behaved from the perspective of an actual user.
 Alternatives considered: I chose not to write the tests by hand to dedicate more time to creative work in the app, which is where I felt that I was strongest and most productive. To test the whole app, especially backend endpoints by hand, would have been inefficient and counterproductive.
@@ -64,6 +64,8 @@ Decision: Keep Django's migration history and add new migrations. Use mssql-djan
 Alternatives considered: Recreating tables or reseeding on deployment would lose data. Copying raw permission/content-type IDs could silently grant the wrong role when migration-generated IDs differ. Sharing the monolith database would violate ownership. A separate migration framework would duplicate Django's existing schema history. SQL Server uses a case-insensitive database collation with ordinary name uniqueness constraints to preserve the case-only genre duplicate rule, since its backend does not create expression indexes. Wide recording URLs use a SHA-256 uniqueness key, with an in-place backfill, instead of indexing the full URL. Nullable group-request notification keys are uniquely indexed only when present.
 Consequences: Existing cross-domain foreign keys become stable IDs with HTTP eligibility/identity checks and historical snapshots, so cross-service referential integrity and atomicity are unavailable. Short Groups read-check-write transactions take a database-scoped application lock; HTTP happens beforehand. This deliberately serializes local writes at current traffic and requires a finer lock strategy at higher load. Startup schema migrations take a separate session-scoped database lock so overlapping revisions cannot migrate concurrently. Recovery first halts deployment/traffic and adds a forward corrective migration, never edits an applied file or fakes migration history. If a migration causes irrecoverable data loss, stop and coordinate point-in-time backup recovery with the professor within the resource quota; do not automate destructive database replacement. Keep source exports and backups private, verify retained IDs/rows before resuming, and copy each owner's uploaded files separately. Local SQL Server tests prove migration/import behavior; the required before/after migration evidence on Azure still needs two actual deployments with pre-existing Azure data.
 
+
+November 28 migration update (ADR 7): `discovery` 0017/0018 add a unique `slug` to the populated subgenre table in the same two steps as 0014/0015, rehearsed on a populated local SQL Server database before deployment. Recovery remains forward-only: a failed 0017 rolls back its own transaction and the previous revision keeps its schema; a fault found after 0018 is corrected by a new migration.
 
 ## [8]. Define the student Azure runtime with Terraform and scoped OIDC
 Date: 2026-11-20

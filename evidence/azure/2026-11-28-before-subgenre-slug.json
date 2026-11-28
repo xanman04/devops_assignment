@@ -1,0 +1,1518 @@
+{
+  "observed_at_utc": "2026-11-28T16:21:33.576591+00:00",
+  "stage": "Before deploying migrations 0017/0018 (GenreTag.slug); public Discovery API, no credentials used",
+  "discovery_health": {
+    "status": "ok",
+    "db": "ok",
+    "version": "7201e928f15b076a5e2647fed23bc5bd56242a5e"
+  },
+  "subgenre_count": 251,
+  "genre_tags": [
+    {
+      "id": 1,
+      "name": "House",
+      "category_id": 15,
+      "has_slug": false
+    },
+    {
+      "id": 2,
+      "name": "Deep House",
+      "category_id": 15,
+      "has_slug": false
+    },
+    {
+      "id": 3,
+      "name": "Tech House",
+      "category_id": 15,
+      "has_slug": false
+    },
+    {
+      "id": 4,
+      "name": "Afro House",
+      "category_id": 15,
+      "has_slug": false
+    },
+    {
+      "id": 5,
+      "name": "Afro Tech",
+      "category_id": 15,
+      "has_slug": false
+    },
+    {
+      "id": 6,
+      "name": "Organic House",
+      "category_id": 15,
+      "has_slug": false
+    },
+    {
+      "id": 7,
+      "name": "Progressive House",
+      "category_id": 15,
+      "has_slug": false
+    },
+    {
+      "id": 8,
+      "name": "Melodic House",
+      "category_id": 15,
+      "has_slug": false
+    },
+    {
+      "id": 9,
+      "name": "Melodic House & Techno",
+      "category_id": 15,
+      "has_slug": false
+    },
+    {
+      "id": 10,
+      "name": "Minimal / Deep Tech",
+      "category_id": 15,
+      "has_slug": false
+    },
+    {
+      "id": 11,
+      "name": "Bass House",
+      "category_id": 15,
+      "has_slug": false
+    },
+    {
+      "id": 12,
+      "name": "Funky House",
+      "category_id": 15,
+      "has_slug": false
+    },
+    {
+      "id": 13,
+      "name": "Jackin House",
+      "category_id": 15,
+      "has_slug": false
+    },
+    {
+      "id": 14,
+      "name": "Soulful House",
+      "category_id": 15,
+      "has_slug": false
+    },
+    {
+      "id": 15,
+      "name": "Vocal House",
+      "category_id": 15,
+      "has_slug": false
+    },
+    {
+      "id": 16,
+      "name": "Piano House",
+      "category_id": 15,
+      "has_slug": false
+    },
+    {
+      "id": 17,
+      "name": "French House / Filter House",
+      "category_id": 15,
+      "has_slug": false
+    },
+    {
+      "id": 18,
+      "name": "Acid House",
+      "category_id": 15,
+      "has_slug": false
+    },
+    {
+      "id": 19,
+      "name": "Latin House",
+      "category_id": 15,
+      "has_slug": false
+    },
+    {
+      "id": 20,
+      "name": "Tribal House",
+      "category_id": 15,
+      "has_slug": false
+    },
+    {
+      "id": 21,
+      "name": "Indie Tech",
+      "category_id": 15,
+      "has_slug": false
+    },
+    {
+      "id": 22,
+      "name": "Future House",
+      "category_id": 15,
+      "has_slug": false
+    },
+    {
+      "id": 23,
+      "name": "Tropical House",
+      "category_id": 15,
+      "has_slug": false
+    },
+    {
+      "id": 24,
+      "name": "Techno",
+      "category_id": 18,
+      "has_slug": false
+    },
+    {
+      "id": 25,
+      "name": "Peak-Time / Driving",
+      "category_id": 18,
+      "has_slug": false
+    },
+    {
+      "id": 26,
+      "name": "Raw Techno",
+      "category_id": 18,
+      "has_slug": false
+    },
+    {
+      "id": 27,
+      "name": "Deep Techno",
+      "category_id": 18,
+      "has_slug": false
+    },
+    {
+      "id": 28,
+      "name": "Hypnotic Techno",
+      "category_id": 18,
+      "has_slug": false
+    },
+    {
+      "id": 29,
+      "name": "Detroit Techno",
+      "category_id": 18,
+      "has_slug": false
+    },
+    {
+      "id": 30,
+      "name": "Dub Techno",
+      "category_id": 18,
+      "has_slug": false
+    },
+    {
+      "id": 31,
+      "name": "Minimal Techno",
+      "category_id": 18,
+      "has_slug": false
+    },
+    {
+      "id": 32,
+      "name": "Dark Techno",
+      "category_id": 18,
+      "has_slug": false
+    },
+    {
+      "id": 33,
+      "name": "Acid Techno",
+      "category_id": 18,
+      "has_slug": false
+    },
+    {
+      "id": 34,
+      "name": "Melodic Techno",
+      "category_id": 18,
+      "has_slug": false
+    },
+    {
+      "id": 35,
+      "name": "Hardgroove",
+      "category_id": 18,
+      "has_slug": false
+    },
+    {
+      "id": 36,
+      "name": "Tribal Techno",
+      "category_id": 18,
+      "has_slug": false
+    },
+    {
+      "id": 37,
+      "name": "Industrial Techno",
+      "category_id": 18,
+      "has_slug": false
+    },
+    {
+      "id": 38,
+      "name": "Broken Techno",
+      "category_id": 18,
+      "has_slug": false
+    },
+    {
+      "id": 39,
+      "name": "Psy-Techno",
+      "category_id": 18,
+      "has_slug": false
+    },
+    {
+      "id": 40,
+      "name": "EBM",
+      "category_id": 18,
+      "has_slug": false
+    },
+    {
+      "id": 41,
+      "name": "Afro Tech",
+      "category_id": 18,
+      "has_slug": false
+    },
+    {
+      "id": 42,
+      "name": "Hard Techno",
+      "category_id": 2,
+      "has_slug": false
+    },
+    {
+      "id": 43,
+      "name": "Schranz",
+      "category_id": 2,
+      "has_slug": false
+    },
+    {
+      "id": 44,
+      "name": "Hard-Bounce",
+      "category_id": 2,
+      "has_slug": false
+    },
+    {
+      "id": 45,
+      "name": "Industrial Hard Techno",
+      "category_id": 2,
+      "has_slug": false
+    },
+    {
+      "id": 46,
+      "name": "Acid Hard Techno",
+      "category_id": 2,
+      "has_slug": false
+    },
+    {
+      "id": 47,
+      "name": "Hardgroove",
+      "category_id": 2,
+      "has_slug": false
+    },
+    {
+      "id": 48,
+      "name": "Neo-Rave",
+      "category_id": 2,
+      "has_slug": false
+    },
+    {
+      "id": 49,
+      "name": "Hardcore",
+      "category_id": 3,
+      "has_slug": false
+    },
+    {
+      "id": 50,
+      "name": "Gabber",
+      "category_id": 3,
+      "has_slug": false
+    },
+    {
+      "id": 51,
+      "name": "Hardstyle",
+      "category_id": 3,
+      "has_slug": false
+    },
+    {
+      "id": 52,
+      "name": "Rawstyle",
+      "category_id": 3,
+      "has_slug": false
+    },
+    {
+      "id": 53,
+      "name": "Euphoric Hardstyle",
+      "category_id": 3,
+      "has_slug": false
+    },
+    {
+      "id": 54,
+      "name": "Hard House",
+      "category_id": 3,
+      "has_slug": false
+    },
+    {
+      "id": 55,
+      "name": "Frenchcore",
+      "category_id": 3,
+      "has_slug": false
+    },
+    {
+      "id": 56,
+      "name": "Uptempo",
+      "category_id": 3,
+      "has_slug": false
+    },
+    {
+      "id": 57,
+      "name": "Terror / Terrorcore",
+      "category_id": 3,
+      "has_slug": false
+    },
+    {
+      "id": 58,
+      "name": "UK Hardcore",
+      "category_id": 3,
+      "has_slug": false
+    },
+    {
+      "id": 59,
+      "name": "Happy Hardcore",
+      "category_id": 3,
+      "has_slug": false
+    },
+    {
+      "id": 60,
+      "name": "Jumpstyle",
+      "category_id": 3,
+      "has_slug": false
+    },
+    {
+      "id": 61,
+      "name": "Reverse Bass",
+      "category_id": 3,
+      "has_slug": false
+    },
+    {
+      "id": 62,
+      "name": "Neo-Rave",
+      "category_id": 3,
+      "has_slug": false
+    },
+    {
+      "id": 63,
+      "name": "Hard Trance",
+      "category_id": 3,
+      "has_slug": false
+    },
+    {
+      "id": 64,
+      "name": "Breakcore",
+      "category_id": 3,
+      "has_slug": false
+    },
+    {
+      "id": 65,
+      "name": "Trance",
+      "category_id": 17,
+      "has_slug": false
+    },
+    {
+      "id": 66,
+      "name": "Main-Floor Trance",
+      "category_id": 17,
+      "has_slug": false
+    },
+    {
+      "id": 67,
+      "name": "Uplifting Trance",
+      "category_id": 17,
+      "has_slug": false
+    },
+    {
+      "id": 68,
+      "name": "Progressive Trance",
+      "category_id": 17,
+      "has_slug": false
+    },
+    {
+      "id": 69,
+      "name": "Raw Trance",
+      "category_id": 17,
+      "has_slug": false
+    },
+    {
+      "id": 70,
+      "name": "Deep Trance",
+      "category_id": 17,
+      "has_slug": false
+    },
+    {
+      "id": 71,
+      "name": "Hypnotic Trance",
+      "category_id": 17,
+      "has_slug": false
+    },
+    {
+      "id": 72,
+      "name": "Tech Trance",
+      "category_id": 17,
+      "has_slug": false
+    },
+    {
+      "id": 73,
+      "name": "Vocal Trance",
+      "category_id": 17,
+      "has_slug": false
+    },
+    {
+      "id": 74,
+      "name": "Acid Trance",
+      "category_id": 17,
+      "has_slug": false
+    },
+    {
+      "id": 75,
+      "name": "Hard Trance",
+      "category_id": 17,
+      "has_slug": false
+    },
+    {
+      "id": 76,
+      "name": "Psytrance",
+      "category_id": 10,
+      "has_slug": false
+    },
+    {
+      "id": 77,
+      "name": "Progressive Psy",
+      "category_id": 10,
+      "has_slug": false
+    },
+    {
+      "id": 78,
+      "name": "Goa Trance",
+      "category_id": 10,
+      "has_slug": false
+    },
+    {
+      "id": 79,
+      "name": "Full-On",
+      "category_id": 10,
+      "has_slug": false
+    },
+    {
+      "id": 80,
+      "name": "Darkpsy",
+      "category_id": 10,
+      "has_slug": false
+    },
+    {
+      "id": 81,
+      "name": "Forest Psy",
+      "category_id": 10,
+      "has_slug": false
+    },
+    {
+      "id": 82,
+      "name": "Psychedelic",
+      "category_id": 10,
+      "has_slug": false
+    },
+    {
+      "id": 83,
+      "name": "Psycore",
+      "category_id": 10,
+      "has_slug": false
+    },
+    {
+      "id": 84,
+      "name": "Hi-Tech Psy",
+      "category_id": 10,
+      "has_slug": false
+    },
+    {
+      "id": 85,
+      "name": "Psy-Tech",
+      "category_id": 10,
+      "has_slug": false
+    },
+    {
+      "id": 86,
+      "name": "Drum & Bass",
+      "category_id": 6,
+      "has_slug": false
+    },
+    {
+      "id": 87,
+      "name": "Liquid DnB",
+      "category_id": 6,
+      "has_slug": false
+    },
+    {
+      "id": 88,
+      "name": "Liquid Funk",
+      "category_id": 6,
+      "has_slug": false
+    },
+    {
+      "id": 89,
+      "name": "Dancefloor",
+      "category_id": 6,
+      "has_slug": false
+    },
+    {
+      "id": 90,
+      "name": "Neurofunk",
+      "category_id": 6,
+      "has_slug": false
+    },
+    {
+      "id": 91,
+      "name": "Jump-Up",
+      "category_id": 6,
+      "has_slug": false
+    },
+    {
+      "id": 92,
+      "name": "Rollers",
+      "category_id": 6,
+      "has_slug": false
+    },
+    {
+      "id": 93,
+      "name": "Techstep",
+      "category_id": 6,
+      "has_slug": false
+    },
+    {
+      "id": 94,
+      "name": "Darkstep",
+      "category_id": 6,
+      "has_slug": false
+    },
+    {
+      "id": 95,
+      "name": "Deep DnB",
+      "category_id": 6,
+      "has_slug": false
+    },
+    {
+      "id": 96,
+      "name": "Minimal DnB",
+      "category_id": 6,
+      "has_slug": false
+    },
+    {
+      "id": 97,
+      "name": "Atmospheric DnB",
+      "category_id": 6,
+      "has_slug": false
+    },
+    {
+      "id": 98,
+      "name": "Soulful DnB",
+      "category_id": 6,
+      "has_slug": false
+    },
+    {
+      "id": 99,
+      "name": "Jazz DnB",
+      "category_id": 6,
+      "has_slug": false
+    },
+    {
+      "id": 100,
+      "name": "Drumfunk",
+      "category_id": 6,
+      "has_slug": false
+    },
+    {
+      "id": 101,
+      "name": "Halftime",
+      "category_id": 6,
+      "has_slug": false
+    },
+    {
+      "id": 102,
+      "name": "Jungle",
+      "category_id": 6,
+      "has_slug": false
+    },
+    {
+      "id": 103,
+      "name": "Dubstep",
+      "category_id": 1,
+      "has_slug": false
+    },
+    {
+      "id": 104,
+      "name": "Deep Dubstep",
+      "category_id": 1,
+      "has_slug": false
+    },
+    {
+      "id": 105,
+      "name": "140",
+      "category_id": 1,
+      "has_slug": false
+    },
+    {
+      "id": 106,
+      "name": "UK Dubstep",
+      "category_id": 1,
+      "has_slug": false
+    },
+    {
+      "id": 107,
+      "name": "Brostep",
+      "category_id": 1,
+      "has_slug": false
+    },
+    {
+      "id": 108,
+      "name": "Riddim",
+      "category_id": 1,
+      "has_slug": false
+    },
+    {
+      "id": 109,
+      "name": "Tearout",
+      "category_id": 1,
+      "has_slug": false
+    },
+    {
+      "id": 110,
+      "name": "Wobble",
+      "category_id": 1,
+      "has_slug": false
+    },
+    {
+      "id": 111,
+      "name": "Melodic Dubstep",
+      "category_id": 1,
+      "has_slug": false
+    },
+    {
+      "id": 112,
+      "name": "Midtempo",
+      "category_id": 1,
+      "has_slug": false
+    },
+    {
+      "id": 113,
+      "name": "Grime",
+      "category_id": 1,
+      "has_slug": false
+    },
+    {
+      "id": 114,
+      "name": "Instrumental Grime",
+      "category_id": 1,
+      "has_slug": false
+    },
+    {
+      "id": 115,
+      "name": "UK Garage",
+      "category_id": 14,
+      "has_slug": false
+    },
+    {
+      "id": 116,
+      "name": "2-Step",
+      "category_id": 14,
+      "has_slug": false
+    },
+    {
+      "id": 117,
+      "name": "Speed Garage",
+      "category_id": 14,
+      "has_slug": false
+    },
+    {
+      "id": 118,
+      "name": "Bassline",
+      "category_id": 14,
+      "has_slug": false
+    },
+    {
+      "id": 119,
+      "name": "4x4 Garage",
+      "category_id": 14,
+      "has_slug": false
+    },
+    {
+      "id": 120,
+      "name": "Future Garage",
+      "category_id": 14,
+      "has_slug": false
+    },
+    {
+      "id": 121,
+      "name": "Dark Garage",
+      "category_id": 14,
+      "has_slug": false
+    },
+    {
+      "id": 122,
+      "name": "UK Funky",
+      "category_id": 14,
+      "has_slug": false
+    },
+    {
+      "id": 123,
+      "name": "Breakbeat",
+      "category_id": 8,
+      "has_slug": false
+    },
+    {
+      "id": 124,
+      "name": "Breaks",
+      "category_id": 8,
+      "has_slug": false
+    },
+    {
+      "id": 125,
+      "name": "Progressive Breaks",
+      "category_id": 8,
+      "has_slug": false
+    },
+    {
+      "id": 126,
+      "name": "Nu-Skool Breaks",
+      "category_id": 8,
+      "has_slug": false
+    },
+    {
+      "id": 127,
+      "name": "Acid Breaks",
+      "category_id": 8,
+      "has_slug": false
+    },
+    {
+      "id": 128,
+      "name": "Electro Breaks",
+      "category_id": 8,
+      "has_slug": false
+    },
+    {
+      "id": 129,
+      "name": "Big Beat",
+      "category_id": 8,
+      "has_slug": false
+    },
+    {
+      "id": 130,
+      "name": "Funky Breaks",
+      "category_id": 8,
+      "has_slug": false
+    },
+    {
+      "id": 131,
+      "name": "Glitch Hop",
+      "category_id": 8,
+      "has_slug": false
+    },
+    {
+      "id": 132,
+      "name": "UK Bass",
+      "category_id": 16,
+      "has_slug": false
+    },
+    {
+      "id": 133,
+      "name": "Bass Music",
+      "category_id": 16,
+      "has_slug": false
+    },
+    {
+      "id": 134,
+      "name": "Leftfield Bass",
+      "category_id": 16,
+      "has_slug": false
+    },
+    {
+      "id": 135,
+      "name": "Hard Drum",
+      "category_id": 16,
+      "has_slug": false
+    },
+    {
+      "id": 136,
+      "name": "Deconstructed Club",
+      "category_id": 16,
+      "has_slug": false
+    },
+    {
+      "id": 137,
+      "name": "Broken Club",
+      "category_id": 16,
+      "has_slug": false
+    },
+    {
+      "id": 138,
+      "name": "Experimental Bass",
+      "category_id": 16,
+      "has_slug": false
+    },
+    {
+      "id": 139,
+      "name": "Jersey Club",
+      "category_id": 16,
+      "has_slug": false
+    },
+    {
+      "id": 140,
+      "name": "Baltimore Club",
+      "category_id": 16,
+      "has_slug": false
+    },
+    {
+      "id": 141,
+      "name": "Footwork",
+      "category_id": 16,
+      "has_slug": false
+    },
+    {
+      "id": 142,
+      "name": "Juke",
+      "category_id": 16,
+      "has_slug": false
+    },
+    {
+      "id": 143,
+      "name": "Global Club",
+      "category_id": 16,
+      "has_slug": false
+    },
+    {
+      "id": 144,
+      "name": "Gqom",
+      "category_id": 16,
+      "has_slug": false
+    },
+    {
+      "id": 145,
+      "name": "UK Funky",
+      "category_id": 16,
+      "has_slug": false
+    },
+    {
+      "id": 146,
+      "name": "EDM Trap",
+      "category_id": 13,
+      "has_slug": false
+    },
+    {
+      "id": 147,
+      "name": "Hybrid Trap",
+      "category_id": 13,
+      "has_slug": false
+    },
+    {
+      "id": 148,
+      "name": "Festival Trap",
+      "category_id": 13,
+      "has_slug": false
+    },
+    {
+      "id": 149,
+      "name": "Future Bass",
+      "category_id": 13,
+      "has_slug": false
+    },
+    {
+      "id": 150,
+      "name": "Wave",
+      "category_id": 13,
+      "has_slug": false
+    },
+    {
+      "id": 151,
+      "name": "Hardwave",
+      "category_id": 13,
+      "has_slug": false
+    },
+    {
+      "id": 152,
+      "name": "Melodic Bass",
+      "category_id": 13,
+      "has_slug": false
+    },
+    {
+      "id": 153,
+      "name": "Electro",
+      "category_id": 12,
+      "has_slug": false
+    },
+    {
+      "id": 154,
+      "name": "Detroit Electro",
+      "category_id": 12,
+      "has_slug": false
+    },
+    {
+      "id": 155,
+      "name": "Electro-Funk",
+      "category_id": 12,
+      "has_slug": false
+    },
+    {
+      "id": 156,
+      "name": "Modern Electro",
+      "category_id": 12,
+      "has_slug": false
+    },
+    {
+      "id": 157,
+      "name": "Acid Electro",
+      "category_id": 12,
+      "has_slug": false
+    },
+    {
+      "id": 158,
+      "name": "Techno-Electro",
+      "category_id": 12,
+      "has_slug": false
+    },
+    {
+      "id": 159,
+      "name": "Electro Breaks",
+      "category_id": 12,
+      "has_slug": false
+    },
+    {
+      "id": 160,
+      "name": "EBM",
+      "category_id": 22,
+      "has_slug": false
+    },
+    {
+      "id": 161,
+      "name": "Industrial",
+      "category_id": 22,
+      "has_slug": false
+    },
+    {
+      "id": 162,
+      "name": "Electro-Industrial",
+      "category_id": 22,
+      "has_slug": false
+    },
+    {
+      "id": 163,
+      "name": "Dark Electro",
+      "category_id": 22,
+      "has_slug": false
+    },
+    {
+      "id": 164,
+      "name": "New Beat",
+      "category_id": 22,
+      "has_slug": false
+    },
+    {
+      "id": 165,
+      "name": "Rhythmic Noise",
+      "category_id": 22,
+      "has_slug": false
+    },
+    {
+      "id": 166,
+      "name": "Power Noise",
+      "category_id": 22,
+      "has_slug": false
+    },
+    {
+      "id": 167,
+      "name": "Aggrotech",
+      "category_id": 22,
+      "has_slug": false
+    },
+    {
+      "id": 168,
+      "name": "Body Music",
+      "category_id": 22,
+      "has_slug": false
+    },
+    {
+      "id": 169,
+      "name": "Electronic Post-Punk",
+      "category_id": 22,
+      "has_slug": false
+    },
+    {
+      "id": 170,
+      "name": "Industrial / Noise",
+      "category_id": 22,
+      "has_slug": false
+    },
+    {
+      "id": 171,
+      "name": "Indie Dance",
+      "category_id": 9,
+      "has_slug": false
+    },
+    {
+      "id": 172,
+      "name": "Dark Disco",
+      "category_id": 9,
+      "has_slug": false
+    },
+    {
+      "id": 173,
+      "name": "Cosmic Dance",
+      "category_id": 9,
+      "has_slug": false
+    },
+    {
+      "id": 174,
+      "name": "Electronic Indie",
+      "category_id": 9,
+      "has_slug": false
+    },
+    {
+      "id": 175,
+      "name": "Leftfield Dance",
+      "category_id": 9,
+      "has_slug": false
+    },
+    {
+      "id": 176,
+      "name": "New-Wave-Influenced Club Music",
+      "category_id": 9,
+      "has_slug": false
+    },
+    {
+      "id": 177,
+      "name": "EBM Crossover",
+      "category_id": 9,
+      "has_slug": false
+    },
+    {
+      "id": 178,
+      "name": "Nu-Disco Crossover",
+      "category_id": 9,
+      "has_slug": false
+    },
+    {
+      "id": 179,
+      "name": "Indie Tech",
+      "category_id": 9,
+      "has_slug": false
+    },
+    {
+      "id": 180,
+      "name": "Disco",
+      "category_id": 19,
+      "has_slug": false
+    },
+    {
+      "id": 181,
+      "name": "Nu Disco",
+      "category_id": 19,
+      "has_slug": false
+    },
+    {
+      "id": 182,
+      "name": "Italo Disco",
+      "category_id": 19,
+      "has_slug": false
+    },
+    {
+      "id": 183,
+      "name": "Space Disco",
+      "category_id": 19,
+      "has_slug": false
+    },
+    {
+      "id": 184,
+      "name": "Cosmic Disco",
+      "category_id": 19,
+      "has_slug": false
+    },
+    {
+      "id": 185,
+      "name": "Hi-NRG",
+      "category_id": 19,
+      "has_slug": false
+    },
+    {
+      "id": 186,
+      "name": "French Touch",
+      "category_id": 19,
+      "has_slug": false
+    },
+    {
+      "id": 187,
+      "name": "Disco House",
+      "category_id": 19,
+      "has_slug": false
+    },
+    {
+      "id": 188,
+      "name": "Electronic Funk / Soul Crossover",
+      "category_id": 19,
+      "has_slug": false
+    },
+    {
+      "id": 189,
+      "name": "Mainstage",
+      "category_id": 4,
+      "has_slug": false
+    },
+    {
+      "id": 190,
+      "name": "Big Room",
+      "category_id": 4,
+      "has_slug": false
+    },
+    {
+      "id": 191,
+      "name": "Electro House",
+      "category_id": 4,
+      "has_slug": false
+    },
+    {
+      "id": 192,
+      "name": "Future House",
+      "category_id": 4,
+      "has_slug": false
+    },
+    {
+      "id": 193,
+      "name": "Speed House",
+      "category_id": 4,
+      "has_slug": false
+    },
+    {
+      "id": 194,
+      "name": "Future Rave",
+      "category_id": 4,
+      "has_slug": false
+    },
+    {
+      "id": 195,
+      "name": "Festival Progressive House",
+      "category_id": 4,
+      "has_slug": false
+    },
+    {
+      "id": 196,
+      "name": "Commercial EDM",
+      "category_id": 4,
+      "has_slug": false
+    },
+    {
+      "id": 197,
+      "name": "Dance-Pop",
+      "category_id": 20,
+      "has_slug": false
+    },
+    {
+      "id": 198,
+      "name": "Electropop",
+      "category_id": 20,
+      "has_slug": false
+    },
+    {
+      "id": 199,
+      "name": "Commercial Vocal Dance",
+      "category_id": 20,
+      "has_slug": false
+    },
+    {
+      "id": 200,
+      "name": "EDM-Pop",
+      "category_id": 20,
+      "has_slug": false
+    },
+    {
+      "id": 201,
+      "name": "Eurodance",
+      "category_id": 20,
+      "has_slug": false
+    },
+    {
+      "id": 202,
+      "name": "Tropical House",
+      "category_id": 20,
+      "has_slug": false
+    },
+    {
+      "id": 203,
+      "name": "Afro Pop",
+      "category_id": 20,
+      "has_slug": false
+    },
+    {
+      "id": 204,
+      "name": "Commercial Electronic Crossover",
+      "category_id": 20,
+      "has_slug": false
+    },
+    {
+      "id": 205,
+      "name": "Amapiano",
+      "category_id": 7,
+      "has_slug": false
+    },
+    {
+      "id": 206,
+      "name": "Afrobeats",
+      "category_id": 7,
+      "has_slug": false
+    },
+    {
+      "id": 207,
+      "name": "Afropiano",
+      "category_id": 7,
+      "has_slug": false
+    },
+    {
+      "id": 208,
+      "name": "Afro House",
+      "category_id": 7,
+      "has_slug": false
+    },
+    {
+      "id": 209,
+      "name": "Afro Tech",
+      "category_id": 7,
+      "has_slug": false
+    },
+    {
+      "id": 210,
+      "name": "Afro Melodic",
+      "category_id": 7,
+      "has_slug": false
+    },
+    {
+      "id": 211,
+      "name": "3Step",
+      "category_id": 7,
+      "has_slug": false
+    },
+    {
+      "id": 212,
+      "name": "Gqom",
+      "category_id": 7,
+      "has_slug": false
+    },
+    {
+      "id": 213,
+      "name": "Bacardi",
+      "category_id": 7,
+      "has_slug": false
+    },
+    {
+      "id": 214,
+      "name": "Quantum",
+      "category_id": 7,
+      "has_slug": false
+    },
+    {
+      "id": 215,
+      "name": "Afro Pop",
+      "category_id": 7,
+      "has_slug": false
+    },
+    {
+      "id": 216,
+      "name": "Related African Electronic / Club Styles",
+      "category_id": 7,
+      "has_slug": false
+    },
+    {
+      "id": 217,
+      "name": "Brazilian Funk",
+      "category_id": 11,
+      "has_slug": false
+    },
+    {
+      "id": 218,
+      "name": "Baile Funk",
+      "category_id": 11,
+      "has_slug": false
+    },
+    {
+      "id": 219,
+      "name": "Funk Carioca",
+      "category_id": 11,
+      "has_slug": false
+    },
+    {
+      "id": 220,
+      "name": "Favela Funk",
+      "category_id": 11,
+      "has_slug": false
+    },
+    {
+      "id": 221,
+      "name": "Mandelão Funk",
+      "category_id": 11,
+      "has_slug": false
+    },
+    {
+      "id": 222,
+      "name": "BH Funk",
+      "category_id": 11,
+      "has_slug": false
+    },
+    {
+      "id": 223,
+      "name": "Melodic Funk",
+      "category_id": 11,
+      "has_slug": false
+    },
+    {
+      "id": 224,
+      "name": "Eletrofunk",
+      "category_id": 11,
+      "has_slug": false
+    },
+    {
+      "id": 225,
+      "name": "Automotivo",
+      "category_id": 11,
+      "has_slug": false
+    },
+    {
+      "id": 226,
+      "name": "Rasteirinha",
+      "category_id": 11,
+      "has_slug": false
+    },
+    {
+      "id": 227,
+      "name": "Latin Electronic",
+      "category_id": 5,
+      "has_slug": false
+    },
+    {
+      "id": 228,
+      "name": "Latin Bass",
+      "category_id": 5,
+      "has_slug": false
+    },
+    {
+      "id": 229,
+      "name": "Tribal / Guaracha",
+      "category_id": 5,
+      "has_slug": false
+    },
+    {
+      "id": 230,
+      "name": "Tribal Guarachero",
+      "category_id": 5,
+      "has_slug": false
+    },
+    {
+      "id": 231,
+      "name": "Raptor House / Changa Tuki",
+      "category_id": 5,
+      "has_slug": false
+    },
+    {
+      "id": 232,
+      "name": "Electronic Cumbia / Cumbia Digital",
+      "category_id": 5,
+      "has_slug": false
+    },
+    {
+      "id": 233,
+      "name": "Moombahton",
+      "category_id": 5,
+      "has_slug": false
+    },
+    {
+      "id": 234,
+      "name": "Neo-Perreo",
+      "category_id": 5,
+      "has_slug": false
+    },
+    {
+      "id": 235,
+      "name": "Latin Club",
+      "category_id": 5,
+      "has_slug": false
+    },
+    {
+      "id": 236,
+      "name": "Electronic Reggaeton Crossover",
+      "category_id": 5,
+      "has_slug": false
+    },
+    {
+      "id": 237,
+      "name": "Latin House",
+      "category_id": 5,
+      "has_slug": false
+    },
+    {
+      "id": 238,
+      "name": "Tribal House",
+      "category_id": 5,
+      "has_slug": false
+    },
+    {
+      "id": 239,
+      "name": "Ambient",
+      "category_id": 21,
+      "has_slug": false
+    },
+    {
+      "id": 240,
+      "name": "Downtempo",
+      "category_id": 21,
+      "has_slug": false
+    },
+    {
+      "id": 241,
+      "name": "Experimental Electronic",
+      "category_id": 21,
+      "has_slug": false
+    },
+    {
+      "id": 242,
+      "name": "Electronica",
+      "category_id": 21,
+      "has_slug": false
+    },
+    {
+      "id": 243,
+      "name": "IDM",
+      "category_id": 21,
+      "has_slug": false
+    },
+    {
+      "id": 244,
+      "name": "Glitch",
+      "category_id": 21,
+      "has_slug": false
+    },
+    {
+      "id": 245,
+      "name": "Drone",
+      "category_id": 21,
+      "has_slug": false
+    },
+    {
+      "id": 246,
+      "name": "Ambient Techno",
+      "category_id": 21,
+      "has_slug": false
+    },
+    {
+      "id": 247,
+      "name": "Ambient House",
+      "category_id": 21,
+      "has_slug": false
+    },
+    {
+      "id": 248,
+      "name": "Chillout",
+      "category_id": 21,
+      "has_slug": false
+    },
+    {
+      "id": 249,
+      "name": "Leftfield Electronica",
+      "category_id": 21,
+      "has_slug": false
+    },
+    {
+      "id": 250,
+      "name": "Microsound",
+      "category_id": 21,
+      "has_slug": false
+    },
+    {
+      "id": 251,
+      "name": "Braindance",
+      "category_id": 21,
+      "has_slug": false
+    }
+  ]
+}

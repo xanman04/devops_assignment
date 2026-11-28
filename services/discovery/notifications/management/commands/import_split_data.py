@@ -71,13 +71,16 @@ class Command(BaseCommand):
             for row in rows:
                 if row["model"] == "discovery.djmedialink":
                     row["fields"]["url_digest"] = hashlib.sha256(row["fields"]["url"].encode("utf-8")).hexdigest()
-            if any(row["model"] == "discovery.genrecategory" for row in rows):
-                from discovery.models import unique_category_slug  # Raw saves skip GenreCategory.save().
-                taken_slugs = set()
-                for row in rows:
-                    if row["model"] == "discovery.genrecategory":
-                        row["fields"]["slug"] = row["fields"].get("slug") or unique_category_slug(row["fields"]["name"], taken_slugs)
-                        taken_slugs.add(row["fields"]["slug"])
+            if any(row["model"] in ("discovery.genrecategory", "discovery.genretag") for row in rows):
+                # Raw saves skip the model save() methods that fill slugs.
+                from discovery.models import unique_category_slug, unique_tag_slug
+                for model, make_slug in (("discovery.genrecategory", unique_category_slug),
+                                         ("discovery.genretag", unique_tag_slug)):
+                    taken_slugs = set()
+                    for row in rows:
+                        if row["model"] == model:
+                            row["fields"]["slug"] = row["fields"].get("slug") or make_slug(row["fields"]["name"], taken_slugs)
+                            taken_slugs.add(row["fields"]["slug"])
             with connection.constraint_checks_disabled():
                 for record in serializers.deserialize("python", rows):
                     record.save()

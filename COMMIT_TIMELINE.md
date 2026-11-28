@@ -1,3 +1,15 @@
+## November 28 second populated-table migration
+
+Milestone 19: `discovery` 0017/0018 add a unique subgenre `slug` to the 251 populated rows,
+so the report can include Azure startup output; subgenre deep links on the genre page. A
+check against the assignment brief also set ADR 1 and ADR 4 to superseded and added the
+single-service and deployment summary to the README.
+
+Remaining, in order: capture the after-data and startup log; owner's manual walkthrough of
+the live app (the owner has not yet seen it in person) with any problems fixed; owner
+AI_USAGE explanations and report AI disclosure; final commit with that text and the
+evidence; `submission` tag on the deployed SHA; submission by November 29 23:59.
+
 ## November 27 remaining UI parity and submission documentation
 
 Milestone 18: organiser listening-link editing (`/api/events/{event_id}/references/`) and the

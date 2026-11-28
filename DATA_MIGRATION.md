@@ -103,3 +103,21 @@ from 0013 to the latest state and checks ids, names and other columns are unchan
 slugs are unique. Local tests do not replace the Azure evidence: the "before" snapshot
 is `evidence/azure/2026-11-23-before-slug-migration.json`; the "after" snapshot, the
 startup migration log and the deployment run link are added once the deployment ran.
+
+## Second populated-table migration on Azure: GenreTag.slug
+
+`discovery` 0017 and 0018 repeat the pattern on a larger populated table, the 251
+subgenres in `discovery_genretag`. 0017 adds a nullable `slug` column, backfills every
+row in primary-key order and prints the row count into the startup log; a name used
+under two genres gets a numeric suffix. 0018 makes the column required and unique.
+IDs, names, categories, descriptions and tempo ranges are not touched. New subgenres
+get a slug from `GenreTag.save`, `import_split_data` derives slugs for imported rows,
+and the genre page opens one subgenre at `#genre/<genre-slug>/<subgenre-slug>`.
+
+This migration was added on November 28 partly so that Azure startup output could be
+captured while it ran, because the console output of 0014/0015 was not kept. It is a
+separate migration and its log is not evidence about the November 23 one. The change
+was rehearsed first on a local SQL Server database populated by the previous version.
+`evidence/azure/2026-11-28-before-subgenre-slug.json` holds the live rows before
+deployment; the rows afterwards and the captured startup output are stored beside it
+once the deployment has run.

@@ -55,14 +55,16 @@ export async function eventDetail(root, id, signal) {
     el('section', {id: 'event-participation'}, el('h2', {}, 'Go together'), link('View attendance groups →', `#event-groups/${event.id}`)));
 }
 
-export async function genre(root, id, signal) {
+export async function genre(root, id, signal, subgenre) {
   const data = await api('discovery', /^\d+$/.test(id) ? `/api/genres/${id}/` : `/api/genres/slug/${id}/`, {signal});
   if (signal.aborted) return;
   root.append(link('← Discover', '#discover'), heading(data.name, data.description), el('p', {}, data.tempo),
     el('h2', {}, 'Start listening'), recordingList(data.samples.filter(s => !s.tag_ids.length)),
-    el('h2', {}, 'Subgenres'), ...data.tags.map(t => el('details', {}, el('summary', {}, t.name), el('p', {}, t.description),
-      t.bpm_min && el('p', {}, `${t.bpm_min}–${t.bpm_max} BPM`), recordingList(data.samples.filter(s => s.tag_ids.includes(t.id))))),
+    el('h2', {}, 'Subgenres'), ...data.tags.map(t => el('details', {open: t.slug === subgenre}, el('summary', {}, t.name), el('p', {}, t.description),
+      t.bpm_min && el('p', {}, `${t.bpm_min}–${t.bpm_max} BPM`), recordingList(data.samples.filter(s => s.tag_ids.includes(t.id))),
+      el('p', {}, link('Link to this subgenre', `#genre/${data.slug}/${t.slug}`)))),
     el('h2', {}, 'Artists & DJs'), artistCards(data.artists));
+  root.querySelector('details[open]')?.scrollIntoView({block: 'start'});
 }
 
 export async function artist(root, id, signal) {

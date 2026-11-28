@@ -47,6 +47,7 @@ role=Group.objects.create(name='Imported group moderator')
 role.permissions.add(Permission.objects.get(content_type__app_label='groups',codename='change_attendancegroup'))
 guest.groups.add(role)
 category=discovery.save_category(actor=owner,data={'name':'House','color':'#123456','description':'Test'})
+discovery.save_tag(actor=owner,data={'category':category,'name':'Deep House','description':'Test'})
 venue=discovery.save_venue(actor=owner,review_status='approved',data={'name':'Venue','latitude':48,'longitude':2,'timezone':'Europe/Paris'})
 start=timezone.now()+timedelta(days=2)
 event=discovery.save_event(actor=owner,category_ids=[category.pk],data={'venue':venue,'title':'Import event','description':'Test','starts_at':start,'ends_at':start+timedelta(hours=4)})
@@ -74,13 +75,14 @@ print(json.dumps({'owner':owner.pk,'guest':guest.pk,'event':event.pk,'group':gro
 import django,os
 django.setup()
 from django.contrib.auth import get_user_model
-from discovery.models import Event, LegacyAdminAudit
+from discovery.models import Event, GenreTag, LegacyAdminAudit
 from notifications.models import Notification
 user=get_user_model().objects.get(pk={ids['guest']})
 assert user.check_password(os.environ['IMPORT_TEST_PASSWORD'])
 assert user.has_perm('groups.change_attendancegroup')
 assert Event.objects.get(pk={ids['event']}).creator_id == {ids['owner']}
 assert LegacyAdminAudit.objects.get().user_id == {ids['owner']}
+assert GenreTag.objects.get().slug == 'deep-house'
 assert Notification.objects.filter(recipient_id={ids['owner']}).count() == 1
 '''
             else:

@@ -1,5 +1,14 @@
 # Bassline Assignment 2 — Claude handoff
 
+## November 28 state (supersedes the dated sections below)
+
+Milestone 19 adds the subgenre slug migration (0017/0018). Before any tag: the owner walks
+through the live app in person and reports problems; the owner writes the AI_USAGE
+explanations and the report disclosure; those and the migration evidence are committed and
+deployed. A November 20 note below said the explanation cells were untouched by that day's
+reformat. That was wrong: the prompts had moved down one row, and this milestone restores
+them.
+
 ## November 27 state (supersedes the dated sections below)
 
 All planned implementation is in milestone 18: listening-link editing and the profile
